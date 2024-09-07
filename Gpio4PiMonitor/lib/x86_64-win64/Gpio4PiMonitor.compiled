@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CONFIG>
-  <Compiler Value="C:\lazarus\fpc\3.2.2\bin\x86_64-win64\fpc.exe" Date="1429740242"/>
-  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -WG -l -vewnhibq &quot;-FiE:\Jan\Projekter\Raspberry Pi\Gpio4Pi\Gpio4PiMonitor\lib\x86_64-win64&quot; &quot;-FuE:\Jan\Projekter\Raspberry Pi\Gpio4Pi&quot; -FuC:\lazarus\lcl\units\x86_64-win64\win32 -FuC:\lazarus\lcl\units\x86_64-win64 -FuC:\lazarus\components\freetype\lib\x86_64-win64 -FuC:\lazarus\components\lazutils\lib\x86_64-win64 -FuC:\lazarus\packager\units\x86_64-win64 &quot;-FuE:\Jan\Projekter\Raspberry Pi\Gpio4Pi\Gpio4PiMonitor\&quot; &quot;-FUE:\Jan\Projekter\Raspberry Pi\Gpio4Pi\Gpio4PiMonitor\lib\x86_64-win64\&quot; &quot;-FEE:\Jan\Projekter\Raspberry Pi\Gpio4Pi\Gpio4PiMonitor\&quot; &quot;-oE:\Jan\Projekter\Raspberry Pi\Gpio4Pi\Gpio4PiMonitor\Gpio4PiMonitor.exe&quot; -dLCL -dLCLwin32 Gpio4PiMonitor.lpr"/>
-</CONFIG>
