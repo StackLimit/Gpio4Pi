@@ -1,3 +1,16 @@
 
 Gpio4Pi.zip
+
+/DivTest
+
+/Gpio4PiClient/backup
+/Gpio4PiClient/lib
+
+/Gpio4PiCmd/backup
 /Gpio4PiCmd/lib
+
+/Gpio4PiMonitor/backup
+/Gpio4PiMonitor/lib
+
+/Gpio4PiTest/backup
+/Gpio4PiTest/lib
