@@ -1,0 +1,27 @@
+object FormOverview: TFormOverview
+  Left = 973
+  Height = 490
+  Top = 159
+  Width = 460
+  HorzScrollBar.Page = 460
+  VertScrollBar.Page = 490
+  AutoScroll = True
+  Caption = 'Overview Clocks and PWMs'
+  ClientHeight = 490
+  ClientWidth = 460
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  OnCreate = FormCreate
+  Position = poDefaultPosOnly
+  LCLVersion = '2.2.4.0'
+  object Panel: TPanel
+    Left = 0
+    Height = 490
+    Top = 0
+    Width = 460
+    BevelOuter = bvNone
+    Caption = 'We are drawing on this surface'
+    TabOrder = 0
+    OnPaint = PanelPaint
+  end
+end

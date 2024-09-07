@@ -1,0 +1,23 @@
+object FormGpioExtra: TFormGpioExtra
+  Left = 1125
+  Height = 361
+  Top = 265
+  Width = 340
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Gpio 28 to 57'
+  ClientHeight = 361
+  ClientWidth = 340
+  OnCreate = FormCreate
+  LCLVersion = '2.2.4.0'
+  object PanelForComboBoxe: TPanel
+    Left = 8
+    Height = 344
+    Top = 8
+    Width = 324
+    BevelInner = bvLowered
+    Caption = 'Panel For ComboBoxes'
+    ParentBidiMode = False
+    TabOrder = 0
+  end
+end

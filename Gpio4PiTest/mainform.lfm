@@ -1,0 +1,260 @@
+object FormMain: TFormMain
+  Left = 933
+  Height = 484
+  Top = 147
+  Width = 588
+  Caption = 'Just a Form for testing Gpio4Pi'
+  ClientHeight = 484
+  ClientWidth = 588
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  OnCreate = FormCreate
+  LCLVersion = '2.2.4.0'
+  object Memo1: TMemo
+    Left = 248
+    Height = 468
+    Top = 8
+    Width = 334
+    Anchors = [akTop, akRight, akBottom]
+    Font.Height = -12
+    Font.Name = 'Monospace'
+    Lines.Strings = (
+      'Memo1'
+    )
+    ParentFont = False
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+  end
+  object GroupBoxPinMode: TGroupBox
+    Left = 9
+    Height = 96
+    Top = 40
+    Width = 232
+    Caption = 'Set Pin Mode'
+    ClientHeight = 76
+    ClientWidth = 228
+    TabOrder = 1
+    object EditGpioPin: TEdit
+      Left = 15
+      Height = 23
+      Hint = 'GPIO Pin number'
+      Top = 8
+      Width = 48
+      TabOrder = 0
+      Text = '12'
+    end
+    object ButtonPinMode: TButton
+      Left = 15
+      Height = 25
+      Top = 40
+      Width = 201
+      Caption = 'Set Pin Mode'
+      OnClick = ButtonPinModeClick
+      TabOrder = 1
+    end
+    object ComboBoxPinMode: TComboBox
+      Left = 72
+      Height = 23
+      Top = 8
+      Width = 144
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'Input'
+        'Output'
+        'Alt 0'
+        'Alt 1'
+        'Alt 2'
+        'Alt 3'
+        'Alt 4'
+        'Alt 5'
+        'PWM Mark/Space'
+        'PWM Balanced'
+        'GPIO Clock'
+      )
+      Style = csDropDownList
+      TabOrder = 2
+      Text = 'Input'
+    end
+  end
+  object ButtonInit: TButton
+    Left = 9
+    Height = 25
+    Top = 8
+    Width = 109
+    Caption = 'Initialize GPIO'
+    OnClick = ButtonInitClick
+    TabOrder = 2
+  end
+  object GroupBoxPull: TGroupBox
+    Left = 8
+    Height = 56
+    Top = 144
+    Width = 233
+    Caption = 'Pull Up / Down'
+    ClientHeight = 36
+    ClientWidth = 229
+    TabOrder = 3
+    object ComboBoxPull: TComboBox
+      Left = 15
+      Height = 23
+      Top = 6
+      Width = 201
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'No Pull Up/Down'
+        'Pull Down'
+        'Pull Up'
+      )
+      OnChange = ComboBoxPullChange
+      Style = csDropDownList
+      TabOrder = 0
+      Text = 'No Pull Up/Down'
+    end
+  end
+  object GroupBoxPWM: TGroupBox
+    Left = 8
+    Height = 160
+    Top = 312
+    Width = 233
+    Caption = 'PWM / GPIO Clock'
+    ClientHeight = 140
+    ClientWidth = 229
+    TabOrder = 4
+    object ButtonPwmValue: TButton
+      Left = 15
+      Height = 25
+      Top = 8
+      Width = 107
+      Caption = 'Set PWM Value'
+      OnClick = ButtonPwmValueClick
+      TabOrder = 0
+    end
+    object EditPwmValue: TEdit
+      Left = 133
+      Height = 23
+      Hint = 'Mark: 0 - Range'
+      Top = 8
+      Width = 83
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+      Text = '100'
+    end
+    object ButtonPwmRange: TButton
+      Left = 15
+      Height = 25
+      Top = 40
+      Width = 107
+      Caption = 'Set PWM Range'
+      OnClick = ButtonPwmRangeClick
+      TabOrder = 2
+    end
+    object EditPwmRange: TEdit
+      Left = 133
+      Height = 23
+      Hint = 'Clock Divisor'
+      Top = 40
+      Width = 83
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 3
+      Text = '200'
+    end
+    object ButtonPwmClock: TButton
+      Left = 16
+      Height = 25
+      Top = 72
+      Width = 107
+      Caption = 'Set PWM Clock'
+      OnClick = ButtonPwmClockClick
+      TabOrder = 4
+    end
+    object EditPwmClock: TEdit
+      Left = 133
+      Height = 23
+      Hint = 'Frequency in Hz (Common for all PWM channels)'
+      Top = 72
+      Width = 83
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 5
+      Text = '20000'
+    end
+    object ButtonGpioClock: TButton
+      Left = 16
+      Height = 25
+      Top = 104
+      Width = 107
+      Caption = 'Set GPIO Clock'
+      OnClick = ButtonGpioClockClick
+      TabOrder = 6
+    end
+    object EditGpioClock: TEdit
+      Left = 133
+      Height = 23
+      Hint = 'Frequency in Hz'
+      Top = 104
+      Width = 83
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 7
+      Text = '20000'
+    end
+  end
+  object ButtonPiInfo: TButton
+    Left = 128
+    Height = 25
+    Top = 8
+    Width = 109
+    Caption = 'Get PI Info'
+    OnClick = ButtonPiInfoClick
+    TabOrder = 5
+  end
+  object GroupBoxReadWrite: TGroupBox
+    Left = 9
+    Height = 97
+    Top = 208
+    Width = 233
+    Caption = 'Read / Write'
+    ClientHeight = 77
+    ClientWidth = 229
+    TabOrder = 6
+    object ButtonRead: TButton
+      Left = 15
+      Height = 25
+      Top = 40
+      Width = 96
+      Caption = 'Read Pin'
+      OnClick = ButtonReadClick
+      TabOrder = 0
+    end
+    object ButtonWrite: TButton
+      Left = 14
+      Height = 25
+      Top = 8
+      Width = 96
+      Caption = 'Write Pin'
+      OnClick = ButtonWriteClick
+      TabOrder = 1
+    end
+    object EditWrite: TEdit
+      Left = 121
+      Height = 23
+      Top = 8
+      Width = 95
+      TabOrder = 2
+      Text = '1'
+    end
+    object ButtonToggel: TButton
+      Left = 120
+      Height = 25
+      Top = 40
+      Width = 96
+      Caption = 'Toggel Pin'
+      OnClick = ButtonToggelClick
+      TabOrder = 3
+    end
+  end
+end

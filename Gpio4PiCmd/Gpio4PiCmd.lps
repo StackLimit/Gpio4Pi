@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="48"/>
+        <CursorPos X="32" Y="69"/>
+        <UsageCount Value="30"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Gpio4Pi.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="831"/>
+        <CursorPos Y="844"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\GpioDefs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="97"/>
+        <CursorPos X="17" Y="107"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="raspimem.pas"/>
+        <UnitName Value="RasPiMem"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="44" Y="17"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unix.pas"/>
+        <UnitName Value="Unix"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="70"/>
+        <CursorPos Y="76"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="gpioextrastuff.pas"/>
+        <UnitName Value="GpioExtraStuff"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="133"/>
+        <CursorPos X="67" Y="147"/>
+        <UsageCount Value="16"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="baseunix.pas"/>
+        <UnitName Value="baseUnix"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6"/>
+        <CursorPos Y="47"/>
+        <UsageCount Value="10"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="220" Column="33" TopLine="170"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="177" Column="19" TopLine="173"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="195" Column="33" TopLine="185"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="202" Column="37" TopLine="188"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="221" Column="33" TopLine="207"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="231" TopLine="227"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="278" Column="24" TopLine="176"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="46" Column="37" TopLine="32"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="11" Column="10" TopLine="3"/>
+      </Position>
+      <Position>
+        <Filename Value="..\Gpio4Pi.pas"/>
+        <Caret Line="654" TopLine="645"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="276" Column="43" TopLine="263"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="46" Column="42" TopLine="33"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="100" Column="49" TopLine="83"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="267" Column="48" TopLine="254"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="316" Column="15" TopLine="306"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="312" Column="21" TopLine="299"/>
+      </Position>
+      <Position>
+        <Filename Value="..\Gpio4Pi.pas"/>
+        <Caret Line="336" Column="15" TopLine="322"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="316" Column="68" TopLine="305"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="335" TopLine="320"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="336" Column="15" TopLine="323"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="344" Column="34" TopLine="327"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="93" Column="8" TopLine="87"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="94" Column="8" TopLine="81"/>
+      </Position>
+      <Position>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="319" TopLine="313"/>
+      </Position>
+      <Position>
+        <Filename Value="gpioextrastuff.pas"/>
+        <Caret Line="126" Column="17" TopLine="121"/>
+      </Position>
+      <Position>
+        <Filename Value="gpioextrastuff.pas"/>
+        <Caret Line="201" Column="32" TopLine="180"/>
+      </Position>
+      <Position>
+        <Filename Value="gpioextrastuff.pas"/>
+        <Caret Line="183" TopLine="170"/>
+      </Position>
+      <Position>
+        <Filename Value="gpioextrastuff.pas"/>
+        <Caret Line="26" Column="32" TopLine="12"/>
+      </Position>
+      <Position>
+        <Filename Value="gpioextrastuff.pas"/>
+        <Caret Line="22" Column="33" TopLine="10"/>
+      </Position>
+      <Position>
+        <Filename Value="gpioextrastuff.pas"/>
+        <Caret Line="174" Column="89" TopLine="157"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

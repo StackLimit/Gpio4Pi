@@ -1,0 +1,159 @@
+object FormSetup: TFormSetup
+  Left = 973
+  Height = 367
+  Top = 231
+  Width = 463
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'FormSetup'
+  ClientHeight = 367
+  ClientWidth = 463
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poDefaultPosOnly
+  LCLVersion = '2.2.4.0'
+  object PageControl: TPageControl
+    Left = 0
+    Height = 320
+    Top = 0
+    Width = 463
+    ActivePage = TabSheetLog
+    Align = alTop
+    TabIndex = 1
+    TabOrder = 0
+    object TabSheetNet: TTabSheet
+      Caption = 'UDP Network'
+      ClientHeight = 292
+      ClientWidth = 455
+      object EditIPaddr: TEdit
+        Left = 240
+        Height = 23
+        Top = 128
+        Width = 144
+        TabOrder = 0
+        Text = 'EditIPaddr'
+      end
+      object EditTxPort: TEdit
+        Left = 240
+        Height = 23
+        Top = 168
+        Width = 72
+        NumbersOnly = True
+        TabOrder = 1
+        Text = 'EditTxPort'
+      end
+      object EditRxPort: TEdit
+        Left = 240
+        Height = 23
+        Top = 208
+        Width = 72
+        NumbersOnly = True
+        TabOrder = 2
+        Text = 'EditRxPort'
+      end
+      object LabelTX: TLabel
+        Left = 64
+        Height = 15
+        Top = 168
+        Width = 68
+        Caption = 'Sending port'
+        ParentColor = False
+      end
+      object LabelRX: TLabel
+        Left = 64
+        Height = 15
+        Top = 208
+        Width = 76
+        Caption = 'Receiving port'
+        ParentColor = False
+      end
+      object LabelNet: TLabel
+        Left = 64
+        Height = 15
+        Top = 128
+        Width = 159
+        Caption = 'IP address for sending data to:'
+        ParentColor = False
+      end
+      object ButtonRestart: TButton
+        Left = 104
+        Height = 25
+        Top = 248
+        Width = 240
+        Caption = 'Store values and Restart Network'
+        OnClick = ButtonRestartClick
+        TabOrder = 3
+      end
+      object LabelNetOver: TLabel
+        Left = 0
+        Height = 90
+        Top = 8
+        Width = 455
+        Align = alTop
+        Alignment = taCenter
+        BorderSpacing.Top = 8
+        Caption = 'The IP address must be the address on which the application with Gpio4Pi runs.'#13#10'This will typically be the same machine, i.e. 127.0.0.1'#13#10#13#10'Sender and receiver ports must correspond to the ports defined in Gpio4Pi:'#13#10'Gpio4Pi.transmitter port -> This.receiver port and'#13#10'Gpio4Pi.receiverport <- This.senderport'
+        ParentColor = False
+      end
+    end
+    object TabSheetLog: TTabSheet
+      Caption = 'Log WIew'
+      ClientHeight = 292
+      ClientWidth = 455
+      object GroupLog1: TGroupBox
+        Tag = 1
+        Left = 8
+        Height = 248
+        Top = 32
+        Width = 208
+        Caption = 'GPIO Functions'
+        PopupMenu = PopMenuSetClear
+        TabOrder = 0
+      end
+      object GroupLog2: TGroupBox
+        Tag = 2
+        Left = 232
+        Height = 248
+        Top = 32
+        Width = 208
+        Caption = 'PWM Functions'
+        PopupMenu = PopMenuSetClear
+        TabOrder = 1
+      end
+      object LabelLog: TLabel
+        Left = 0
+        Height = 15
+        Top = 5
+        Width = 455
+        Align = alTop
+        Alignment = taCenter
+        AutoSize = False
+        BorderSpacing.Top = 5
+        Caption = 'Items that are checked will show in the log wiev'
+        ParentColor = False
+      end
+    end
+  end
+  object ButtonClose: TButton
+    Left = 152
+    Height = 25
+    Top = 328
+    Width = 147
+    Caption = 'Close'
+    OnClick = ButtonCloseClick
+    TabOrder = 1
+  end
+  object PopMenuSetClear: TPopupMenu
+    Left = 56
+    Top = 312
+    object MenuItemSet: TMenuItem
+      Caption = 'Select All'
+      OnClick = MenuItemSetClick
+    end
+    object MenuItemClear: TMenuItem
+      Caption = 'Clear All'
+      OnClick = MenuItemClearClick
+    end
+  end
+end

@@ -1,0 +1,25 @@
+unit baseUnix;
+
+// ------------------------------------------------------------------------
+//
+// A dummy unit so it can compile under Windows...
+//
+// DO NOT USE THIS UNIT ON THE RASPBERRY!!!
+// ----------------------------------------
+//
+// Still under development and therefore not quite finished
+// Copyright (c) 2024 Jan Andersen
+// ------------------------------------------------------------------------
+
+{$mode ObjFPC}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils;
+
+
+implementation
+
+end.
+

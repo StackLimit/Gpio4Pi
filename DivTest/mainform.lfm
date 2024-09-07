@@ -1,0 +1,99 @@
+object FormMain: TFormMain
+  Left = 1020
+  Height = 250
+  Top = 216
+  Width = 443
+  Caption = 'FormMain'
+  ClientHeight = 250
+  ClientWidth = 443
+  LCLVersion = '2.2.4.0'
+  object EditPiFreq: TEdit
+    Left = 88
+    Height = 23
+    Top = 8
+    Width = 80
+    TabOrder = 0
+    Text = '54000000'
+  end
+  object Label1: TLabel
+    Left = 24
+    Height = 15
+    Top = 8
+    Width = 39
+    Caption = 'PI Freq:'
+    ParentColor = False
+  end
+  object EditDiv: TEdit
+    Left = 88
+    Height = 23
+    Top = 40
+    Width = 80
+    TabOrder = 1
+    Text = '2699'
+  end
+  object Label2: TLabel
+    Left = 24
+    Height = 15
+    Top = 40
+    Width = 39
+    Caption = 'Divisor:'
+    ParentColor = False
+  end
+  object EditFrac: TEdit
+    Left = 88
+    Height = 23
+    Top = 73
+    Width = 80
+    TabOrder = 2
+    Text = '1000'
+  end
+  object Label3: TLabel
+    Left = 24
+    Height = 15
+    Top = 73
+    Width = 46
+    Caption = 'Fraction:'
+    ParentColor = False
+  end
+  object LabResult1: TLabel
+    Left = 24
+    Height = 15
+    Top = 112
+    Width = 57
+    Caption = 'LabResult1'
+    ParentColor = False
+  end
+  object ButtonCalc: TButton
+    Left = 160
+    Height = 25
+    Top = 136
+    Width = 75
+    Caption = 'Calculate'
+    OnClick = ButtonCalcClick
+    TabOrder = 3
+  end
+  object EditDesired: TEdit
+    Left = 272
+    Height = 23
+    Top = 8
+    Width = 80
+    TabOrder = 4
+    Text = '20000'
+  end
+  object Label4: TLabel
+    Left = 192
+    Height = 15
+    Top = 8
+    Width = 68
+    Caption = 'Desired Freq:'
+    ParentColor = False
+  end
+  object LabResult2: TLabel
+    Left = 192
+    Height = 15
+    Top = 48
+    Width = 57
+    Caption = 'LabResult2'
+    ParentColor = False
+  end
+end

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="12"/>
+    <General>
+      <SessionStorage Value="InProjectDir"/>
+      <Title Value="GpioPiClient"/>
+      <Scaled Value="True"/>
+      <ResourceType Value="res"/>
+      <XPManifest>
+        <DpiAware Value="True"/>
+      </XPManifest>
+      <Icon Value="0"/>
+    </General>
+    <BuildModes>
+      <Item Name="Default" Default="True"/>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+    </RunParams>
+    <RequiredPackages>
+      <Item>
+        <PackageName Value="LCL"/>
+      </Item>
+    </RequiredPackages>
+    <Units>
+      <Unit>
+        <Filename Value="GpioPiClient.lpr"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="mainform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MainForm"/>
+      </Unit>
+      <Unit>
+        <Filename Value="udprxtxclient.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UdpRxTxClient"/>
+      </Unit>
+      <Unit>
+        <Filename Value="common.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Common"/>
+      </Unit>
+      <Unit>
+        <Filename Value="gpiocheckbox.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GPIOcheckbox"/>
+      </Unit>
+      <Unit>
+        <Filename Value="setupform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormSetup"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="SetupForm"/>
+      </Unit>
+      <Unit>
+        <Filename Value="GpioPiCli.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="GpioPiTxtCmd.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="clockform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormClocks"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ClockForm"/>
+      </Unit>
+      <Unit>
+        <Filename Value="pwmform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormPwm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PwmForm"/>
+      </Unit>
+      <Unit>
+        <Filename Value="overviewform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormOverview"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="OverviewForm"/>
+      </Unit>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <Target>
+      <Filename Value="GpioPiClient"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value=".."/>
+      <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <Linking>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions>
+      <Item>
+        <Name Value="EAbort"/>
+      </Item>
+      <Item>
+        <Name Value="ECodetoolError"/>
+      </Item>
+      <Item>
+        <Name Value="EFOpenError"/>
+      </Item>
+    </Exceptions>
+  </Debugging>
+</CONFIG>
