@@ -1,5 +1,6 @@
 
 Gpio4Pi.zip
+*.exe
 
 /DivTest
 
@@ -14,3 +15,4 @@ Gpio4Pi.zip
 
 /Gpio4PiTest/backup
 /Gpio4PiTest/lib
+
