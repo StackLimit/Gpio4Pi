@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CONFIG>
-  <Compiler Value="C:\lazarus\fpc\3.2.2\bin\x86_64-win64\fpc.exe" Date="1429740242"/>
-  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -l -vewnhibq &quot;-FiE:\Jan\Projekter\Raspberry Pi\Gpio4Pi\Gpio4PiCmd\lib\x86_64-win64&quot; &quot;-FuE:\Jan\Projekter\Raspberry Pi\Gpio4Pi&quot; &quot;-FuE:\Jan\Projekter\Raspberry Pi\Gpio4Pi\Gpio4PiCmd\&quot; &quot;-FUE:\Jan\Projekter\Raspberry Pi\Gpio4Pi\Gpio4PiCmd\lib\x86_64-win64\&quot; &quot;-FEE:\Jan\Projekter\Raspberry Pi\Gpio4Pi\Gpio4PiCmd\&quot; &quot;-oE:\Jan\Projekter\Raspberry Pi\Gpio4Pi\Gpio4PiCmd\Gpio4PiCmd.exe&quot; Gpio4PiCmd.lpr"/>
-</CONFIG>
