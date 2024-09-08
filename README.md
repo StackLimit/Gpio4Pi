@@ -19,13 +19,13 @@ Gpio4Pi.pas is the actual GPIO object with all the functions and
 GpioDefs.pas are all the constant definitions used for calling the functions.
 There is a brief description of all the functions in Gpio4Pi.pas.
 
-A liitle example of using the library/oblect:
+A liitle example of using the library/object:
 
 var 
   PiGpio: TPiGpio;
   
 procedure InitGpio;   
-begin
+begin</BR>
   PiGpio:= TPiGpio.Create;
 end;
 
