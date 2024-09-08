@@ -8,7 +8,8 @@
       <Unit>
         <Filename Value="Gpio4PiCmd.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="48"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="36"/>
         <CursorPos X="32" Y="69"/>
         <UsageCount Value="30"/>
         <Loaded Value="True"/>
@@ -49,7 +50,6 @@
       <Unit>
         <Filename Value="gpioextrastuff.pas"/>
         <UnitName Value="GpioExtraStuff"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
         <TopLine Value="133"/>
         <CursorPos X="67" Y="147"/>
