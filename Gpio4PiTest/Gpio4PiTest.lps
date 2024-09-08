@@ -19,9 +19,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="25" Y="14"/>
+        <CursorPos X="34" Y="13"/>
         <UsageCount Value="161"/>
+        <Loaded Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="../Gpio4Pi.pas"/>
@@ -226,9 +226,6 @@
         <UsageCount Value="14"/>
       </Unit28>
     </Units>
-    <General>
-      <ActiveWindowIndexAtStart Value="-1"/>
-    </General>
     <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>
