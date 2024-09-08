@@ -19,16 +19,23 @@ Gpio4Pi.pas is the actual GPIO object with all the functions and
 GpioDefs.pas are all the constant definitions used for calling the functions.
 There is a brief description of all the functions in Gpio4Pi.pas.
 
-A liitle example of using the library/object:
+A liitle example of using the library/object, set GPIO pin 4 high:
 
-var 
-  PiGpio: TPiGpio;
+program GpioTest;</BR>
+uses Gpio4Pi, GpioDefs;</BR>
+var</BR>
+  PiGpio: TPiGpio;</BR>
   
-procedure InitGpio;   
 begin</BR>
-  PiGpio:= TPiGpio.Create;
-end;
+  PiGpio:= TPiGpio.Create;</BR>
+  PiGpio.SetPinMode(4, PM_OUTPUT);</BR>
+  PiGpio.GpioWrite(4, PIN_HIGH);</BR>
+end;</BR>
 
 
+To have some examples to look at, there are four directories to look at:
+
+Gpio4PiTest:</BR>
+------------</BR>
 
 
