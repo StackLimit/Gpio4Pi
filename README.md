@@ -20,6 +20,8 @@ To use the library you just copy the two files: **Gpio4Pi.pas** and **GpioDefs.p
 
 There is a brief description of all the functions in Gpio4Pi.pas.
 
+**Support:** Supports Raspberry Pi 1 to Raspberry Pi 4B. NO support for Rpi 5 yet.
+
 A liitle example of using the library/object, set GPIO pin 4 high:
 
 ```pas
@@ -61,9 +63,9 @@ which is in the directory Gpio4PiClient.
 ## Gpio4PiClient
 This is a GUI app where the Raspberry Pi 40-pin header is presented graphically.
 The status of all GPIO pins can be read here.
-The application is used together with Gpio4PiTest.
+Clocks and PWM can also be read.
+The application is used together with Gpio4PiTest which communicate together via UDP.
 To use this app, both this app and Gpio4PiTest must be running.
-Clocks and PWM can also be read in this app.
 
 ## Gpio4PiCmd
 This is a command-line application with the following options:
