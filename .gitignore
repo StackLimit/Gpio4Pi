@@ -2,6 +2,7 @@
 Gpio4Pi.zip
 *.exe
 
+/backup
 /DivTest
 
 /Gpio4PiClient/backup
