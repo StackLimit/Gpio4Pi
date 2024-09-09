@@ -56,15 +56,15 @@ Uses MainForm, Common;
 
 
 Type
-  // UDP Rx/Tx buffer. NB: Must be the same size as in ..\UdpRxTx.pas
+  // UDP Rx/Tx buffer. NB: Must be the same size as in ..\Gpio4PiTest\UdpRxTx.pas
   TUdpRxTxBuffer = record
-    Antal: Integer;
+    Count:  Integer;
     Buffer: Array[1..500] Of Char;
   end;
 
   TSocketData = record
     Socket: Longint;
-    PortNr: Word;
+    PortNo: Word;
     Addr:   TInetSockAddr;
   end;
 
@@ -195,7 +195,7 @@ end;
 procedure UdpRxTxSend(TxData: String);
 var
   Tx: TUdpRxTxBuffer;
-  AntTx: ssize_t;
+  CntTx: ssize_t;
 
 begin
   if TxSocket.Socket = 0 then exit;
@@ -203,11 +203,11 @@ begin
 
   FillChar(Tx{%H-}, SizeOf(Tx), 0);
   Move(TxData[1], Tx.Buffer, Length(TxData));
-  Tx.Antal:= Length(TxData);
-  AntTx:= fpsendto(TxSocket.Socket, @Tx.Buffer, Tx.Antal,
+  Tx.Count:= Length(TxData);
+  CntTx:= fpsendto(TxSocket.Socket, @Tx.Buffer, Tx.Count,
                    0, @TxSocket.Addr, sizeof(TxSocket.Addr));
 
-  WrtLog('TxData, Count: ' + IntToStr(AntTx) + ', Data: ' + TxData);
+  WrtLog('TxData, Count: ' + IntToStr(CntTx) + ', Data: ' + TxData);
 end;
 
 
@@ -224,8 +224,8 @@ begin
   // Callback to Main
   if not Assigned(RxDataEvent) then exit;
 
-  SetLength(Rx{%H-}, RxBuffer.Antal);
-  Move(RxBuffer.Buffer, Rx[1], RxBuffer.Antal);
+  SetLength(Rx{%H-}, RxBuffer.Count);
+  Move(RxBuffer.Buffer, Rx[1], RxBuffer.Count);
 
   RxDataEvent(NetAddrToStr(DataFrom.sin_addr), Rx);
 end;
@@ -242,10 +242,10 @@ begin
     FromLen:= sizeof(DataFrom);
 
     // Wait for received data (blocking)
-    RxBuffer.Antal:= fprecvfrom(RxSocket.Socket,
+    RxBuffer.Count:= fprecvfrom(RxSocket.Socket,
                                 @RxBuffer.Buffer, SizeOf(RxBuffer.Buffer),
                                 0, @DataFrom, @Fromlen);
-    if (RxBuffer.Antal > 0) then
+    if (RxBuffer.Count > 0) then
     begin
       Synchronize(@DataReceived);
     end;
