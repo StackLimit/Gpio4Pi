@@ -41,7 +41,7 @@ Thats it.....
 
 To have some examples to look at, there are four directories to look at:
 
-Gpio4PiTest:</BR>
+## Gpio4PiTest:</BR>
 ============</BR>
 This is a GUI app where you can set any GPIO pin for Input, Output, Alt0..5, PWM and Clock mode.
 Pull Up/Down can also be tested and can be read/written from/to the GPIO pin. 
