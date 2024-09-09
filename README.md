@@ -66,7 +66,7 @@ These two files MUST NOT be copied to the Raspberry Pi when the application is t
 
 An example of running Gpio4PiCmd with option show on a Rpi4 with PicorePlayer:
 ```
-tc@pCP9:~$ Gpio4PiCmd show
+tc@pCP9:~$ sudo Gpio4PiCmd show
 GPIO Initialized OK, Using /dev/mem
 
 ---------- All GPIOs ----------
