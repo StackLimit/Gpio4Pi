@@ -41,7 +41,7 @@ Thats it.....
 
 To have some examples to look at, there are four directories to look at:
 
-## Gpio4PiTest:
+## Gpio4PiTest
 This is a GUI app where you can set any GPIO pin for Input, Output, Alt0..5, PWM and Clock mode.
 Pull Up/Down can also be tested and can be read/written from/to the GPIO pin. 
 Furthermore, the GPIO clock frequency can be set and the PWM frequency and Range/Value can be set.
@@ -57,32 +57,34 @@ Furthermore, the Windows version has built-in memory simulation so the app works
 It is also built in so that changes in memory are sent via UDP to a Client,
 which is in the directory Gpio4PiClient.
 
-## Gpio4PiClient:
+## Gpio4PiClient
 This is a GUI app where the Raspberry Pi 40-pin header is presented graphically.
 The status of all GPIO pins can be read here.
 The application is used together with Gpio4PiTest.
 To use this app, both this app and Gpio4PiTest must be running.
 Clocks and PWM can also be read in this app.
 
-## Gpio4PiCmd:
-This is a command-line application with the following options:</BR>
-- info ..................: Show info about the Paspberry PI</BR>
-- show ..................: Show all GPIO, Clock and PWM information</BR>
-- mode <mode gpio> ......: Set GPIO to Mode. Mode=in,out,alt0..alt5</BR>
-- pull <pull gpio> ......: Set GPIO Pull-Up/Down. Pull=none,up,down</BR>
-- write <val gpio> ......: Write a Value to GPIO. Value=0,1</BR>
-- read <gpio> ...........: Read a Value from GPIO</BR>
-- clock <freq gpio> .....: Set GPIO Clock in Hz</BR>
-- pwmclock <freq> .......: Set PWM Master Clock in Hz</BR>
-- pwmmode <mode gpio> ...: Set PWM Mode for GPIO x. Mode=bal,ms</BR>
-- pwmrange <range gpio> .: Set PWM Range for GPIO x</BR>
-- pwmduty <duty gpio> ...: Set PWM Duty Cycle for GPIO x</BR>
+## Gpio4PiCmd
+This is a command-line application with the following options:
+```
+- info ..................: Show info about the Paspberry PI
+- show ..................: Show all GPIO, Clock and PWM information
+- mode <mode gpio> ......: Set GPIO to Mode. Mode=in,out,alt0..alt5
+- pull <pull gpio> ......: Set GPIO Pull-Up/Down. Pull=none,up,down
+- write <val gpio> ......: Write a Value to GPIO. Value=0,1
+- read <gpio> ...........: Read a Value from GPIO
+- clock <freq gpio> .....: Set GPIO Clock in Hz
+- pwmclock <freq> .......: Set PWM Master Clock in Hz
+- pwmmode <mode gpio> ...: Set PWM Mode for GPIO x. Mode=bal,ms
+- pwmrange <range gpio> .: Set PWM Range for GPIO x
+- pwmduty <duty gpio> ...: Set PWM Duty Cycle for GPIO x
+```
 
 Note that two files, baseunix.pas and unix.pas, also are included in this directory. 
 It is to be able to compile and test the application under Windows. 
 These two files MUST NOT be copied to the Raspberry Pi when the application is to be built there.
 
-## Gpio4PiMonitor:
+## Gpio4PiMonitor
 This is a GUI application where the Pi's memory is scanned for changes all the time
 and changes in the memory are presented graphically.
 All GPIOs are shown with Input, Output, Alt0..5 and Pull Up/Down.
