@@ -1,243 +1,226 @@
 object FormClocks: TFormClocks
   Left = 988
-  Height = 426
+  Height = 365
   Top = 284
   Width = 585
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Clocks'
-  ClientHeight = 426
+  ClientHeight = 365
   ClientWidth = 585
+  Font.CharSet = ANSI_CHARSET
+  Font.Pitch = fpVariable
+  Font.Quality = fqDraft
   OnCreate = FormCreate
   LCLVersion = '2.2.4.0'
   object GroupBoxClock0: TGroupBox
     Left = 8
-    Height = 200
+    Height = 168
     Top = 8
     Width = 184
     Caption = 'GPIO Clock 0'
-    ClientHeight = 180
+    ClientHeight = 148
     ClientWidth = 180
     TabOrder = 0
     object Label1: TLabel
       Left = 8
-      Height = 90
+      Height = 75
       Top = 8
       Width = 77
-      Caption = 'Clock Source .'#13#10'Enable . . . . . . .'#13#10'Kill . . . . . . . . . .'#13#10'Flip . . . . . . . . .'#13#10'MASH . . . . . . .'#13#10'Password . . . .'
+      Caption = 'Clock Source .'#13#10'Enable . . . . . . .'#13#10'Kill . . . . . . . . . .'#13#10'Flip . . . . . . . . .'#13#10'MASH . . . . . . .'
       ParentColor = False
     end
     object LabClkCtl0: TLabel
       Left = 88
-      Height = 90
+      Height = 75
       Top = 8
       Width = 57
-      Caption = 'LabClkCtl0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'#13#10'Line 6'
-      Font.Height = 16
+      Caption = 'LabClkCtl0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'
       ParentColor = False
-      ParentFont = False
     end
     object Label2: TLabel
       Left = 8
-      Height = 60
-      Top = 112
-      Width = 80
-      Caption = 'Divisor . . . . . . .'#13#10'Fraction . . . . . .'#13#10'Password . . . . .'#13#10'Frequency Hz .'
+      Height = 45
+      Top = 96
+      Width = 79
+      Caption = 'Divisor . . . . . . .'#13#10'Fraction . . . . . .'#13#10'Frequency Hz .'
       ParentColor = False
     end
     object LabClkDiv0: TLabel
       Left = 88
-      Height = 60
-      Top = 112
+      Height = 45
+      Top = 96
       Width = 59
-      Caption = 'LabClkDiv0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'
-      Font.Height = 16
+      Caption = 'LabClkDiv0'#13#10'Line 2'#13#10'Line 3'
       ParentColor = False
-      ParentFont = False
     end
   end
   object GroupBoxClock1: TGroupBox
     Left = 200
-    Height = 200
+    Height = 168
     Top = 8
     Width = 184
     Caption = 'GPIO Clock 1'
-    ClientHeight = 180
+    ClientHeight = 148
     ClientWidth = 180
     TabOrder = 1
     object Label3: TLabel
       Left = 8
-      Height = 90
+      Height = 75
       Top = 8
       Width = 77
-      Caption = 'Clock Source .'#13#10'Enable . . . . . . .'#13#10'Kill . . . . . . . . . .'#13#10'Flip . . . . . . . . .'#13#10'MASH . . . . . . .'#13#10'Password . . . .'
+      Caption = 'Clock Source .'#13#10'Enable . . . . . . .'#13#10'Kill . . . . . . . . . .'#13#10'Flip . . . . . . . . .'#13#10'MASH . . . . . . .'
       ParentColor = False
     end
     object LabClkCtl1: TLabel
       Left = 88
-      Height = 90
+      Height = 75
       Top = 8
       Width = 57
-      Caption = 'LabClkCtl1'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'#13#10'Line 6'
-      Font.Height = 16
+      Caption = 'LabClkCtl1'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'
       ParentColor = False
-      ParentFont = False
     end
     object Label4: TLabel
       Left = 8
-      Height = 60
-      Top = 112
-      Width = 80
-      Caption = 'Divisor . . . . . . .'#13#10'Fraction . . . . . .'#13#10'Password . . . . .'#13#10'Frequency Hz .'
+      Height = 45
+      Top = 96
+      Width = 79
+      Caption = 'Divisor . . . . . . .'#13#10'Fraction . . . . . .'#13#10'Frequency Hz .'
       ParentColor = False
     end
     object LabClkDiv1: TLabel
       Left = 88
-      Height = 60
-      Top = 112
+      Height = 45
+      Top = 96
       Width = 59
-      Caption = 'LabClkDiv0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'
-      Font.Height = 16
+      Caption = 'LabClkDiv0'#13#10'Line 2'#13#10'Line 3'
       ParentColor = False
-      ParentFont = False
     end
   end
   object GroupBoxClock2: TGroupBox
     Left = 392
-    Height = 200
+    Height = 168
     Top = 8
     Width = 184
     Caption = 'GPIO Clock 2'
-    ClientHeight = 180
+    ClientHeight = 148
     ClientWidth = 180
     TabOrder = 2
     object Label5: TLabel
       Left = 8
-      Height = 90
+      Height = 75
       Top = 8
       Width = 77
-      Caption = 'Clock Source .'#13#10'Enable . . . . . . .'#13#10'Kill . . . . . . . . . .'#13#10'Flip . . . . . . . . .'#13#10'MASH . . . . . . .'#13#10'Password . . . .'
+      Caption = 'Clock Source .'#13#10'Enable . . . . . . .'#13#10'Kill . . . . . . . . . .'#13#10'Flip . . . . . . . . .'#13#10'MASH . . . . . . .'
       ParentColor = False
     end
     object LabClkCtl2: TLabel
       Left = 88
-      Height = 90
+      Height = 75
       Top = 8
       Width = 57
-      Caption = 'LabClkCtl2'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'#13#10'Line 6'
-      Font.Height = 16
+      Caption = 'LabClkCtl2'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'
       ParentColor = False
-      ParentFont = False
     end
     object Label6: TLabel
       Left = 8
-      Height = 60
-      Top = 112
-      Width = 80
-      Caption = 'Divisor . . . . . . .'#13#10'Fraction . . . . . .'#13#10'Password . . . . .'#13#10'Frequency Hz .'
+      Height = 45
+      Top = 96
+      Width = 79
+      Caption = 'Divisor . . . . . . .'#13#10'Fraction . . . . . .'#13#10'Frequency Hz .'
       ParentColor = False
     end
     object LabClkDiv2: TLabel
       Left = 88
-      Height = 60
-      Top = 112
+      Height = 45
+      Top = 96
       Width = 59
-      Caption = 'LabClkDiv0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'
-      Font.Height = 16
+      Caption = 'LabClkDiv0'#13#10'Line 2'#13#10'Line 3'
       ParentColor = False
-      ParentFont = False
     end
   end
   object GroupBoxClock3: TGroupBox
     Left = 8
-    Height = 200
-    Top = 216
+    Height = 168
+    Top = 184
     Width = 184
     Caption = 'PCM Clock'
-    ClientHeight = 180
+    ClientHeight = 148
     ClientWidth = 180
     TabOrder = 3
     object Label7: TLabel
       Left = 8
-      Height = 90
+      Height = 75
       Top = 8
       Width = 77
-      Caption = 'Clock Source .'#13#10'Enable . . . . . . .'#13#10'Kill . . . . . . . . . .'#13#10'Flip . . . . . . . . .'#13#10'MASH . . . . . . .'#13#10'Password . . . .'
+      Caption = 'Clock Source .'#13#10'Enable . . . . . . .'#13#10'Kill . . . . . . . . . .'#13#10'Flip . . . . . . . . .'#13#10'MASH . . . . . . .'
       ParentColor = False
     end
     object LabClkCtl3: TLabel
       Left = 88
-      Height = 90
+      Height = 75
       Top = 8
       Width = 57
-      Caption = 'LabClkCtl3'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'#13#10'Line 6'
-      Font.Height = 16
+      Caption = 'LabClkCtl3'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'
       ParentColor = False
-      ParentFont = False
     end
     object Label8: TLabel
       Left = 8
-      Height = 60
-      Top = 112
-      Width = 80
-      Caption = 'Divisor . . . . . . .'#13#10'Fraction . . . . . .'#13#10'Password . . . . .'#13#10'Frequency Hz .'
+      Height = 45
+      Top = 96
+      Width = 79
+      Caption = 'Divisor . . . . . . .'#13#10'Fraction . . . . . .'#13#10'Frequency Hz .'
       ParentColor = False
     end
     object LabClkDiv3: TLabel
       Left = 88
-      Height = 60
-      Top = 112
+      Height = 45
+      Top = 96
       Width = 59
-      Caption = 'LabClkDiv0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'
-      Font.Height = 16
+      Caption = 'LabClkDiv0'#13#10'Line 2'#13#10'Line 3'
       ParentColor = False
-      ParentFont = False
     end
   end
   object GroupBoxClock4: TGroupBox
     Left = 200
-    Height = 200
-    Top = 216
+    Height = 168
+    Top = 184
     Width = 184
     Caption = 'PWM Clock'
-    ClientHeight = 180
+    ClientHeight = 148
     ClientWidth = 180
     TabOrder = 4
     object Label9: TLabel
       Left = 8
-      Height = 90
+      Height = 75
       Top = 8
       Width = 77
-      Caption = 'Clock Source .'#13#10'Enable . . . . . . .'#13#10'Kill . . . . . . . . . .'#13#10'Flip . . . . . . . . .'#13#10'MASH . . . . . . .'#13#10'Password . . . .'
+      Caption = 'Clock Source .'#13#10'Enable . . . . . . .'#13#10'Kill . . . . . . . . . .'#13#10'Flip . . . . . . . . .'#13#10'MASH . . . . . . .'
       ParentColor = False
     end
     object LabClkCtl4: TLabel
       Left = 88
-      Height = 90
+      Height = 75
       Top = 8
       Width = 57
-      Caption = 'LabClkCtl4'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'#13#10'Line 6'
-      Font.Height = 16
+      Caption = 'LabClkCtl4'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'
       ParentColor = False
-      ParentFont = False
     end
     object Label10: TLabel
       Left = 8
-      Height = 60
-      Top = 112
-      Width = 80
-      Caption = 'Divisor . . . . . . .'#13#10'Fraction . . . . . .'#13#10'Password . . . . .'#13#10'Frequency Hz .'
+      Height = 45
+      Top = 96
+      Width = 79
+      Caption = 'Divisor . . . . . . .'#13#10'Fraction . . . . . .'#13#10'Frequency Hz .'
       ParentColor = False
     end
     object LabClkDiv4: TLabel
       Left = 88
-      Height = 60
-      Top = 112
+      Height = 45
+      Top = 96
       Width = 59
-      Caption = 'LabClkDiv0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'
-      Font.Height = 16
+      Caption = 'LabClkDiv0'#13#10'Line 2'#13#10'Line 3'
       ParentColor = False
-      ParentFont = False
     end
   end
 end
