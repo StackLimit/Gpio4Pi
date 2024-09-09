@@ -1,11 +1,11 @@
 # Gpio4Pi
  Lazarus Pascal GPIO for Raspberry Pi
 
-Preface:
+Preface:</BR>
 For many years I have used WiringPi for basic Input/Output with a translated Pascal header.
 Now I had to use PWM on Gpio pins and found out that it doesn't really support Rpi4 (BCM2711) to the full.
-
 So I decided to make a simple GPIO interface for Lazarus Pascal.
+
 Why another GPIO library when there are so many out there?
 Because of my own interest in how the CPU is built and how I use it,
 and I wanted a simple interface to the GPIO, which is written in Pascal.
@@ -28,8 +28,11 @@ var</BR>
   
 begin</BR>
   PiGpio:= TPiGpio.Create;</BR>
-  PiGpio.SetPinMode(4, PM_OUTPUT);</BR>
-  PiGpio.GpioWrite(4, PIN_HIGH);</BR>
+  if PiGpio <> nil then</BR>
+  begin</BR>
+    PiGpio.SetPinMode(4, PM_OUTPUT);</BR>
+    PiGpio.GpioWrite(4, PIN_HIGH);</BR>
+  end;</BR>
 end;</BR>
 
 Thats it.....
@@ -37,10 +40,11 @@ Thats it.....
 To have some examples to look at, there are four directories to look at:
 
 Gpio4PiTest:</BR>
-------------</BR>
+============</BR>
 This is a GUI app where you can set any GPIO pin for Input, Output, Alt0..5, PWM and Clock mode.
 Pull Up/Down can also be tested and can be read/written from/to the GPIO pin. 
 Furthermore, the GPIO clock frequency can be set and the PWM frequency and Range/Value can be set.
+I used this when developing the Gpio4Pi object.
 
 Note that two files, baseunix.pas and unix.pas, are included in this directory. 
 It is to be able to compile and test the application under Windows. 
@@ -53,12 +57,17 @@ It is also built in so that changes in memory are sent via UDP to a Client,
 which is in the directory Gpio4PiClient.
 
 Gpio4PiClient:</BR>
---------------</BR>
+==============</BR>
 This is a GUI app where the Raspberry Pi 40-pin header is presented graphically.
 The status of all GPIO pins can be read here.
 The application is used together with Gpio4PiTest.
 To use this app, both this app and Gpio4PiTest must be running.
 Clocks and PWM can also be read in this app.
 
+Gpio4PiCmd:</BR>
+===========</BR>
 
 
+
+Gpio4PiMonitor:</BR>
+===============</BR>
