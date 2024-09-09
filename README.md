@@ -22,6 +22,9 @@ There is a brief description of all the functions in Gpio4Pi.pas.
 
 **Support:** Supports Raspberry Pi 1 to Raspberry Pi 4B. NO support for Rpi 5 yet.
 
+Like other GPIO libraries, Rpi user must be in the same group as /dev/gpiomem to perform basic GPIO Input/Output operations.
+To perform Clock's and PWM operations, sudo must be used when running the application.
+
 A liitle example of using the library/object, set GPIO pin 4 high:
 
 ```pas
