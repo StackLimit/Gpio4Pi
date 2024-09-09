@@ -19,9 +19,10 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
         <IsVisibleTab Value="True"/>
-        <CursorPos X="34" Y="13"/>
+        <CursorPos X="27" Y="14"/>
         <UsageCount Value="161"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="../Gpio4Pi.pas"/>
