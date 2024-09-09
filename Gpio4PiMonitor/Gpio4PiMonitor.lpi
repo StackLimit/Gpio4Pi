@@ -61,6 +61,7 @@
         <Filename Value="clockform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormClocks"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockForm"/>
       </Unit>
@@ -68,6 +69,7 @@
         <Filename Value="pwmform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FormPwm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PwmForm"/>
       </Unit>
@@ -95,6 +97,10 @@
         <Filename Value="gpioextrastuff.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GpioExtraStuff"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Gpio4Pi.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
   </ProjectOptions>
