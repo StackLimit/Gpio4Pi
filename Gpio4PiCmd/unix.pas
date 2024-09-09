@@ -13,12 +13,6 @@ unit Unix;
 // Furthermore, this unit also emulates memory for Raspberry Pi 4,
 // so all Fpmmap() returns a valid pointer to some memory.
 //
-// This memory is regularly scanned for changes and changes are sent to
-// Gpio4PiClient if this is used.
-//
-// Data is also received from Gpio4PiClient such as Input changes,
-// and this is put in memory so that Gpio4Pi can read Input high/low values.
-//
 // Still under development and therefore not quite finished.
 // Copyright (c) 2024 Jan Andersen
 // ------------------------------------------------------------------------
