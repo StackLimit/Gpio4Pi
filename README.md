@@ -21,10 +21,11 @@ There is a brief description of all the functions in Gpio4Pi.pas.
 
 A liitle example of using the library/object, set GPIO pin 4 high:
 
-program GpioTest;</BR>
-uses Gpio4Pi, GpioDefs;</BR>
-var</BR>
-  PiGpio: TPiGpio;</BR>
+```c
+program GpioTest;
+uses Gpio4Pi, GpioDefs;
+var
+  PiGpio: TPiGpio;
   
 begin</BR>
   PiGpio:= TPiGpio.Create;</BR>
@@ -34,6 +35,7 @@ begin</BR>
     PiGpio.GpioWrite(4, PIN_HIGH);</BR>
   end;</BR>
 end;</BR>
+```
 
 Thats it.....
 
