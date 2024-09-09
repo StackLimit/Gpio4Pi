@@ -21,7 +21,7 @@ There is a brief description of all the functions in Gpio4Pi.pas.
 
 A liitle example of using the library/object, set GPIO pin 4 high:
 
-```c
+```pas
 program GpioTest;
 uses Gpio4Pi, GpioDefs;
 var
