@@ -59,13 +59,13 @@ Var
 Type
   // UDP Rx/Tx buffer. There must be room for Full GPIO Map
   TUdpRxTxBuffer = record
-    Antal: Integer;
+    Count:  Integer;
     Buffer: Array[1..1000] Of Char;
   end;
 
   TSocketData = record
     Socket: Longint;
-    PortNr: Word;
+    PortNo: Word;
     Addr:   TInetSockAddr;
   end;
 
@@ -176,7 +176,7 @@ end;
 procedure UdpRxTxSend(Data: String);
 var
   Tx: TUdpRxTxBuffer;
-  AntTx: ssize_t;
+  CntTx: ssize_t;
 
 begin
   if TxSocket.Socket = 0 then exit;
@@ -185,15 +185,15 @@ begin
   // Load Data
   FillChar(Tx, SizeOf(Tx), 0);
   Move(Data[1], Tx.Buffer, Length(Data));
-  Tx.Antal:= Length(Data);
+  Tx.Count:= Length(Data);
 
   // Load ToAddress
   TxSocket.Addr.sin_addr:= StrToNetAddr(ToAddr);
 
-  AntTx:= fpsendto(TxSocket.Socket, @Tx.Buffer, Tx.Antal,
+  CntTx:= fpsendto(TxSocket.Socket, @Tx.Buffer, Tx.Count,
                    0, @TxSocket.Addr, sizeof(TxSocket.Addr));
 
-  WrtLog('Data Send To ' + ToAddr + ', Count: ' + IntToStr(AntTx) + ', Data: ' + Data);
+  WrtLog('Data Send To ' + ToAddr + ', Count: ' + IntToStr(CntTx) + ', Data: ' + Data);
 end;
 
 
@@ -211,8 +211,8 @@ begin
   if not Assigned(RxDataEvent) then exit;
 
   Rx:= '';
-  SetLength(Rx, RxBuffer.Antal);
-  Move(RxBuffer.Buffer, Rx[1], RxBuffer.Antal);
+  SetLength(Rx, RxBuffer.Count);
+  Move(RxBuffer.Buffer, Rx[1], RxBuffer.Count);
 
   WrtLog('Data Received From ' + ToAddr + ', Data: ' + Rx);
 
@@ -233,10 +233,10 @@ begin
     FromLen:= sizeof(from);
 
     // Wait for received data (blocking)
-    RxBuffer.Antal:= fprecvfrom(RxSocket.Socket,
+    RxBuffer.Count:= fprecvfrom(RxSocket.Socket,
                                 @RxBuffer.Buffer, SizeOf(RxBuffer.Buffer),
                                 0, @From, @FromLen);
-    if (RxBuffer.Antal > 0) then
+    if (RxBuffer.Count > 0) then
     begin
       // Save the IP address in ToAddr so that data can be sent back to the sender
       if FromLen = SizeOf(From) then
