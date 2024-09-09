@@ -22,10 +22,10 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="91"/>
-        <CursorPos X="40" Y="101"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="71"/>
+        <CursorPos X="59" Y="104"/>
         <UsageCount Value="46"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="gpiocheckbox.pas"/>
@@ -146,6 +146,9 @@
         <UsageCount Value="11"/>
       </Unit>
     </Units>
+    <General>
+      <ActiveWindowIndexAtStart Value="-1"/>
+    </General>
     <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>
