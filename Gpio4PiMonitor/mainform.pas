@@ -5,6 +5,10 @@ unit MainForm;
 // Gpio4Pi Monitor is a test / debug App which scan the memory
 // of Raspberry Pi and show the status og GPIO's, Clocks and PWM's
 //
+// NB: Written to Rpi4 (BCM2711), so it shows all 57 GPIO pins and all 4 PWM channels.
+//     Also the Pull Up/Down are shown, so if you use an Rpi1-3,
+//     Pull Up/Down must be disregarded as this cannot be read on an Rpi1-3
+//
 // Still under development and therefore not quite finished
 // Copyright (c) 2024 Jan Andersen
 // -----------------------------------------------------------------
