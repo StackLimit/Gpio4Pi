@@ -15,8 +15,8 @@ But everything in this library is written in pure Pascal (Lazarus).
 Some of the declarations and functions are converted from WiringPi and rewritten.
 
 To use the library you just copy the two files: Gpio4Pi.pas and GpioDefs.pas to your source directory.
-**Gpio4Pi.pas** is the actual GPIO object with all the functions and
-**GpioDefs.pas** are all the constant definitions used for calling the functions.
+- **Gpio4Pi.pas** is the actual GPIO object with all the functions and
+- **GpioDefs.pas** are all the constant definitions used for calling the functions.
 There is a brief description of all the functions in Gpio4Pi.pas.
 
 A liitle example of using the library/object, set GPIO pin 4 high:
