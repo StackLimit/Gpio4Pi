@@ -27,14 +27,14 @@ uses Gpio4Pi, GpioDefs;
 var
   PiGpio: TPiGpio;
   
-begin</BR>
-  PiGpio:= TPiGpio.Create;</BR>
-  if PiGpio <> nil then</BR>
-  begin</BR>
-    PiGpio.SetPinMode(4, PM_OUTPUT);</BR>
-    PiGpio.GpioWrite(4, PIN_HIGH);</BR>
-  end;</BR>
-end;</BR>
+begin
+  PiGpio:= TPiGpio.Create;
+  if PiGpio <> nil then
+  begin
+    PiGpio.SetPinMode(4, PM_OUTPUT);
+    PiGpio.GpioWrite(4, PIN_HIGH);
+  end;
+end;
 ```
 
 Thats it.....
