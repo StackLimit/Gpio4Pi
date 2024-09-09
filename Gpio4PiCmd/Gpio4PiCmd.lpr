@@ -440,7 +440,7 @@ begin
   { add your help code here }
   WriteLn('Usage: ', ExtractFileName(ExeName));
   WriteLn('  info ..................: Show info about the Paspberry PI');
-  WriteLn('  show ..................: Show all');
+  WriteLn('  show ..................: Show all GPIO, Clock and PWM information');
   WriteLn('  mode <mode gpio> ......: Set GPIO to Mode. Mode=in,out,alt0..alt5');
   WriteLn('  pull <pull gpio> ......: Set GPIO Pull-Up/Down. Pull=none,up,down');
   WriteLn('  write <val gpio> ......: Write a Value to GPIO. Value=0,1');
