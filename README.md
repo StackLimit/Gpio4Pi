@@ -1,7 +1,7 @@
 # Gpio4Pi
  Lazarus Pascal GPIO for Raspberry Pi
 
-Preface:</BR>
+## Preface
 For many years I have used WiringPi for basic Input/Output with a translated Pascal header.
 Now I had to use PWM on Gpio pins and found out that it doesn't really support Rpi4 (BCM2711) to the full.
 So I decided to make a simple GPIO interface for Lazarus Pascal.
@@ -89,6 +89,8 @@ This is a GUI application where the Pi's memory is scanned for changes all the t
 and changes in the memory are presented graphically.
 All GPIOs are shown with Input, Output, Alt0..5 and Pull Up/Down.
 All Clock's and PWM's are displayed with all their values.
+
+At the moment the app are written for Raspberry Pi 4 (BCM2711) and therefore are showing all 57 GPIO pins and four PWM channels.
 
 Note that two files, baseunix.pas and unix.pas, also are included in this directory. 
 It is to be able to compile and test the application under Windows. 
