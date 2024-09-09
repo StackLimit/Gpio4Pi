@@ -1,7 +1,7 @@
 # Gpio4Pi
  Lazarus Pascal GPIO for Raspberry Pi
 
-## Preface
+**Preface**
 For many years I have used WiringPi for basic Input/Output with a translated Pascal header.
 Now I had to use PWM on Gpio pins and found out that it doesn't really support Rpi4 (BCM2711) to the full.
 So I decided to make a simple GPIO interface for Lazarus Pascal.
@@ -15,8 +15,8 @@ But everything in this library is written in pure Pascal (Lazarus).
 Some of the declarations and functions are converted from WiringPi and rewritten.
 
 To use the library you just copy the two files: Gpio4Pi.pas and GpioDefs.pas to your source directory.
-Gpio4Pi.pas is the actual GPIO object with all the functions and
-GpioDefs.pas are all the constant definitions used for calling the functions.
+**Gpio4Pi.pas** is the actual GPIO object with all the functions and
+**GpioDefs.pas** are all the constant definitions used for calling the functions.
 There is a brief description of all the functions in Gpio4Pi.pas.
 
 A liitle example of using the library/object, set GPIO pin 4 high:
