@@ -63,9 +63,12 @@ This is a command-line application with the following options:
 - pwmduty <duty gpio> ...: Set PWM Duty Cycle for GPIO x
 ```
 
-Note that two files, baseunix.pas and unix.pas, also are included in this directory. 
+Note that two files, baseunix.pas and unix.pas, are included in this directory. 
 It is to be able to compile and test the application under Windows. 
 These two files MUST NOT be copied to the Raspberry Pi when the application is to be built there.
+
+Sometimes I write the software on my Windows PC with multiple monitors and then transfer
+the source files to Rasbian on the PI and compile the project there.
 
 An example of running Gpio4PiCmd with option show on a Rpi4 with PicorePlayer:
 ```
@@ -178,11 +181,9 @@ Pull Up/Down can also be tested and can be read/written from/to the GPIO pin.
 Furthermore, the GPIO clock frequency can be set and the PWM frequency and Range/Value can be set.
 I used this when developing the Gpio4Pi object.
 
-Note that two files, baseunix.pas and unix.pas, are included in this directory. 
+Note that two files, baseunix.pas and unix.pas, also are included in this directory. 
 It is to be able to compile and test the application under Windows. 
 These two files MUST NOT be copied to the Raspberry Pi when the application is to be built there.
-Sometimes I write the software on my Windows PC with multiple monitors and then transfer
-the source files to Rasbian on the PI and compile the project there.
 
 Furthermore, the Windows version has built-in memory simulation so the app works under Windows.
 It is also built in so that changes in memory are sent via UDP to a Client,
