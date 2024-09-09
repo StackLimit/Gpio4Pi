@@ -66,8 +66,31 @@ Clocks and PWM can also be read in this app.
 
 Gpio4PiCmd:</BR>
 ===========</BR>
+This is a command-line application with the following options:</BR>
+- info ..................: Show info about the Paspberry PI</BR>
+- show ..................: Show all GPIO, Clock and PWM information</BR>
+- mode <mode gpio> ......: Set GPIO to Mode. Mode=in,out,alt0..alt5</BR>
+- pull <pull gpio> ......: Set GPIO Pull-Up/Down. Pull=none,up,down</BR>
+- write <val gpio> ......: Write a Value to GPIO. Value=0,1</BR>
+- read <gpio> ...........: Read a Value from GPIO</BR>
+- clock <freq gpio> .....: Set GPIO Clock in Hz</BR>
+- pwmclock <freq> .......: Set PWM Master Clock in Hz</BR>
+- pwmmode <mode gpio> ...: Set PWM Mode for GPIO x. Mode=bal,ms</BR>
+- pwmrange <range gpio> .: Set PWM Range for GPIO x</BR>
+- pwmduty <duty gpio> ...: Set PWM Duty Cycle for GPIO x</BR>
 
-
+Note that two files, baseunix.pas and unix.pas, also are included in this directory. 
+It is to be able to compile and test the application under Windows. 
+These two files MUST NOT be copied to the Raspberry Pi when the application is to be built there.
 
 Gpio4PiMonitor:</BR>
 ===============</BR>
+This is a GUI application where the Pi's memory is scanned for changes all the time
+and changes in the memory are presented graphically.
+All GPIOs are shown with Input, Output, Alt0..5 and Pull Up/Down.
+All Clock's and PWM's are displayed with all their values.
+
+Note that two files, baseunix.pas and unix.pas, also are included in this directory. 
+It is to be able to compile and test the application under Windows. 
+These two files MUST NOT be copied to the Raspberry Pi when the application is to be built there.
+
