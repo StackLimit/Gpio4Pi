@@ -64,6 +64,99 @@ Note that two files, baseunix.pas and unix.pas, also are included in this direct
 It is to be able to compile and test the application under Windows. 
 These two files MUST NOT be copied to the Raspberry Pi when the application is to be built there.
 
+An example of running Gpio4PiCmd with option show on a Rpi4 with PicorePlayer:
+```
+tc@pCP9:~$ Gpio4PiCmd show
+GPIO Initialized OK, Using /dev/mem
+
+---------- All GPIOs ----------
+GPIO 0: Mode=Output, Level=Low, Pull=PullUp
+GPIO 1: Mode=Input, Level=High, Pull=PullUp
+GPIO 2: Mode=Alt 0 ~ SDA1, Level=High, Pull=PullUp
+GPIO 3: Mode=Alt 0 ~ SCL1, Level=High, Pull=PullUp
+GPIO 4: Mode=Input, Level=High, Pull=PullUp
+GPIO 5: Mode=Input, Level=High, Pull=PullUp
+GPIO 6: Mode=Input, Level=High, Pull=PullUp
+GPIO 7: Mode=Output, Level=High, Pull=PullUp
+GPIO 8: Mode=Output, Level=High, Pull=PullUp
+GPIO 9: Mode=Alt 0 ~ SPI0_MISO, Level=Low, Pull=PullDown
+GPIO 10: Mode=Alt 0 ~ SPI0_MOSI, Level=Low, Pull=PullDown
+GPIO 11: Mode=Alt 0 ~ SPI0_SCLK, Level=Low, Pull=PullDown
+GPIO 12: Mode=Output, Level=High, Pull=PullDown
+GPIO 13: Mode=Alt 0 ~ PWM0_1, Level=Low, Pull=PullDown
+GPIO 14: Mode=Input, Level=High, Pull=PullUp
+GPIO 15: Mode=Input, Level=High, Pull=PullUp
+GPIO 16: Mode=Input, Level=Low, Pull=PullDown
+GPIO 17: Mode=Input, Level=High, Pull=PullDown
+GPIO 18: Mode=Alt 0 ~ PCM_CLK, Level=Low, Pull=PullDown
+GPIO 19: Mode=Alt 0 ~ PCM_FS, Level=Low, Pull=PullDown
+GPIO 20: Mode=Alt 0 ~ PCM_DIN, Level=Low, Pull=PullDown
+GPIO 21: Mode=Alt 0 ~ PCM_DOUT, Level=Low, Pull=PullDown
+GPIO 22: Mode=Output, Level=High, Pull=PullDown
+GPIO 23: Mode=Input, Level=High, Pull=PullUp
+GPIO 24: Mode=Input, Level=High, Pull=PullUp
+GPIO 25: Mode=Output, Level=High, Pull=PullDown
+GPIO 26: Mode=Input, Level=High, Pull=PullUp
+GPIO 27: Mode=Output, Level=High, Pull=PullDown
+GPIO 28: Mode=Alt 5 ~ RGMII_MDIO, Level=High, Pull=PullUp
+GPIO 29: Mode=Alt 5 ~ RGMII_MDC, Level=Low, Pull=PullDown
+GPIO 30: Mode=Input, Level=High, Pull=PullUp
+GPIO 31: Mode=Input, Level=High, Pull=No PullUp/Down
+GPIO 32: Mode=Input, Level=High, Pull=PullDown
+GPIO 33: Mode=Input, Level=High, Pull=PullDown
+GPIO 34: Mode=Alt 3 ~ SD1_CLK, Level=High, Pull=No PullUp/Down
+GPIO 35: Mode=Alt 3 ~ SD1_CMD, Level=High, Pull=PullUp
+GPIO 36: Mode=Alt 3 ~ SD1_DAT0, Level=High, Pull=PullUp
+GPIO 37: Mode=Alt 3 ~ SD1_DAT1, Level=High, Pull=PullUp
+GPIO 38: Mode=Alt 3 ~ SD1_DAT2, Level=High, Pull=PullUp
+GPIO 39: Mode=Alt 3 ~ SD1_DAT3, Level=High, Pull=PullUp
+GPIO 40: Mode=Alt 0 ~ PWM1_0, Level=Low, Pull=No PullUp/Down
+GPIO 41: Mode=Alt 0 ~ PWM1_1, Level=Low, Pull=No PullUp/Down
+GPIO 42: Mode=Output, Level=Low, Pull=PullUp
+GPIO 43: Mode=Input, Level=High, Pull=PullUp
+GPIO 44: Mode=Input, Level=High, Pull=PullUp
+GPIO 45: Mode=Input, Level=High, Pull=PullUp
+GPIO 46: Mode=Input, Level=Low, Pull=PullUp
+GPIO 47: Mode=Input, Level=Low, Pull=PullUp
+GPIO 48: Mode=Input, Level=Low, Pull=PullDown
+GPIO 49: Mode=Input, Level=Low, Pull=PullDown
+GPIO 50: Mode=Input, Level=Low, Pull=PullDown
+GPIO 51: Mode=Input, Level=Low, Pull=PullDown
+GPIO 52: Mode=Input, Level=Low, Pull=PullDown
+GPIO 53: Mode=Input, Level=Low, Pull=PullDown
+GPIO 54: Mode=Input, Level=Low, Pull=PullDown
+GPIO 55: Mode=Input, Level=Low, Pull=PullDown
+GPIO 56: Mode=Input, Level=Low, Pull=PullDown
+GPIO 57: Mode=Input, Level=Low, Pull=PullDown
+
+---------- All CLOCKs ----------
+GPIO CLOCK 0: Enable=No, Source=GND, Kill=No, Flip=No, MASH=1-stage MASH, Div=0, Frac=0, Freq=0Hz
+  Connected GPIOs: None
+
+GPIO CLOCK 1: Enable=No, Source=GND, Kill=No, Flip=No, MASH=1-stage MASH, Div=0, Frac=0, Freq=0Hz
+  Connected GPIOs: None
+
+GPIO CLOCK 2: Enable=No, Source=GND, Kill=No, Flip=No, MASH=1-stage MASH, Div=0, Frac=0, Freq=0Hz
+  Connected GPIOs: None
+
+PCM CLOCK: Enable=No, Source=GND, Kill=No, Flip=No, MASH=1-stage MASH, Div=0, Frac=0, Freq=0Hz
+
+PWM CLOCK: Enable=Yes, Source=PLLD per, Kill=No, Flip=No, MASH=Integer Division, Div=750, Frac=0, Freq=1000000Hz
+
+---------- All PWMs ----------
+PWM 0_0: Enable=Yes, Serial=Yes, Repeat=No, Silence=No, Polarity=No, UseFifo=Yes, M/S mode=No, Range=10, Data=0
+  Connected GPIOs: None
+
+PWM 0_1: Enable=Yes, Serial=No, Repeat=No, Silence=No, Polarity=No, UseFifo=No, M/S mode=Yes, Range=5000, Data=150
+  Connected GPIOs: 13
+
+PWM 1_0: Enable=No, Serial=No, Repeat=No, Silence=No, Polarity=No, UseFifo=No, M/S mode=No, Range=32, Data=0
+  Connected GPIOs: 40
+
+PWM 1_1: Enable=No, Serial=No, Repeat=No, Silence=No, Polarity=No, UseFifo=No, M/S mode=No, Range=32, Data=0
+  Connected GPIOs: 41
+```
+
 ## Gpio4PiMonitor
 This is a GUI application where the Pi's memory is scanned for changes all the time
 and changes in the memory are presented graphically.
