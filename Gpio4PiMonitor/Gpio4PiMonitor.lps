@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="Gpio4PiMonitor.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="49"/>
+      </Unit>
+      <Unit>
+        <Filename Value="mainform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MainForm"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="33" Y="18"/>
+        <UsageCount Value="49"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="gpiocheckbox.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GPIOcheckbox"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="123"/>
+        <CursorPos Y="124"/>
+        <UsageCount Value="49"/>
+      </Unit>
+      <Unit>
+        <Filename Value="common.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Common"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="6" Y="55"/>
+        <UsageCount Value="49"/>
+      </Unit>
+      <Unit>
+        <Filename Value="raspimem.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="RasPiMem"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="42" Y="15"/>
+        <UsageCount Value="49"/>
+      </Unit>
+      <Unit>
+        <Filename Value="clockform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormClocks"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ClockForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="43"/>
+        <CursorPos X="50" Y="51"/>
+        <UsageCount Value="39"/>
+      </Unit>
+      <Unit>
+        <Filename Value="pwmform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormPwm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PwmForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="21"/>
+        <UsageCount Value="39"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\GpioDefs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="34"/>
+        <CursorPos X="17" Y="59"/>
+        <UsageCount Value="38"/>
+      </Unit>
+      <Unit>
+        <Filename Value="overviewform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormOverview"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="OverviewForm"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="167"/>
+        <CursorPos X="69" Y="176"/>
+        <UsageCount Value="37"/>
+      </Unit>
+      <Unit>
+        <Filename Value="gpioextraform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormGpioExtra"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="GpioExtraForm"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="71" Y="21"/>
+        <UsageCount Value="34"/>
+      </Unit>
+      <Unit>
+        <Filename Value="gpioextrastuff.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GpioExtraStuff"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="57" Y="219"/>
+        <UsageCount Value="28"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Gpio4Pi.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="160"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unix.pas"/>
+        <UnitName Value="Unix"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="29" Y="21"/>
+        <UsageCount Value="17"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2399"/>
+        <CursorPos X="32" Y="2410"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="baseunix.pas"/>
+        <UnitName Value="baseUnix"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="11"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Gpio4PiClient\udprxtxclient.pas"/>
+        <UnitName Value="UdpRxTxClient"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="44" Y="210"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Gpio4PiTest\udprxtx.pas"/>
+        <UnitName Value="UdpRxTx"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="173"/>
+        <CursorPos X="8" Y="193"/>
+        <UsageCount Value="10"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="-1"/>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
