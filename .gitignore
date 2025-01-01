@@ -8,6 +8,7 @@ README.md-OLD
 /DivTest
 /Gpio4PiTest
 /Gpio4PiClient
+/Gpio4PiUCmd
 
 /Gpio4PiCmd/backup
 /Gpio4PiCmd/lib

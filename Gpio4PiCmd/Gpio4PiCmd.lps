@@ -9,10 +9,10 @@
         <Filename Value="Gpio4PiCmd.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="7"/>
-        <CursorPos X="34" Y="19"/>
+        <TopLine Value="29"/>
+        <CursorPos Y="41"/>
         <UsageCount Value="31"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="gpioextrastuff.pas"/>
@@ -69,10 +69,20 @@
         <UsageCount Value="10"/>
       </Unit7>
     </Units>
-    <General>
-      <ActiveWindowIndexAtStart Value="-1"/>
-    </General>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory Count="3" HistoryIndex="2">
+      <Position1>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="34" TopLine="22"/>
+      </Position1>
+      <Position2>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="28" Column="20" TopLine="15"/>
+      </Position2>
+      <Position3>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="256" TopLine="245"/>
+      </Position3>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>

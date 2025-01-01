@@ -16,7 +16,7 @@ uses
   {$ENDIF}
   Classes, SysUtils, CustApp,
   { you can add units after this }
-  GpioDefs, Gpio4Pi, GpioUart4Pi, GpioExtraStuff;
+  GpioDefs, Gpio4Pi, GpioExtraStuff;
 
 
 type
@@ -25,23 +25,18 @@ type
   protected
     procedure DoRun; override;
   private
-    PiGpio: TPiGpioUart;
+    PiGpio: TPiGpio;
     S: String;
     function ConnectedClocksToStr(Gpios: TIntArray): String;
     procedure ShowAllGpio;
     procedure ShowAllClock;
     procedure ShowAllPwm;
-    procedure ShowAllUart;
     procedure ShowAll;
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
     procedure WriteHelp; virtual;
   end;
-
-
-
-
 
 
 
@@ -249,80 +244,11 @@ end;
 
 //----------------------------------------------------------------
 
-procedure TGpio4PiCmd.ShowAllUart;
-var
-  Uart: TUartData;
-  Gpios: TIntArray;
-
-procedure ShowOneUart(UartNo: Integer);
-begin
-  if not PiGpio.GetRawUartData(UartNo, Uart) then exit;
-
-  S:= 'UART ' + IntToStr(UartNo) + ': ';
-
-  // Control Register
-  S:= S +
-    'Enable='       + LongToYesNo(Uart.Control and UART_CR_ENABLE) +
-    ', LoopBack='   + LongToYesNo(Uart.Control and UART_CR_LOOPBACK) +
-    ', TX Enable='  + LongToYesNo(Uart.Control and UART_CR_TXENABLE) +
-    ', RX Enable='  + LongToYesNo(Uart.Control and UART_CR_RXENABLE) +
-    ', RTS='        + LongToYesNo(Uart.Control and UART_CR_RTS) +
-    ', RTS Enable=' + LongToYesNo(Uart.Control and UART_CR_RTSENA) +
-    ', CTS Enable=' + LongToYesNo(Uart.Control and UART_CR_CTSENA);
-  WriteLn(S);
-
-  // Line Control Register
-  S:= '  ';
-  case (Uart.LineCtlReg and UART_LCRH_XBITS) of
-    UART_LCRH_8BITS: S:= S + '8 Bits';
-    UART_LCRH_7BITS: S:= S + '7 Bits';
-    UART_LCRH_6BITS: S:= S + '6 Bits';
-    else             S:= S + '5 Bits';
-  end;
-
-  S:= S +
-    ', SendBreak='     + LongToYesNo(Uart.LineCtlReg and UART_LCRH_BREAK) +
-    ', Parity Enable=' + LongToYesNo(Uart.LineCtlReg and UART_LCRH_PARITY) +
-    ', Even Parity='   + LongToYesNo(Uart.LineCtlReg and UART_LCRH_EVEN) +
-    ', Stick Parity='  + LongToYesNo(Uart.LineCtlReg and UART_LCRH_STICK) +
-    ', 2 StopBits='    + LongToYesNo(Uart.LineCtlReg and UART_LCRH_2STOP) +
-    ', Fifo Enable='   + LongToYesNo(Uart.LineCtlReg and UART_LCRH_FIFO);
-  WriteLn(S);
-
-  // Divisor, Fraction and Baud Rate
-  S:= '  Divisor='  + IntToStr(Uart.BaudDivisor) +
-      ', Fraction=' + IntToStr(Uart.BaudFract) +
-      ', BaudRate=' + IntToStr(PiGpio.GetUartBaudRate(UartNo));
-  WriteLn(S);
-
-  // Print connected GPIOs
-  Gpios:= PiGpio.GetGpiosForUart(UartNo);
-  S:= ConnectedClocksToStr(Gpios);
-  WriteLn(S);
-  WriteLn;
-end;
-
-begin
-  WriteLn;
-  WriteLn('---------- All UARTs ----------');
-  ShowOneUart(0);
-  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2711 then
-  begin
-    ShowOneUart(2);
-    ShowOneUart(3);
-    ShowOneUart(4);
-    ShowOneUart(5);
-  end;
-end;
-
-//----------------------------------------------------------------
-
 procedure TGpio4PiCmd.ShowAll;
 begin
   ShowAllGpio;
   ShowAllClock;
   ShowAllPwm;
-  ShowAllUart;
 end;
 
 //----------------------------------------------------------------
@@ -334,7 +260,7 @@ var
   PiInfo: TRPiModelInfo;
 
 begin
-  PiGpio:= TPiGpioUart.Create;
+  PiGpio:= TPiGpio.Create;
   if PiGpio = Nil then
   begin
     WriteLn('GPIO Initialized FAIL');
@@ -494,7 +420,7 @@ end;
 constructor TGpio4PiCmd.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
-  StopOnException:=True;
+  StopOnException:= True;
 end;
 
 //----------------------------------------------------------------
@@ -528,8 +454,8 @@ end;
 var
   Application: TGpio4PiCmd;
 begin
-  Application:=TGpio4PiCmd.Create(nil);
-  Application.Title:='Gpio4PiCmd';
+  Application:= TGpio4PiCmd.Create(nil);
+  Application.Title:= 'Gpio4PiCmd';
   Application.Run;
   Application.Free;
 end.
