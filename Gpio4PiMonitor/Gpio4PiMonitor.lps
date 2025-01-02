@@ -12,7 +12,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="49"/>
+        <UsageCount Value="50"/>
       </Unit>
       <Unit>
         <Filename Value="mainform.pas"/>
@@ -21,10 +21,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
-        <IsVisibleTab Value="True"/>
-        <CursorPos X="33" Y="18"/>
-        <UsageCount Value="49"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="120"/>
+        <CursorPos X="14" Y="129"/>
+        <UsageCount Value="50"/>
       </Unit>
       <Unit>
         <Filename Value="gpiocheckbox.pas"/>
@@ -33,7 +33,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="123"/>
         <CursorPos Y="124"/>
-        <UsageCount Value="49"/>
+        <UsageCount Value="50"/>
       </Unit>
       <Unit>
         <Filename Value="common.pas"/>
@@ -41,7 +41,7 @@
         <UnitName Value="Common"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6" Y="55"/>
-        <UsageCount Value="49"/>
+        <UsageCount Value="50"/>
       </Unit>
       <Unit>
         <Filename Value="raspimem.pas"/>
@@ -49,7 +49,7 @@
         <UnitName Value="RasPiMem"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="42" Y="15"/>
-        <UsageCount Value="49"/>
+        <UsageCount Value="50"/>
       </Unit>
       <Unit>
         <Filename Value="clockform.pas"/>
@@ -58,10 +58,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockForm"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="43"/>
-        <CursorPos X="50" Y="51"/>
-        <UsageCount Value="39"/>
+        <TopLine Value="112"/>
+        <CursorPos X="75" Y="122"/>
+        <UsageCount Value="40"/>
       </Unit>
       <Unit>
         <Filename Value="pwmform.pas"/>
@@ -72,15 +73,15 @@
         <UnitName Value="PwmForm"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="21"/>
-        <UsageCount Value="39"/>
+        <UsageCount Value="40"/>
       </Unit>
       <Unit>
         <Filename Value="..\GpioDefs.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="34"/>
+        <TopLine Value="37"/>
         <CursorPos X="17" Y="59"/>
-        <UsageCount Value="38"/>
+        <UsageCount Value="39"/>
       </Unit>
       <Unit>
         <Filename Value="overviewform.pas"/>
@@ -92,7 +93,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="167"/>
         <CursorPos X="69" Y="176"/>
-        <UsageCount Value="37"/>
+        <UsageCount Value="38"/>
       </Unit>
       <Unit>
         <Filename Value="gpioextraform.pas"/>
@@ -103,7 +104,7 @@
         <UnitName Value="GpioExtraForm"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="71" Y="21"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="35"/>
       </Unit>
       <Unit>
         <Filename Value="gpioextrastuff.pas"/>
@@ -111,14 +112,14 @@
         <UnitName Value="GpioExtraStuff"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="57" Y="219"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="29"/>
       </Unit>
       <Unit>
         <Filename Value="..\Gpio4Pi.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="160"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit>
       <Unit>
         <Filename Value="unix.pas"/>
@@ -159,6 +160,9 @@
         <UsageCount Value="10"/>
       </Unit>
     </Units>
+    <General>
+      <ActiveWindowIndexAtStart Value="-1"/>
+    </General>
     <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>

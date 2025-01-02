@@ -24,7 +24,9 @@ type
     GroupBoxClock2: TGroupBox;
     GroupBoxClock3: TGroupBox;
     GroupBoxClock4: TGroupBox;
+    GroupBoxClock5: TGroupBox;
     LabClkCtl0: TLabel;
+    LabClkCtl5: TLabel;
     LabClkDiv0: TLabel;
     LabClkCtl1: TLabel;
     LabClkDiv1: TLabel;
@@ -34,7 +36,10 @@ type
     LabClkDiv3: TLabel;
     LabClkCtl4: TLabel;
     LabClkDiv4: TLabel;
+    LabClkDiv5: TLabel;
     Label1: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -77,6 +82,7 @@ begin
     CLK_GPIO2: begin LabCtl:= LabClkCtl2; LabDiv:= LabClkDiv2; end;
     CLK_PCM:   begin LabCtl:= LabClkCtl3; LabDiv:= LabClkDiv3; end;
     CLK_PWM:   begin LabCtl:= LabClkCtl4; LabDiv:= LabClkDiv4; end;
+    CLK_UART:  begin LabCtl:= LabClkCtl5; LabDiv:= LabClkDiv5; end;
     else exit;
   end;
 
@@ -147,19 +153,21 @@ var
 
 begin
   LabClkCtl0.Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
-                       'NA' + #13#10 + 'NA' + #13#10 + 'NA';
+                       'NA' + #13#10 + 'NA';
   LabClkCtl1.Caption:= LabClkCtl0.Caption;
   LabClkCtl2.Caption:= LabClkCtl0.Caption;
   LabClkCtl3.Caption:= LabClkCtl0.Caption;
   LabClkCtl4.Caption:= LabClkCtl0.Caption;
+  LabClkCtl5.Caption:= LabClkCtl0.Caption;
 
-  LabClkDiv0.Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 + 'NA';
+  LabClkDiv0.Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA';
   LabClkDiv1.Caption:= LabClkDiv0.Caption;
   LabClkDiv2.Caption:= LabClkDiv0.Caption;
   LabClkDiv3.Caption:= LabClkDiv0.Caption;
   LabClkDiv4.Caption:= LabClkDiv0.Caption;
+  LabClkDiv5.Caption:= LabClkDiv0.Caption;
 
-  for I:= 0 to 4 do UpdateClock(I);
+  for I:= 0 to 5 do UpdateClock(I);
 end;
 
 
