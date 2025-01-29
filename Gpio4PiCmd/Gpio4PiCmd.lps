@@ -8,10 +8,9 @@
       <Unit0>
         <Filename Value="Gpio4PiCmd.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="-1"/>
         <CursorPos X="30" Y="24"/>
         <UsageCount Value="31"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="gpioextrastuff.pas"/>
@@ -56,10 +55,12 @@
       <Unit6>
         <Filename Value="unix.pas"/>
         <UnitName Value="Unix"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="13"/>
-        <CursorPos X="75" Y="200"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="113"/>
+        <CursorPos X="13" Y="122"/>
         <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="baseunix.pas"/>
@@ -68,10 +69,12 @@
         <UsageCount Value="10"/>
       </Unit7>
     </Units>
-    <General>
-      <ActiveWindowIndexAtStart Value="-1"/>
-    </General>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory Count="1">
+      <Position1>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="24" Column="30"/>
+      </Position1>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>

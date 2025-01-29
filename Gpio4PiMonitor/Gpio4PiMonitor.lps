@@ -21,10 +21,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
-        <EditorIndex Value="-1"/>
         <TopLine Value="120"/>
-        <CursorPos X="14" Y="129"/>
+        <CursorPos X="49" Y="126"/>
         <UsageCount Value="50"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="gpiocheckbox.pas"/>
@@ -58,8 +58,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockForm"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
         <TopLine Value="112"/>
         <CursorPos X="75" Y="122"/>
         <UsageCount Value="40"/>
@@ -124,11 +124,12 @@
       <Unit>
         <Filename Value="unix.pas"/>
         <UnitName Value="Unix"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="7"/>
-        <CursorPos X="29" Y="21"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="157"/>
+        <CursorPos Y="171"/>
         <UsageCount Value="17"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
@@ -160,10 +161,16 @@
         <UsageCount Value="10"/>
       </Unit>
     </Units>
-    <General>
-      <ActiveWindowIndexAtStart Value="-1"/>
-    </General>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory HistoryIndex="1">
+      <Position>
+        <Filename Value="mainform.pas"/>
+        <Caret Line="126" Column="49" TopLine="120"/>
+      </Position>
+      <Position>
+        <Filename Value="unix.pas"/>
+        <Caret Line="133" Column="87" TopLine="119"/>
+      </Position>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>

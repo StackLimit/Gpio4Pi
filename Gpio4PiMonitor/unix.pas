@@ -65,6 +65,7 @@ var
   MemGpio: Array[0..$FF div 4] of LongWord;
   MemClk:  Array[0..$AF div 4] of LongWord;
   MemPwm:  Array[0..$82F div 4] of LongWord;  // PWM1_OFFSET are at $800 !
+  MemUart: Array[0..$BFF div 4] of LongWord;
 
 
 // ------------------------------------------------------------------------
@@ -105,7 +106,8 @@ begin
   case (offst and $0FFF) of
     CLOCK_BASE: exit(Addr(MemClk));
     GPIO_BASE:  exit(Addr(MemGpio));
-    GPIO_PWM:   exit(Addr(MemPwm));
+    PWM_BASE:   exit(Addr(MemPwm));
+    UART_BASE:  exit(Addr(MemUart));
   end;
   exit(nil);
 end;
@@ -121,11 +123,58 @@ end;
 // ------------------------------------------------------------------------
 
 
+// ------------------------------------------------------------------------
+//
+// Some definitions to access memory areas
+//
+// Because we are using Array of LongWords, all offsets must be divided by 4.
+//
+// ------------------------------------------------------------------------
+
+const
+  // Offsets for UART
+  UART0_OFFSETd4 = UART0_OFFSET div 4;
+  UART2_OFFSETd4 = UART2_OFFSET div 4;
+  UART3_OFFSETd4 = UART3_OFFSET div 4;
+  UART4_OFFSETd4 = UART4_OFFSET div 4;
+  UART5_OFFSETd4 = UART5_OFFSET div 4;
+
+  UART_DRd4     = UART_DR     div 4;
+  UART_RSRECRd4 = UART_RSRECR div 4;
+  UART_FRd4     = UART_FR     div 4;
+  UART_IBRDd4   = UART_IBRD   div 4;
+  UART_FBRDd4   = UART_FBRD   div 4;
+  UART_LCRHd4   = UART_LCRH   div 4;
+  UART_CRd4     = UART_CR     div 4;
+  UART_IFLSd4   = UART_IFLS   div 4;
+  UART_IMSCd4   = UART_IMSC   div 4;
+  UART_RISd4    = UART_RIS    div 4;
+  UART_MISd4    = UART_MIS    div 4;
+  UART_ICRd4    = UART_ICR    div 4;
+  UART_DMACRd4  = UART_DMACR  div 4;
+  UART_ITCR     = UART_ITCR   div 4;
+  UART_ITIPd4   = UART_ITIP   div 4;
+  UART_ITOPd4   = UART_ITOP   div 4;
+  UART_TDRd4    = UART_TDR    div 4;
+
+// ------------------------------------------------------------------------
+
+
+
 Initialization
   // Clear all memory
   FillChar(MemGpio, SizeOf(MemGpio), 0);
   FillChar(MemClk,  SizeOf(MemClk),  0);
   FillChar(MemPwm,  SizeOf(MemPwm),  0);
+  FillChar(MemUart, SizeOf(MemUart), 0);
+
+  // Some default bits in Uart ram
+  MemUart[UART0_OFFSETd4 + UART_FRd4]:= UART_FR_RXFE or UART_FR_TXFE;
+  MemUart[UART2_OFFSETd4 + UART_FRd4]:= UART_FR_RXFE or UART_FR_TXFE;
+  MemUart[UART3_OFFSETd4 + UART_FRd4]:= UART_FR_RXFE or UART_FR_TXFE;
+  MemUart[UART4_OFFSETd4 + UART_FRd4]:= UART_FR_RXFE or UART_FR_TXFE;
+  MemUart[UART5_OFFSETd4 + UART_FRd4]:= UART_FR_RXFE or UART_FR_TXFE;
+
 
 Finalization
 

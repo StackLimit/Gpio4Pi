@@ -210,13 +210,17 @@ const
   GPIO_PERI_BASE_2835 = $20000;    // Pi 1
   GPIO_PERI_BASE_2836 = $3F000;    // Pi 2,3
   GPIO_PERI_BASE_2711 = $FE000;    // Pi 4
-  GPIO_PERI_BASE_2712 = $00;   // Pi 5: Unknown. 32-bit mapped global mem access not supported for now
+  GPIO_PERI_BASE_2712 = $00000;    // Pi 5: Unknown. 32-bit mapped global mem access not supported for now
 
   // Offsets into the memory interface, also div $1000
-  CLOCK_BASE = $101;              // $101000
-  GPIO_BASE  = $200;              // $200000
-  GPIO_PWM   = $20C;              // $20C000
-  UART_BASE  = $201;              // $201000
+  CLOCK_BASE = $101;     // General Purpose clocks
+  GPIO_BASE  = $200;     // General Purpose Input/Output (GPIO)
+  PWM_BASE   = $20C;     // Pulse Width Modulator (PWM) peripherals
+  PCM_BASE   = $203;     // PCM (Pulse Code Modulation) audio interface
+  UART_BASE  = $201;     // UART (Universal Asynchronous Receiver/Transmitter). UART0, UART2, UART3, UART4 & UART5
+  AUX_BASE   = $215;     // Auxiliary peripherals: One mini UART (UART1) and two SPI masters (SPI1 & SPI2)
+  SPI_BASE   = $204;     // Serial Peripheral Interface (SPI) or Synchronous Serial Protocol (SSP)
+  SYST_BASE  = $003;     // System Timer peripheral
 
 
   // -----------------------------------------------

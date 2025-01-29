@@ -119,7 +119,7 @@ begin
   case (offst and $0FFF) of
     CLOCK_BASE: exit(Addr(MemClk));
     GPIO_BASE:  exit(Addr(MemGpio));
-    GPIO_PWM:   exit(Addr(MemPwm));
+    PWM_BASE:   exit(Addr(MemPwm));
     UART_BASE:  exit(Addr(MemUart));
   end;
   exit(nil);

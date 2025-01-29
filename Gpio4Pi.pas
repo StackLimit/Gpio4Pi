@@ -438,7 +438,7 @@ begin
   // Set the offsets into the memory interface.
   memGpio:= FGpioBaseMem + GPIO_BASE;
   memClk:=  FGpioBaseMem + CLOCK_BASE;
-  memPwm:=  FGpioBaseMem + GPIO_PWM;
+  memPwm:=  FGpioBaseMem + PWM_BASE;
   memUart:= FGpioBaseMem + UART_BASE;
 
   PGpioMem:= FpMmap(Nil, PAGE_SIZE, PROT_READ or PROT_WRITE, MAP_SHARED, Fd, memGpio);
