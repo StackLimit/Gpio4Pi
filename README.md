@@ -20,8 +20,8 @@ To use the library you just copy the two files: **Gpio4Pi.pas** and **GpioDefs.p
 
 There is a brief description of all the functions in Gpio4Pi.pas.
 
-**Support:** Supports Raspberry Pi 1 to Raspberry Pi 4B - 32Bit. NO support for Rpi 5 yet.
-Will probably NOT work on 64 Bit OS.
+**Support:** Supports Raspberry Pi 1 to Raspberry Pi 4B. NO support for Rpi 5 yet.
+Both 32 bit and 64 Bit OS. Tested on RPI4B on both 32 and 64 Bit.
 
 Like other GPIO libraries, Rpi user must be in the same group as /dev/gpiomem to perform basic GPIO Input/Output operations.
 To perform Clock's and PWM operations, sudo must be used when running the application.

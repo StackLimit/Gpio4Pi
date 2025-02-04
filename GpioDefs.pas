@@ -199,18 +199,20 @@ const
 //
 // Definitions for Raspberry Pi's CPU memory map
 //
+// 32 and 64 bit address space
+//
 // -----------------------------------------------------
 const
-  // fpMap uses page offset, one page is 4096 Bytes = hex $1000
-  // so simply calculate $20.000.000 / $1000 = $20.000
   PAGE_SIZE  = 4096;
   BLOCK_SIZE = 4096;
 
+{$ifdef CPU32}
+  // 32 BIT address space
   // Memory addresses Pi 1 to 4
   GPIO_PERI_BASE_2835 = $20000;    // Pi 1
   GPIO_PERI_BASE_2836 = $3F000;    // Pi 2,3
   GPIO_PERI_BASE_2711 = $FE000;    // Pi 4
-  GPIO_PERI_BASE_2712 = $00000;    // Pi 5: Unknown. 32-bit mapped global mem access not supported for now
+  GPIO_PERI_BASE_2712 = $00000;    // Pi 5: Unknown.
 
   // Offsets into the memory interface, also div $1000
   CLOCK_BASE = $101;     // General Purpose clocks
@@ -221,6 +223,26 @@ const
   AUX_BASE   = $215;     // Auxiliary peripherals: One mini UART (UART1) and two SPI masters (SPI1 & SPI2)
   SPI_BASE   = $204;     // Serial Peripheral Interface (SPI) or Synchronous Serial Protocol (SSP)
   SYST_BASE  = $003;     // System Timer peripheral
+{$endif}
+
+{$ifdef CPU64}
+  // 64 BIT address space
+  // Memory addresses Pi 1 to 4
+  GPIO_PERI_BASE_2835 = $20000000;    // Pi 1
+  GPIO_PERI_BASE_2836 = $3F000000;    // Pi 2,3
+  GPIO_PERI_BASE_2711 = $FE000000;    // Pi 4
+  GPIO_PERI_BASE_2712 = $00000000;    // Pi 5: Unknown.
+
+  // Offsets into the memory interface, also div $1000
+  CLOCK_BASE = $101000;     // General Purpose clocks
+  GPIO_BASE  = $200000;     // General Purpose Input/Output (GPIO)
+  PWM_BASE   = $20C000;     // Pulse Width Modulator (PWM) peripherals
+  PCM_BASE   = $203000;     // PCM (Pulse Code Modulation) audio interface
+  UART_BASE  = $201000;     // UART (Universal Asynchronous Receiver/Transmitter). UART0, UART2, UART3, UART4 & UART5
+  AUX_BASE   = $215000;     // Auxiliary peripherals: One mini UART (UART1) and two SPI masters (SPI1 & SPI2)
+  SPI_BASE   = $204000;     // Serial Peripheral Interface (SPI) or Synchronous Serial Protocol (SSP)
+  SYST_BASE  = $003000;     // System Timer peripheral
+{$endif}
 
 
   // -----------------------------------------------

@@ -42,7 +42,7 @@ type
   off_t  = LongInt;
   TSize  = QWord;
   TsSize = LongInt;
-
+  Toff   = off_t;
 
   timeval = record
     tv_sec: LongInt;
@@ -115,8 +115,17 @@ end;
 // Fpmmap. Return address for memory areas
 function Fpmmap(start: pointer; len: size_t; prot: cint; flags: cint;
                 fd: cint; offst: off_t): pointer;
+var
+  Mask: off_t;
+
 begin
-  case (offst and $0FFF) of
+  {$ifdef CPU64}
+    Mask:= $0FFF000;
+  {$else}
+    Mask:= $0FFF;
+  {$endif}
+
+  case (offst and Mask) of
     CLOCK_BASE: exit(Addr(MemClk));
     GPIO_BASE:  exit(Addr(MemGpio));
     PWM_BASE:   exit(Addr(MemPwm));

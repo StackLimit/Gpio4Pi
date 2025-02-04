@@ -390,7 +390,6 @@ end;
 constructor TPiGpio.Create;
 var
   Fd: Integer;
-  memGpio,memClk,memPwm,memUart: LongWord;
 
 begin
   inherited Create;
@@ -419,10 +418,10 @@ begin
   // Open the master /dev/ memory control device
   // Try /dev/mem. If that fails, then
   // try /dev/gpiomem. If that fails then game over.
-  Fd:= fpOpen('/dev/mem', O_RdWr or O_Sync); // Try to open the master /dev/mem device
+  Fd:= {%H-}fpOpen('/dev/mem', O_RdWr or O_Sync); // Try to open the master /dev/mem device
   if Fd < 0 then
   begin
-    Fd:= fpOpen('/dev/gpiomem', O_RdWr or O_Sync); // Open the /dev/gpiomem
+    Fd:= {%H-}fpOpen('/dev/gpiomem', O_RdWr or O_Sync); // Open the /dev/gpiomem
     if Fd >= 0 then
     begin
       FGpioBaseMem:= 0;
@@ -435,25 +434,37 @@ begin
     end;
   end;
 
-  // Set the offsets into the memory interface.
-  memGpio:= FGpioBaseMem + GPIO_BASE;
-  memClk:=  FGpioBaseMem + CLOCK_BASE;
-  memPwm:=  FGpioBaseMem + PWM_BASE;
-  memUart:= FGpioBaseMem + UART_BASE;
+  // Allways map GPIO memory
+  PGpioMem:= FpMmap(Nil, PAGE_SIZE, PROT_READ or PROT_WRITE, MAP_SHARED,
+                    Fd, Toff(FGpioBaseMem) + Toff(GPIO_BASE));
+  if (PGpioMem = MAP_FAILED) then PGpioMem:= nil;
 
-  PGpioMem:= FpMmap(Nil, PAGE_SIZE, PROT_READ or PROT_WRITE, MAP_SHARED, Fd, memGpio);
-  PClkMem:=  FpMmap(Nil, PAGE_SIZE, PROT_READ or PROT_WRITE, MAP_SHARED, Fd, memClk);
-  PPwmMem:=  FpMmap(Nil, PAGE_SIZE, PROT_READ or PROT_WRITE, MAP_SHARED, Fd, memPwm);
-  PUartMem:= FpMmap(Nil, PAGE_SIZE, PROT_READ or PROT_WRITE, MAP_SHARED, Fd, memUart);
+  // Only map all oyhers if not using GpioMem
+  if not FUsingGpioMem then
+  begin
+    PClkMem:= FpMmap(Nil, PAGE_SIZE, PROT_READ or PROT_WRITE, MAP_SHARED,
+                     Fd, Toff(FGpioBaseMem) + Toff(CLOCK_BASE));
+    if (PClkMem = MAP_FAILED) then PClkMem:= nil;
+
+    PPwmMem:= FpMmap(Nil, PAGE_SIZE, PROT_READ or PROT_WRITE, MAP_SHARED,
+                     Fd, Toff(FGpioBaseMem) + Toff(PWM_BASE));
+    if (PPwmMem = MAP_FAILED) then PPwmMem:= nil;
+
+    PUartMem:= FpMmap(Nil, PAGE_SIZE, PROT_READ or PROT_WRITE, MAP_SHARED,
+                      Fd, Toff(FGpioBaseMem) + Toff(UART_BASE));
+    if (PUartMem = MAP_FAILED) then PUartMem:= nil;
+  end;
 
   // Check for mapping ok
-  if (PGpioMem = MAP_FAILED) or
-     (PClkMem = MAP_FAILED) or
-     (PPwmMem = MAP_FAILED) or
-     (PUartMem = MAP_FAILED) then
+  if (PGpioMem = nil) or
+     ((not FUsingGpioMem) and
+      ((PClkMem = Nil) or (PPwmMem = Nil) or (PUartMem = Nil))) then
   begin
     Self.Destroy;
+{$ifdef CPU32}
     FreeAndNil(Self);
+{$endif}
+    Self:= Nil;
     Exit;
   end;
 end;
@@ -505,11 +516,11 @@ begin
   Rev:= 0;
 
   // First try device-tree
-  Fd:= fpOpen('/proc/device-tree/system/linux,revision', O_RdOnly);
+  Fd:= {%H-}fpOpen('/proc/device-tree/system/linux,revision', O_RdOnly);
   if Fd >= 0 then
   begin
     // Read binary file direct into Rev variable
-    Cnt:= fpRead(Fd, Rev, SizeOf(Rev));
+    Cnt:= {%H-}fpRead(Fd, Rev, SizeOf(Rev));
     FpClose(Fd);
     if Cnt <> SizeOf(Rev) then Rev:= 0;
     Rev:= SwapEndian(Rev);
@@ -518,7 +529,7 @@ begin
   // If device-tree failed, then try /proc/cpuinfo
   if Rev = 0 then
   begin
-    Fd:= fpOpen('/proc/cpuinfo', O_RdOnly);
+    Fd:= {%H-}fpOpen('/proc/cpuinfo', O_RdOnly);
     if Fd >= 0 then
     begin
       // Read text file into temp buffer

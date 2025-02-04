@@ -12,7 +12,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="51"/>
       </Unit>
       <Unit>
         <Filename Value="mainform.pas"/>
@@ -21,10 +21,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="120"/>
-        <CursorPos X="49" Y="126"/>
-        <UsageCount Value="50"/>
-        <Loaded Value="True"/>
+        <CursorPos X="56" Y="129"/>
+        <UsageCount Value="51"/>
       </Unit>
       <Unit>
         <Filename Value="gpiocheckbox.pas"/>
@@ -33,7 +33,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="123"/>
         <CursorPos Y="124"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="51"/>
       </Unit>
       <Unit>
         <Filename Value="common.pas"/>
@@ -41,7 +41,7 @@
         <UnitName Value="Common"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6" Y="55"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="51"/>
       </Unit>
       <Unit>
         <Filename Value="raspimem.pas"/>
@@ -49,7 +49,7 @@
         <UnitName Value="RasPiMem"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="42" Y="15"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="51"/>
       </Unit>
       <Unit>
         <Filename Value="clockform.pas"/>
@@ -62,7 +62,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="112"/>
         <CursorPos X="75" Y="122"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="41"/>
       </Unit>
       <Unit>
         <Filename Value="pwmform.pas"/>
@@ -73,15 +73,15 @@
         <UnitName Value="PwmForm"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="21"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="41"/>
       </Unit>
       <Unit>
         <Filename Value="..\GpioDefs.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="37"/>
+        <TopLine Value="223"/>
         <CursorPos X="17" Y="59"/>
-        <UsageCount Value="39"/>
+        <UsageCount Value="40"/>
       </Unit>
       <Unit>
         <Filename Value="overviewform.pas"/>
@@ -93,7 +93,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="167"/>
         <CursorPos X="69" Y="176"/>
-        <UsageCount Value="38"/>
+        <UsageCount Value="39"/>
       </Unit>
       <Unit>
         <Filename Value="gpioextraform.pas"/>
@@ -104,7 +104,7 @@
         <UnitName Value="GpioExtraForm"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="71" Y="21"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="36"/>
       </Unit>
       <Unit>
         <Filename Value="gpioextrastuff.pas"/>
@@ -112,24 +112,24 @@
         <UnitName Value="GpioExtraStuff"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="57" Y="219"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="30"/>
       </Unit>
       <Unit>
         <Filename Value="..\Gpio4Pi.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="160"/>
-        <UsageCount Value="22"/>
+        <TopLine Value="799"/>
+        <CursorPos X="58" Y="810"/>
+        <UsageCount Value="23"/>
       </Unit>
       <Unit>
         <Filename Value="unix.pas"/>
         <UnitName Value="Unix"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="157"/>
-        <CursorPos Y="171"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="97"/>
+        <CursorPos X="23" Y="104"/>
         <UsageCount Value="17"/>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
@@ -161,16 +161,10 @@
         <UsageCount Value="10"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="1">
-      <Position>
-        <Filename Value="mainform.pas"/>
-        <Caret Line="126" Column="49" TopLine="120"/>
-      </Position>
-      <Position>
-        <Filename Value="unix.pas"/>
-        <Caret Line="133" Column="87" TopLine="119"/>
-      </Position>
-    </JumpHistory>
+    <General>
+      <ActiveWindowIndexAtStart Value="-1"/>
+    </General>
+    <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>
