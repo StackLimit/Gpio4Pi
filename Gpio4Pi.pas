@@ -8,8 +8,8 @@ unit Gpio4Pi;
 // Can be used on:
 // - Pi 1 (BCM2835) - Tested with Pi 1.2
 // - Pi 2 (BCM2836) - I don't have a Pi 2
-// - Pi 3 (BCM2837) - Tested with Pi 3B+
-// - Pi 4 (BCM2711) - Tested with Pi 4B
+// - Pi 3 (BCM2837) - Tested with Pi 3B+ both 32 and 64 bit
+// - Pi 4 (BCM2711) - Tested with Pi 4B both 32 and 64 bit
 // - Pi 5 (BCM2712) - NO SUPPORT YET
 //
 // This unit / object uses ONLY GPIO pin numbers which directly refer
