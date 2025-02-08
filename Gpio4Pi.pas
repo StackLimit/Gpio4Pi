@@ -8,8 +8,8 @@ unit Gpio4Pi;
 // Can be used on:
 // - Pi 1 (BCM2835) - Tested with Pi 1.2
 // - Pi 2 (BCM2836) - I don't have a Pi 2
-// - Pi 3 (BCM2837) - Tested with Pi 3B+ both 32 and 64 bit
-// - Pi 4 (BCM2711) - Tested with Pi 4B both 32 and 64 bit
+// - Pi 3 (BCM2837) - Tested with Pi 3B+. Both 32 and 64 bit
+// - Pi 4 (BCM2711) - Tested with Pi 4B. Both 32 and 64 bit
 // - Pi 5 (BCM2712) - NO SUPPORT YET
 //
 // This unit / object uses ONLY GPIO pin numbers which directly refer
@@ -1064,8 +1064,7 @@ begin
   // From the manual: Freq:= Source / (DIVI + DIVF / 1024??) in MASH-1 mode
   // It seems to be: Freq:= Source / (DIVI + DIVF / 4096) in MASH-1 mode
   DivI:= PiFreq div Freq;
-//  DivF:= Trunc(((PiFreq / Freq) - DivI) * 1024);   // Not Correct!!!
-  DivF:= Trunc(((PiFreq / Freq) - DivI) * 4096);
+  DivF:= Round(((PiFreq / Freq) - DivI) * 4096);  // Round up here
   if DivF > 4095 then DivF:= 4095;
 
   if (DivI < 2) then
@@ -1171,7 +1170,7 @@ begin
   Fr:= ClkData.Divisor and $FFF;
 
   if Di > 0
-    then Result:= Trunc(PiFreq / (Di + (Fr / 4096)))
+    then Result:= Trunc((PiFreq / (Di + (Fr / 4096))) + 0.5)  // Round up
     else Result:= 0;
 end;
 
