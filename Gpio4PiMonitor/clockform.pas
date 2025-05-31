@@ -25,30 +25,18 @@ type
     GroupBoxClock3: TGroupBox;
     GroupBoxClock4: TGroupBox;
     GroupBoxClock5: TGroupBox;
-    LabClkCtl0: TLabel;
-    LabClkCtl5: TLabel;
-    LabClkDiv0: TLabel;
-    LabClkCtl1: TLabel;
-    LabClkDiv1: TLabel;
-    LabClkCtl2: TLabel;
-    LabClkDiv2: TLabel;
-    LabClkCtl3: TLabel;
-    LabClkDiv3: TLabel;
-    LabClkCtl4: TLabel;
-    LabClkDiv4: TLabel;
-    LabClkDiv5: TLabel;
+    LabClk0: TLabel;
+    LabClk1: TLabel;
+    LabClk2: TLabel;
+    LabClk3: TLabel;
+    LabClk4: TLabel;
+    LabClk5: TLabel;
     Label1: TLabel;
-    Label11: TLabel;
-    Label12: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
-    Label10: TLabel;
     procedure FormCreate(Sender: TObject);
   private
   public
@@ -66,9 +54,10 @@ uses
   Common, GpioDefs, Gpio4Pi, RasPiMem;
 
 
+
 procedure TFormClocks.UpdateClock(ClkNo: Integer);
 var
-  LabCtl, LabDiv: TLabel;
+  LabClk: TLabel;
   Txt: String;
   Di,Fr,Freq: LongWord;
   Data: TClock;
@@ -77,12 +66,12 @@ begin
   if not PiGpio.GetRawClockData(ClkNo, Data{%H-}) then exit;
 
   case ClkNo of
-    CLK_GPIO0: begin LabCtl:= LabClkCtl0; LabDiv:= LabClkDiv0; end;
-    CLK_GPIO1: begin LabCtl:= LabClkCtl1; LabDiv:= LabClkDiv1; end;
-    CLK_GPIO2: begin LabCtl:= LabClkCtl2; LabDiv:= LabClkDiv2; end;
-    CLK_PCM:   begin LabCtl:= LabClkCtl3; LabDiv:= LabClkDiv3; end;
-    CLK_PWM:   begin LabCtl:= LabClkCtl4; LabDiv:= LabClkDiv4; end;
-    CLK_UART:  begin LabCtl:= LabClkCtl5; LabDiv:= LabClkDiv5; end;
+    CLK_GPIO0: LabClk:= LabClk0;
+    CLK_GPIO1: LabClk:= LabClk1;
+    CLK_GPIO2: LabClk:= LabClk2;
+    CLK_PCM:   LabClk:= LabClk3;
+    CLK_PWM:   LabClk:= LabClk4;
+    CLK_UART:  LabClk:= LabClk5;
     else exit;
   end;
 
@@ -123,11 +112,9 @@ begin
 //    then Txt:= Txt + #13#10 + 'OK (5A)'
 //    else Txt:= Txt + #13#10 + 'Fail';
 
-  LabCtl.Caption:= Txt;
-
   // Divisor (B12-B23)
   Di:= (Data.Divisor shr 12) and $FFF;
-  Txt:= IntToStr(Di);
+  Txt:= Txt + #13#10 + IntToStr(Di);
 
   // Fraction (B0-B11)
   Fr:= Data.Divisor and $FFF;
@@ -142,7 +129,7 @@ begin
   Freq:= PiGpio.GetClockFrequency(ClkNo);
   Txt:= Txt + #13#10 + IntToStr(Freq);
 
-  LabDiv.Caption:= Txt;
+  LabClk.Caption:= Txt;
 end;
 
 
@@ -152,20 +139,13 @@ var
   I: Integer;
 
 begin
-  LabClkCtl0.Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
-                       'NA' + #13#10 + 'NA';
-  LabClkCtl1.Caption:= LabClkCtl0.Caption;
-  LabClkCtl2.Caption:= LabClkCtl0.Caption;
-  LabClkCtl3.Caption:= LabClkCtl0.Caption;
-  LabClkCtl4.Caption:= LabClkCtl0.Caption;
-  LabClkCtl5.Caption:= LabClkCtl0.Caption;
-
-  LabClkDiv0.Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA';
-  LabClkDiv1.Caption:= LabClkDiv0.Caption;
-  LabClkDiv2.Caption:= LabClkDiv0.Caption;
-  LabClkDiv3.Caption:= LabClkDiv0.Caption;
-  LabClkDiv4.Caption:= LabClkDiv0.Caption;
-  LabClkDiv5.Caption:= LabClkDiv0.Caption;
+  LabClk0.Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
+                    'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 + 'NA';
+  LabClk1.Caption:= LabClk0.Caption;
+  LabClk2.Caption:= LabClk0.Caption;
+  LabClk3.Caption:= LabClk0.Caption;
+  LabClk4.Caption:= LabClk0.Caption;
+  LabClk5.Caption:= LabClk0.Caption;
 
   for I:= 0 to 5 do UpdateClock(I);
 end;

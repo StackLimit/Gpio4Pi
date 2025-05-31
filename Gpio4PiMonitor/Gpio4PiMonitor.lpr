@@ -11,8 +11,7 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, MainForm, RasPiMem, Common, GPIOcheckbox, ClockForm, PwmForm,
-  OverviewForm, GpioDefs, Gpio4Pi, GpioExtraForm, GpioExtraStuff
-  { you can add units after this };
+  OverviewForm, GpioDefs, Gpio4Pi, GpioExtraForm, GpioExtraStuff;
 
 {$R *.res}
 

@@ -13,7 +13,7 @@ unit OverviewForm;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, ComCtrls;
+  Classes, Types, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, ComCtrls;
 
 
 type
@@ -23,6 +23,9 @@ type
     procedure FormCreate(Sender: TObject);
     procedure PanelPaint(Sender: TObject);
   private
+    ClkBoxDim: TSize;
+    PwmBoxDim: TSize;
+    GpioBoxDim: TSize;
     procedure DrawOnePwmChannel(First: Boolean; Chan, X, Y: Integer);
     procedure DrawOneGpio(First: Boolean; Gpio, X, Y: Integer);
     procedure DrawOneClock(ClkNo, X, Y: Integer);
@@ -40,6 +43,10 @@ implementation
 uses
   Common, GpioDefs, Gpio4Pi, RasPiMem, GPIOcheckbox;
 
+const
+  Space = 10;           // Distance between boxes
+  Space2 = Space * 2;
+  Space4 = Space * 4;
 
 
 
@@ -80,10 +87,15 @@ begin
     then Panel.Canvas.Brush.Color:= clLightGreen
     else Panel.Canvas.Brush.Color:= clDefault;
 
-  if not First then Panel.Canvas.Line(X, Y-50, X, Y);
-  Panel.Canvas.Line(X, Y, X+20, Y);
-  Panel.Canvas.Rectangle(X+20, Y-9, X+130, Y+39);
-  Panel.Canvas.Line(X+130, Y, X+150, Y);
+  if not First then Panel.Canvas.Line(X - Space2, Y - PwmBoxDim.Height,
+                                      X - Space2, Y + Space);
+
+  Panel.Canvas.Line(X - Space2, Y + Space, X, Y + Space);
+
+  Panel.Canvas.Rectangle(X, Y, X + PwmBoxDim.Width, Y + PwmBoxDim.Height);
+
+  Panel.Canvas.Line(X + PwmBoxDim.Width, Y + Space,
+                    X + PwmBoxDim.Width +  Space2, Y + Space);
 
   S:= 'PWM ';
   case Chan of
@@ -109,7 +121,7 @@ begin
   Style:= Panel.Canvas.TextStyle;
   Style.SingleLine:= False;
   Panel.Canvas.TextStyle:= Style;
-  Panel.Canvas.TextRect(Self.ClientRect, X+25, Y-7, S);
+  Panel.Canvas.TextRect(Self.ClientRect, X+5, Y+2, S);
 end;
 
 
@@ -117,7 +129,7 @@ end;
 // Draw one GPIO
 // First: The GPIO are the first on a device
 // GPIO:  GPIO number 0-63
-// X,Y:   Position to draw the GPIO
+// X,Y:   Position to draw the GPIO box
 // -------------------------------------------------------------
 procedure TFormOverview.DrawOneGpio(First: Boolean; Gpio, X, Y: Integer);
 var
@@ -127,9 +139,12 @@ var
 begin
   Panel.Canvas.Brush.Color:= clLightGreen;
 
-  if not First then Panel.Canvas.Line(X, Y-20, X, Y);
-  Panel.Canvas.Line(X, Y, X+20, Y);
-  Panel.Canvas.Rectangle(X+20, Y-9, X+110, Y+9);
+  if not First then Panel.Canvas.Line(X - Space2, Y - GpioBoxDim.Height,
+                                      X - Space2, Y + Space);
+
+  Panel.Canvas.Line(X - Space2, Y + Space, X, Y + Space);
+
+  Panel.Canvas.Rectangle(X, Y, X + GpioBoxDim.Width, Y + GpioBoxDim.Height);
 
   S:= 'GPIO ' + IntToStr(Gpio);
 
@@ -145,8 +160,8 @@ begin
     end;
   end;
 
-//  Panel.Canvas.TextOut(X+25, Y-8, S);
-  Panel.Canvas.TextRect(Self.ClientRect, X+25, Y-8, S);
+//  Panel.Canvas.TextOut(X+5, Y+5, S);
+  Panel.Canvas.TextRect(Self.ClientRect, X+5, Y+2, S);
 end;
 
 
@@ -170,8 +185,10 @@ begin
     then Panel.Canvas.Brush.Color:= clLightGreen
     else Panel.Canvas.Brush.Color:= clDefault;
 
-  Panel.Canvas.Rectangle(X, Y, X+100, Y+80);
-  Panel.Canvas.Line(X+100, Y+10, X+120, Y+10);
+  Panel.Canvas.Rectangle(X, Y, X + ClkBoxDim.Width, Y + ClkBoxDim.Height);
+
+  Panel.Canvas.Line(X + ClkBoxDim.Width, Y + Space,
+                    X + ClkBoxDim.Width + Space2, Y + Space);
 
   // Build text
   case ClkNo of
@@ -215,6 +232,7 @@ var
   Cl,Gp,Pw: Integer;
   Gpio: TIntArray;
   FirstGp: Boolean;
+  PX,PY: Integer;
 
 begin
   // Erase background
@@ -222,9 +240,12 @@ begin
   Panel.Canvas.FillRect(0, 0, Panel.Width, Panel.Height);
 
   // Draw GPIO clocks 0-2 and all the GPIOs that are connected to the clocks
+  PX:= 10;
+  PY:= 10;
+
   for Cl:= 0 to 2 do
   begin
-    DrawOneClock(Cl, 10, 10+(Cl*90));
+    DrawOneClock(Cl, PX, PY);
 
     Gpio:= PiGpio.GetGpiosForGpioClock(Cl);
     if Length(Gpio) > 0 then
@@ -232,20 +253,26 @@ begin
       FirstGp:= True;
       for Gp:= 0 to Length(Gpio)-1 do
       begin
-        DrawOneGpio(FirstGp, Gpio[Gp], 130, 20+(Cl*90)+(Gp*20));
+        DrawOneGpio(FirstGp, Gpio[Gp],
+                    PX + ClkBoxDim.Width + Space4,
+                    PY + (GpioBoxDim.Height * Gp) + (Space * Gp));
         FirstGp:= False;
       end;
     end;
+
+    PY:= PY + ClkBoxDim.Height + Space;
   end;
 
 
   // Draw PWM clock and 4 PWM channels and all the GPIOs that
   // are connected to the PWM channels
-  DrawOneClock(4, 10, 280);
+  DrawOneClock(4, PX, PY);
+
+  PX:= PX + ClkBoxDim.Width + Space4;
 
   for Pw:= 0 to 3 do
   begin
-    DrawOnePwmChannel(Pw = 0, Pw, 130, 290+(Pw*50));
+    DrawOnePwmChannel(Pw = 0, Pw, PX, PY);
 
     Gpio:= PiGpio.GetGpiosForPwm(Pw);
     if Length(Gpio) > 0 then
@@ -253,10 +280,14 @@ begin
       FirstGp:= True;
       for Gp:= 0 to Length(Gpio)-1 do
       begin
-        DrawOneGpio(FirstGp, Gpio[Gp], 280, 290+(Pw*50)+(Gp*20));
+        DrawOneGpio(FirstGp, Gpio[Gp],
+                    PX + PwmBoxDim.Width + Space4,
+                    PY + (GpioBoxDim.Height * Gp) + (Space * Gp));
         FirstGp:= False;
       end;
     end;
+
+    PY:= PY + PwmBoxDim.Height + Space;
   end;
 end;
 
@@ -274,7 +305,18 @@ end;
 
 procedure TFormOverview.FormCreate(Sender: TObject);
 begin
-  //
+  // Set size of boxes
+  ClkBoxDim:= Panel.Canvas.TextExtent('Freq: 20000000');
+  ClkBoxDim.Height:= (ClkBoxDim.Height+3) * 4;
+  ClkBoxDim.Width:= ClkBoxDim.Width + 10;
+
+  PwmBoxDim:= Panel.Canvas.TextExtent('20000000 Hz, 100%');
+  PwmBoxDim.Height:= (PwmBoxDim.Height+3) * 3;
+  PwmBoxDim.Width:= PwmBoxDim.Width + 10;
+
+  GpioBoxDim:= Panel.Canvas.TextExtent('GPIO 22 (ALT 0)');
+  GpioBoxDim.Height:= GpioBoxDim.Height + 5;
+  GpioBoxDim.Width:= GpioBoxDim.Width + 10;
 end;
 
 

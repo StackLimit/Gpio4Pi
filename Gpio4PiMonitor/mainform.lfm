@@ -1,20 +1,23 @@
 object FormMain: TFormMain
-  Left = 781
+  Left = 927
   Height = 514
-  Top = 105
+  Top = 139
   Width = 657
   Anchors = [akTop]
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Gpio4Pi Monitor'
-  ClientHeight = 489
+  ClientHeight = 494
   ClientWidth = 657
+  Font.CharSet = ANSI_CHARSET
   Font.Height = -12
   Font.Name = 'Segoe UI'
+  Font.Pitch = fpVariable
+  Font.Quality = fqDraft
   Menu = MainMenu1
   OnCreate = FormCreate
-  Position = poDefaultPosOnly
-  LCLVersion = '2.0.10.0'
+  Position = poDefaultSizeOnly
+  LCLVersion = '2.2.4.0'
   object MemoText: TMemo
     Left = 336
     Height = 452
@@ -29,8 +32,8 @@ object FormMain: TFormMain
   end
   object StatusBar: TStatusBar
     Left = 0
-    Height = 20
-    Top = 469
+    Height = 23
+    Top = 471
     Width = 657
     Panels = <    
       item

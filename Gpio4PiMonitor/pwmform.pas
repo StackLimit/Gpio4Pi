@@ -38,22 +38,14 @@ type
     GroupBoxPwm1: TGroupBox;
     GroupBoxPwm2: TGroupBox;
     GroupBoxPwm3: TGroupBox;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    LabPwmCtl0: TLabel;
-    LabPwmCtl1: TLabel;
-    LabPwmCtl2: TLabel;
-    LabPwmCtl3: TLabel;
-    LabPwmData0: TLabel;
     Label1: TLabel;
     Label2: TLabel;
-    LabPwmData1: TLabel;
-    LabPwmData2: TLabel;
-    LabPwmData3: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    LabPwm0: TLabel;
+    LabPwm1: TLabel;
+    LabPwm2: TLabel;
+    LabPwm3: TLabel;
     procedure FormCreate(Sender: TObject);
   private
 
@@ -76,19 +68,15 @@ uses
 
 procedure TFormPwm.UpdatePwmBlock(PwmNo: Integer);
 var
-  LabCtl1, LabCtl2, LabDat1, LabDat2: TLabel;
+  LabCtl1, LabCtl2: TLabel;
   Data: TPwmData;
 
 begin
   if not PiGpio.GetRawPwmData(PwmNo, Data{%H-}) then exit;
 
   case PwmNo of
-    0: begin LabCtl1:= LabPwmCtl0; LabDat1:= LabPwmData0;
-             LabCtl2:= LabPwmCtl1; LabDat2:= LabPwmData1; end;
-
-    1: begin LabCtl1:= LabPwmCtl2; LabDat1:= LabPwmData2;
-             LabCtl2:= LabPwmCtl3; LabDat2:= LabPwmData3; end;
-
+    0: begin LabCtl1:= LabPwm0; LabCtl2:= LabPwm1; end;
+    1: begin LabCtl1:= LabPwm2; LabCtl2:= LabPwm3; end;
     else exit;
   end;
 
@@ -100,10 +88,9 @@ begin
     LongToTrueFalse(Data.Control and PWM0_SILENCE) + #13#10 +
     LongToTrueFalse(Data.Control and PWM0_REVPOLAR) + #13#10 +
     LongToTrueFalse(Data.Control and PWM0_USEFIFO) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM0_MS_MODE);
+    LongToTrueFalse(Data.Control and PWM0_MS_MODE) + #13#10 +
 
   // Channel 1 Data
-  LabDat1.Caption:=
     IntToStr(Data.Channels[0].Range)  + #13#10 +
     IntToStr(Data.Channels[0].Data);
 
@@ -115,10 +102,9 @@ begin
     LongToTrueFalse(Data.Control and PWM1_SILENCE) + #13#10 +
     LongToTrueFalse(Data.Control and PWM1_REVPOLAR) + #13#10 +
     LongToTrueFalse(Data.Control and PWM1_USEFIFO) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM1_MS_MODE);
+    LongToTrueFalse(Data.Control and PWM1_MS_MODE) + #13#10 +
 
   // Channel 2 Data
-  LabDat2.Caption:=
   IntToStr(Data.Channels[1].Range)  + #13#10 +
   IntToStr(Data.Channels[1].Data);
 end;
@@ -130,16 +116,12 @@ var
   I: Integer;
 
 begin
-  LabPwmCtl0.Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
-                       'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 + 'NA';
-  LabPwmCtl1.Caption:= LabPwmCtl0.Caption;
-  LabPwmCtl2.Caption:= LabPwmCtl0.Caption;
-  LabPwmCtl3.Caption:= LabPwmCtl0.Caption;
-
-  LabPwmData0.Caption:= 'NA' + #13#10 + 'NA';
-  LabPwmData1.Caption:= LabPwmData0.Caption;
-  LabPwmData2.Caption:= LabPwmData0.Caption;
-  LabPwmData3.Caption:= LabPwmData0.Caption;
+  LabPwm0.Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
+                    'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
+                    'NA' + #13#10 + 'NA' + #13#10 + 'NA';
+  LabPwm1.Caption:= LabPwm0.Caption;
+  LabPwm2.Caption:= LabPwm0.Caption;
+  LabPwm3.Caption:= LabPwm0.Caption;
 
   for I:= 0 to 1 do UpdatePwmBlock(I);
 end;
