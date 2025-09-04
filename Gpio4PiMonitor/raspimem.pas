@@ -6,7 +6,7 @@ unit RasPiMem;
 // Scans PI's memory for changes and updates Forms when changes occur
 //
 // Still under development and therefore not quite finished
-// Copyright (c) 2024 Jan Andersen
+// Copyright (c) 2024-2025 Jan Andersen
 // -------------------------------------------------------------------
 
 {$mode ObjFPC}{$H+}
@@ -17,16 +17,8 @@ uses
   Classes, SysUtils, Gpio4Pi;
 
 
-type
-  // Special GPIO Class exposing the Mem Pointers
-  TPiGpioMem = class(TPiGpio)
-  private
-  public
-  end;
-
-
 var
-  PiGpio: TPiGpioMem;
+  PiGpio: TPiGpio;
 
 
 implementation
@@ -34,20 +26,6 @@ implementation
 Uses
   GpioDefs, MainForm, ClockForm, PwmForm, OverviewForm;
 
-
-// ------------------------------------------------------------------------
-
-function SetPtr(BasePtr: Pointer; Ofs: LongWord): Pointer; inline;
-begin
-  Result:= BasePtr + Ofs;
-end;
-
-function SetPtr(BasePtr: Pointer; Ofs1,Ofs2: LongWord): Pointer; inline; overload;
-begin
-  Result:= BasePtr + Ofs1 + Ofs2;
-end;
-
-// ------------------------------------------------------------------------
 
 
 // ------------------------------------------------------------------------
@@ -60,15 +38,13 @@ type
   TMemThread = class(TThread)
   private
     Step: Integer;
-    OldGPFSEL:   Array[0..5] of LongWord;
-    OldGPLEV:    Array[0..1] of LongWord;
-    OldGPPUPPDN: Array[0..3] of LongWord;
-    OldCLKCTL:   Array[0..4] of LongWord;
-    OldCLKDIV:   Array[0..4] of LongWord;
-    OldPWMblock: Array[0..1,0..7] of LongWord;
+    OldGpioPin: Array[0..57] of TGpioPin;
+    OldGpioClk: Array[0..8]  of TGpioClk;
+    OldPwmData: Array[0..1]  of TPwmData;
     procedure ScanGPIOClockMem;
     procedure ScanPWMMem;
     procedure ScanGPIOMem;
+
   protected
     procedure Execute; override;
   public
@@ -81,61 +57,64 @@ var
 
 
 // -------------------------------------------------------------
-// Scan GPIO Clock 0-2, PCM and PWM clocks for changes
+// Scan GPIO Clock 0-2/5, PCM and PWM clocks for changes
 // -------------------------------------------------------------
 procedure TMemThread.ScanGPIOClockMem;
 var
-  I: Integer;
-  pCtl,pDiv: ^LongWord;
+  I, ClkNo: Integer;
+  Data: TGpioClk;
 
 begin
   if PiGpio.UsingGpioMem then exit;
 
-  // GPIO Clocks 0 - 2
-  for I:= 0 to 2 do
+  for I:= Low(OldGpioClk) to High(OldGpioClk) do
   begin
-    pCtl:= SetPtr(PiGpio.PClkMem, CLK_GP0_CTL, I*8);
-    pDiv:= SetPtr(PiGpio.PClkMem, CLK_GP0_DIV, I*8);
+    ClkNo:= $FF;
 
-    if (pCtl^ <> OldCLKCTL[I]) or
-       (pDiv^ <> OldCLKDIV[I]) then
+    if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
     begin
-      // Clock Changed, update Clock Form and Overview
-      FormClocks.UpdateClock(I);
-      FormOverview.UpdateView;
-      OldCLKCTL[I]:= pCtl^;
-      OldCLKDIV[I]:= pDiv^;
+      // RaspberryPi 5
+      case I of
+        0: ClkNo:= CLK_GPIO0;
+        1: ClkNo:= CLK_GPIO1;
+        2: ClkNo:= CLK_GPIO2;
+        3: ClkNo:= CLK_GPIO3;
+        4: ClkNo:= CLK_GPIO4;
+        5: ClkNo:= CLK_GPIO5;
+        6: ClkNo:= CLK_PWM;
+        7: ClkNo:= CLK_UART;
+        8: ClkNo:= CLK_PCM;
+      end;
+    end
+    else
+    begin
+      // RaspberryPi 1 - RaspberryPi 4
+      case I of
+        0: ClkNo:= CLK_GPIO0;
+        1: ClkNo:= CLK_GPIO1;
+        2: ClkNo:= CLK_GPIO2;
+        3: ClkNo:= CLK_PWM;
+        4: ClkNo:= CLK_UART;
+        5: ClkNo:= CLK_PCM;
+      end;
+    end;
+
+    if PiGpio.GetRawClockData(ClkNo, Data{%H-}) then
+    begin
+      if (Data.Control <> OldGpioClk[ClkNo].Control) or
+         (Data.Divisor <> OldGpioClk[ClkNo].Divisor) or
+         (Data.Fract   <> OldGpioClk[ClkNo].Fract) then
+      begin
+        // Clock Changed, update Clock Form and Overview
+        FormClocks.UpdateClock(ClkNo);
+        FormOverview.UpdateView;
+
+        OldGpioClk[ClkNo]:= Data;
+      end;
     end;
   end;
-
-  // PCM Clock
-  pCtl:= SetPtr(PiGpio.PClkMem, CLK_PCM_CTL);
-  pDiv:= SetPtr(PiGpio.PClkMem, CLK_PCM_DIV);
-
-  if (pCtl^ <> OldCLKCTL[3]) or
-     (pDiv^ <> OldCLKDIV[3]) then
-  begin
-    // Clock Changed, update Clock Form and Overview
-    FormClocks.UpdateClock(3);
-    FormOverview.UpdateView;
-    OldCLKCTL[3]:= pCtl^;
-    OldCLKDIV[3]:= pDiv^;
-  end;
-
-  // PWM Clock
-  pCtl:= SetPtr(PiGpio.PClkMem, CLK_PWM_CTL);
-  pDiv:= SetPtr(PiGpio.PClkMem, CLK_PWM_DIV);
-
-  if (pCtl^ <> OldCLKCTL[4]) or
-     (pDiv^ <> OldCLKDIV[4]) then
-  begin
-    // Clock Changed, update Clock Form and Overview
-    FormClocks.UpdateClock(4);
-    FormOverview.UpdateView;
-    OldCLKCTL[4]:= pCtl^;
-    OldCLKDIV[4]:= pDiv^;
-  end;
 end;
+
 
 
 // -------------------------------------------------------------
@@ -143,50 +122,65 @@ end;
 // -------------------------------------------------------------
 procedure TMemThread.ScanPWMMem;
 var
-  I: Integer;
-  Ofs: LongWord;
-  pCtl,pSta,pDma,pRng0,pDat0,pFif,pRng1,pDat1: ^LongWord;
+  Grp,Chan: Integer;
+  Data: TPwmData;
+  Changed: Boolean;
 
 begin
   if PiGpio.UsingGpioMem then exit;
 
-  Ofs:= PWM0_OFFSET;
-
-  for I:= 0 to 1 do
+  for Grp:= Low(OldPwmData) to High(OldPwmData) do
   begin
-    pCtl:=  SetPtr(PiGpio.PPwmMem, Ofs, PWM_CONTROL);
-    pSta:=  SetPtr(PiGpio.PPwmMem, Ofs, PWM_STATUS);
-    pDma:=  SetPtr(PiGpio.PPwmMem, Ofs, PWM_DMACTL);
-    pRng0:= SetPtr(PiGpio.PPwmMem, Ofs, PWM0_RANGE);
-    pDat0:= SetPtr(PiGpio.PPwmMem, Ofs, PWM0_DATA);
-    pFif:=  SetPtr(PiGpio.PPwmMem, Ofs, PWM_FIFO);
-    pRng1:= SetPtr(PiGpio.PPwmMem, Ofs, PWM1_RANGE);
-    pDat1:= SetPtr(PiGpio.PPwmMem, Ofs, PWM1_DATA);
-
-    if (pCtl^  <> OldPWMblock[I,0]) or
-       (pSta^  <> OldPWMblock[I,1]) or
-       (pDma^  <> OldPWMblock[I,2]) or
-       (pRng0^ <> OldPWMblock[I,3]) or
-       (pDat0^ <> OldPWMblock[I,4]) or
-       (pFif^  <> OldPWMblock[I,5]) or
-       (pRng1^ <> OldPWMblock[I,6]) or
-       (pDat1^ <> OldPWMblock[I,7]) then
+    if PiGpio.GetRawPwmData(Grp, Data{%H-}) then
     begin
-      // PWM channel changed, update PWM Form and Overview
-      FormPwm.UpdatePwmBlock(I);
-      FormOverview.UpdateView;
+      if Data.Cpu = PI_CPU_BCM2712 then
+      begin
+        // RaspberryPi 5
+        Changed:= ((Data.Rp1GlobCtrl <> OldPwmData[Grp].Rp1GlobCtrl) or
+                   (Data.Rp1FifoCtrl <> OldPwmData[Grp].Rp1FifoCtrl) or
+                   (Data.Rp1ComRange <> OldPwmData[Grp].Rp1ComRange) or
+                   (Data.Rp1ComDuty  <> OldPwmData[Grp].Rp1ComDuty) or
+                   (Data.Rp1DutyFifo <> OldPwmData[Grp].Rp1DutyFifo));
 
-      OldPWMblock[I,0]:= pCtl^;
-      OldPWMblock[I,1]:= pSta^;
-      OldPWMblock[I,2]:= pDma^;
-      OldPWMblock[I,3]:= pRng0^;
-      OldPWMblock[I,4]:= pDat0^;
-      OldPWMblock[I,5]:= pFif^;
-      OldPWMblock[I,6]:= pRng1^;
-      OldPWMblock[I,7]:= pDat1^;
+        for Chan:= Low(Data.Rp1Channels) to High(Data.Rp1Channels) do
+        begin
+          if (Data.Rp1Channels[Chan].Rp1Control <> OldPwmData[Grp].Rp1Channels[Chan].Rp1Control) or
+             (Data.Rp1Channels[Chan].Rp1Range <> OldPwmData[Grp].Rp1Channels[Chan].Rp1Range) or
+             (Data.Rp1Channels[Chan].Rp1Phase <> OldPwmData[Grp].Rp1Channels[Chan].Rp1Phase) or
+             (Data.Rp1Channels[Chan].Rp1Duty <> OldPwmData[Grp].Rp1Channels[Chan].Rp1Duty) or
+             Changed then
+          begin
+            // PWM channel changed, update PWM Form and Overview
+            FormPwm.UpdatePwmBlock(Grp);
+            FormOverview.UpdateView;
+
+            OldPwmData[Grp]:= Data;
+          end;
+        end;
+      end
+      else
+      begin
+        // RaspberryPi 1 - RaspberryPi 4
+        Changed:= ((Data.Control <> OldPwmData[Grp].Control) or
+                   (Data.Status  <> OldPwmData[Grp].Status) or
+                   (Data.DMA     <> OldPwmData[Grp].DMA) or
+                   (Data.FIFO    <> OldPwmData[Grp].FIFO));
+
+        for Chan:= Low(Data.Channels) to High(Data.Channels) do
+        begin
+          if (Data.Channels[Chan].Range <> OldPwmData[Grp].Channels[Chan].Range) or
+             (Data.Channels[Chan].Data  <> OldPwmData[Grp].Channels[Chan].Data) or
+             Changed then
+          begin
+            // PWM channel changed, update PWM Form and Overview
+            FormPwm.UpdatePwmBlock(Grp);
+            FormOverview.UpdateView;
+
+            OldPwmData[Grp]:= Data;
+          end;
+        end;
+      end;
     end;
-
-    Ofs:= PWM1_OFFSET;
   end;
 end;
 
@@ -197,77 +191,28 @@ end;
 // -------------------------------------------------------------
 procedure TMemThread.ScanGPIOMem;
 var
-  I,J: Integer;
-  Mask: LongWord;
-  Diff: LongWord;
-  pMem: ^LongWord;
+  Gpin: Integer;
+  Data: TGpioPin;
 
 begin
-  // GPIO Function Select 0 - 5
-  for I:= Low(OldGPFSEL) to High(OldGPFSEL) do
-  begin
-    pMem:= SetPtr(PiGpio.PGpioMem, I*4);
-    if pMem^ <> OldGPFSEL[I] then
-    begin
-      Diff:= pMem^ xor OldGPFSEL[I];
-      Mask:= 7;
-      for J:= 0 to 9 do
-      begin
-        if (Diff and Mask) <> 0 then
-        begin
-          // Mode Changed, Update Combo and Overview
-          FormMain.UpdatePinCombo((I*10) + J);
-          FormOverview.UpdateView;
-        end;
-        Mask:= Mask shl 3;
-      end;
-      OldGPFSEL[I]:= pMem^;
-    end;
-  end;
+  Gpin:= 0;
 
-
-  // GPIO Pin Level 0 - 1
-  for I:= 0 to 1 do
+  while PiGpio.GetGpioPinData(Gpin, Data{%H-}) do
   begin
-    pMem:= SetPtr(PiGpio.PGpioMem, GPLEV0+(I*4));
-    if pMem^ <> OldGPLEV[I] then
+    if (Data.Mode <> OldGpioPin[Gpin].Mode) or
+       (Data.Level <> OldGpioPin[Gpin].Level) or
+       (Data.Pull <> OldGpioPin[Gpin].Pull) then
     begin
-      Diff:= pMem^ xor OldGPLEV[I];
-      Mask:= 1;
-      for J:= 0 to 31 do
-      begin
-        if (Diff and Mask) <> 0 then
-        begin
-          // Pin Changed, Update Combo
-          FormMain.UpdatePinCombo((I*32) + J);
-        end;
-        Mask:= Mask shl 1;
-      end;
-      OldGPLEV[I]:= pMem^;
-    end;
-  end;
+      // Pin Changed, Update Combo and Overview
+      FormMain.UpdatePinCombo(Gpin);
+      FormOverview.UpdateView;
 
-  // GPIO Puul Up/Down 0 - 3
-  for I:= 0 to 3 do
-  begin
-    pMem:= SetPtr(PiGpio.PGpioMem, GPPUPPDN0+(I*4));
-    if pMem^ <> OldGPPUPPDN[I] then
-    begin
-      Diff:= pMem^ xor OldGPPUPPDN[I];
-      Mask:= 3;
-      for J:= 0 to 15 do
-      begin
-        if (Diff and Mask) <> 0 then
-        begin
-          // Pull Up/Down Changed, Update Combo
-          FormMain.UpdatePinCombo((I*15) + J);
-        end;
-        Mask:= Mask shl 2;
-      end;
-      OldGPPUPPDN[I]:= pMem^;
+      OldGpioPin[Gpin]:= Data;
     end;
+    Gpin:= Gpin + 1;
   end;
 end;
+
 
 
 // -------------------------------------------------------------

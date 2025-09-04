@@ -6,7 +6,7 @@ unit Common;
 //
 //
 // Still under development and therefore not quite finished
-// Copyright (c) 2024 Jan Andersen
+// Copyright (c) 2024-2015 Jan Andersen
 // -----------------------------------------------------------------
 
 {$mode ObjFPC}{$H+}

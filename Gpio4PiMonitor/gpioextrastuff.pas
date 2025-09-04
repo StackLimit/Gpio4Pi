@@ -5,7 +5,7 @@ unit GpioExtraStuff;
 // Extra stuff for converting Mode, Alt, etc. to text
 //
 // Still under development and therefore not quite finished
-// Copyright (c) 2024 Jan Andersen
+// Copyright (c) 2024-2015 Jan Andersen
 // -----------------------------------------------------------------
 
 {$mode ObjFPC}{$H+}
@@ -32,14 +32,18 @@ uses
 function GpioModeToShortStr(Mode: Integer): String;
 begin
   case Mode of
-    FSEL_INPUT:  Result:= 'In';
-    FSEL_OUTPUT: Result:= 'Out';
-    FSEL_ALT0:   Result:= 'Alt0';
-    FSEL_ALT1:   Result:= 'Alt1';
-    FSEL_ALT2:   Result:= 'Alt2';
-    FSEL_ALT3:   Result:= 'Alt3';
-    FSEL_ALT4:   Result:= 'Alt4';
-    FSEL_ALT5:   Result:= 'Alt5';
+    PM_GPIO_OFF: Result:= 'Off';
+    PM_INPUT:    Result:= 'In';
+    PM_OUTPUT:   Result:= 'Out';
+    PM_ALT0:     Result:= 'Alt0';
+    PM_ALT1:     Result:= 'Alt1';
+    PM_ALT2:     Result:= 'Alt2';
+    PM_ALT3:     Result:= 'Alt3';
+    PM_ALT4:     Result:= 'Alt4';
+    PM_ALT5:     Result:= 'Alt5';
+    PM_ALT6:     Result:= 'Alt6';
+    PM_ALT7:     Result:= 'Alt7';
+    PM_ALT8:     Result:= 'Alt8';
     else         Result:= 'Undef';
   end;
 end;
@@ -49,14 +53,18 @@ end;
 function GpioModeToLongStr(Cpu, Gpio, Mode: Integer): String;
 begin
   case Mode of
-    FSEL_INPUT:  Result:= 'Input';
-    FSEL_OUTPUT: Result:= 'Output';
-    FSEL_ALT0:   Result:= 'Alt 0 = ' + GpioAltModeToStr(Cpu, Gpio, Mode);
-    FSEL_ALT1:   Result:= 'Alt 1 = ' + GpioAltModeToStr(Cpu, Gpio, Mode);
-    FSEL_ALT2:   Result:= 'Alt 2 = ' + GpioAltModeToStr(Cpu, Gpio, Mode);
-    FSEL_ALT3:   Result:= 'Alt 3 = ' + GpioAltModeToStr(Cpu, Gpio, Mode);
-    FSEL_ALT4:   Result:= 'Alt 4 = ' + GpioAltModeToStr(Cpu, Gpio, Mode);
-    FSEL_ALT5:   Result:= 'Alt 5 = ' + GpioAltModeToStr(Cpu, Gpio, Mode);
+    PM_GPIO_OFF: Result:= 'Off';
+    PM_INPUT:    Result:= 'Input';
+    PM_OUTPUT:   Result:= 'Output';
+    PM_ALT0:     Result:= 'Alt 0 ~ ' + GpioAltModeToStr(Cpu, Gpio, Mode);
+    PM_ALT1:     Result:= 'Alt 1 ~ ' + GpioAltModeToStr(Cpu, Gpio, Mode);
+    PM_ALT2:     Result:= 'Alt 2 ~ ' + GpioAltModeToStr(Cpu, Gpio, Mode);
+    PM_ALT3:     Result:= 'Alt 3 ~ ' + GpioAltModeToStr(Cpu, Gpio, Mode);
+    PM_ALT4:     Result:= 'Alt 4 ~ ' + GpioAltModeToStr(Cpu, Gpio, Mode);
+    PM_ALT5:     Result:= 'Alt 5 ~ ' + GpioAltModeToStr(Cpu, Gpio, Mode);
+    PM_ALT6:     Result:= 'Alt 6 ~ ' + GpioAltModeToStr(Cpu, Gpio, Mode);
+    PM_ALT7:     Result:= 'Alt 7 ~ ' + GpioAltModeToStr(Cpu, Gpio, Mode);
+    PM_ALT8:     Result:= 'Alt 8 ~ ' + GpioAltModeToStr(Cpu, Gpio, Mode);
     else         Result:= 'Undefined';
   end;
 end;
@@ -209,18 +217,91 @@ const
 {57} ('<Internal>', '',             '',          '',               '',                 ''));
 
 
+  // ALT modes for Pi5 (BCM2712 / RP1)
+  GpioAltModePi5Def: Array[0..53,0..8] of String[20] =
+{GPIO  ALT 0         ALT 1            ALT 2            ALT 3            ALT 4            ALT 5         ALT 6          ALT 7          ALT 8}
+// 0 to 27 are from the RP1 manual
+{0} (('SPI0_SIO3',  'DPI_PCLK',      'UART1_TX',      'I2C0_SDA',      '',              'SYS_RIO0',   'PROC_RIO0',   'PIO0',        'SPI2_CS0'),
+     ('SPI0_SIO2',  'DPI_DE',        'UART1_RX',      'I2C0_SCL',      '',              'SYS_RIO1',   'PROC_RIO1',   'PIO1',        'SPI2_SIO1'),
+     ('SPI0_CS3',   'DPI_VSYNC',     'UART1_CTS',     'I2C1_SDA',      'UART0_IR_RX',   'SYS_RIO2',   'PROC_RIO2',   'PIO2',        'SPI2_SIO0'),
+     ('SPI0_CS2',   'DPI_HSYNC',     'UART1_RTS',     'I2C1_SCL',      'UART0_IR_TX',   'SYS_RIO3',   'PROC_RIO3',   'PIO3',        'SPI2_SCLK'),
+     ('GPCLK0',     'DPI_D0',        'UART2_TX',      'I2C2_SDA',      'UART0_RI',      'SYS_RIO4',   'PROC_RIO4',   'PIO4',        'SPI3_CS0'),
+     ('GPCLK1',     'DPI_D1',        'UART2_RX',      'I2C2_SCL',      'UART0_DTR',     'SYS_RIO5',   'PROC_RIO5',   'PIO5',        'SPI3_SIO1'),
+     ('GPCLK2',     'DPI_D2',        'UART2_CTS',     'I2C3_SDA',      'UART0_DCD',     'SYS_RIO6',   'PROC_RIO6',   'PIO6',        'SPI3_SIO0'),
+     ('SPI0_CS1',   'DPI_D3',        'UART2_RTS',     'I2C3_SCL',      'UART0_DSR',     'SYS_RIO7',   'PROC_RIO7',   'PIO7',        'SPI3_SCLK'),
+     ('SPI0_CS0',   'DPI_D4',        'UART3_TX',      'I2C0_SDA',      '',              'SYS_RIO8',   'PROC_RIO8',   'PIO8',        'SPI4_CS0'),
+     ('SPI0_SIO1',  'DPI_D5',        'UART3_RX',      'I2C0_SCL',      '',              'SYS_RIO9',   'PROC_RIO9',   'PIO9',        'SPI4_SIO0'),
+{10} ('SPI0_SIO0',  'DPI_D6',        'UART3_CTS',     'I2C1_SDA',      '',              'SYS_RIO10',  'PROC_RIO10',  'PIO10',       'SPI4_SIO1'),
+     ('SPI0_SCLK',  'DPI_D7',        'UART3_RTS',     'I2C1_SCL',      '',              'SYS_RIO11',  'PROC_RIO11',  'PIO11',       'SPI4_SCLK'),
+     ('PWM0_0',     'DPI_D8',        'UART4_TX',      'I2C2_SDA',      'AUDIO_OUT_L',   'SYS_RIO12',  'PROC_RIO12',  'PIO12',       'SPI5_CS0'),
+     ('PWM0_1',     'DPI_D9',        'UART4_RX',      'I2C2_SCL',      'AUDIO_OUT_R',   'SYS_RIO13',  'PROC_RIO13',  'PIO13',       'SPI5_SIO1'),
+     ('PWM0_2',     'DPI_D10',       'UART4_CTS',     'I2C3_SDA',      'UART0_TX',      'SYS_RIO14',  'PROC_RIO14',  'PIO14',       'SPI5_SIO0'),
+     ('PWM0_3',     'DPI_D11',       'UART4_RTS',     'I2C3_SCL',      'UART0_RX',      'SYS_RIO15',  'PROC_RIO15',  'PIO15',       'SPI5_SCLK'),
+     ('SPI1_CS2',   'DPI_D12',       'MIPI0_DSI_TE',  'UART0_CTS',     '',              'SYS_RIO16',  'PROC_RIO16',  'PIO16',       ''),
+     ('SPI1_CS1',   'DPI_D13',       'MIPI1_DSI_TE',  'UART0_RTS',     '',              'SYS_RIO17',  'PROC_RIO17',  'PIO17',       ''),
+     ('SPI1_CS0',   'DPI_D14',       'I2S0_SCLK',     'PWM0_2',        'I2S1_SCLK',     'SYS_RIO18',  'PROC_RIO18',  'PIO18',       'GPCLK1'),
+     ('SPI1_SIO1',  'DPI_D15',       'I2S0_WS',       'PWM0_3',        'I2S1_WS',       'SYS_RIO19',  'PROC_RIO19',  'PIO19',       ''),
+{20} ('SPI1_SIO0',  'DPI_D16',       'I2S0_SDI0',     'GPCLK0',        'I2S1_SDI0',     'SYS_RIO20',  'PROC_RIO20',  'PIO20',       ''),
+     ('SPI1_SCLK',  'DPI_D17',       'I2S0_SDO0',     'GPCLK1',        'I2S1_SDO0',     'SYS_RIO21',  'PROC_RIO21',  'PIO21',       ''),
+     ('SDIO0_CLK',  'DPI_D18',       'I2S0_SDI1',     'I2C3_SDA',      'I2S1_SDI1',     'SYS_RIO22',  'PROC_RIO22',  'PIO22',       ''),
+     ('SDIO0_CMD',  'DPI_D19',       'I2S0_SDO1',     'I2C3_SCL',      'I2S1_SDO1',     'SYS_RIO23',  'PROC_RIO23',  'PIO23',       ''),
+     ('SDIO0_DAT0', 'DPI_D20',       'I2S0_SDI2',     'I2S1_SDI2',     '',              'SYS_RIO24',  'PROC_RIO24',  'PIO24',       'SPI2_CS1'),
+     ('SDIO0_DAT1', 'DPI_D21',       'I2S0_SDO2',     'AUDIO_IN_CLK',  'I2S1_SDO2',     'SYS_RIO25',  'PROC_RIO25',  'PIO25',       'SPI3_CS1'),
+     ('SDIO0_DAT2', 'DPI_D22',       'I2S0_SDI3',     'AUDIO_IN_DAT0', 'I2S1_SDI3',     'SYS_RIO26',  'PROC_RIO26',  'PIO26',       'SPI5_CS1'),
+{27} ('SDIO0_DAT3', 'DPI_D23',       'I2S0_SDO3',     'AUDIO_IN_DAT1', 'I2S1_SDO3',     'SYS_RIO27',  'PROC_RIO27',  'PIO27',       'SPI1_CS1'),
+// 28 to 53 are from 'pinctrl funcs 28-53'
+{28} ('SD1_CLK',    'SDA4',          'I2S2_SCLK',     'SPI6_MISO',     'VBUS_EN0',      'SYS_RIO10',  'PROC_RIO10',  '',            ''),
+     ('SD1_CMD',    'SCL4',          'I2S2_WS',       'SPI6_MOSI',     'VBUS_OC0',      'SYS_RIO11',  'PROC_RIO11',  '',            ''),
+{30} ('SD1_DAT0',   'SDA5',          'I2S2_SDI0',     'SPI6_SCLK',     'TXD5',          'SYS_RIO12',  'PROC_RIO12',  '',            ''),
+     ('SD1_DAT1',   'SCL5',          'I2S2_SDO0',     'SPI6_CE0',      'RXD5',          'SYS_RIO13',  'PROC_RIO13',  '',            ''),
+     ('SD1_DAT2',   'GPCLK3',        'I2S2_SDI1',     'SPI6_CE1',      'CTS5',          'SYS_RIO14',  'PROC_RIO14',  '',            ''),
+     ('SD1_DAT3',   'GPCLK4',        'I2S2_SDO1',     'SPI6_CE2',      'RTS5',          'SYS_RIO15',  'PROC_RIO15',  '',            ''),
+     ('PWM1_2',     'GPCLK3',        'VBUS_EN0',      'SDA4',          'MIC_CLK',       'SYS_RIO20',  'PROC_RIO20',  '',            ''),
+     ('SPI8_CE1',   'PWM1_0',        'VBUS_OC0',      'SCL4',          'MIC_DAT0',      'SYS_RIO21',  'PROC_RIO21',  '',            ''),
+     ('SPI8_CE0',   'TXD5',          'PCIE_CLKREQ_N', 'SDA5',          'MIC_DAT1',      'SYS_RIO22',  'PROC_RIO22',  '',            ''),
+     ('SPI8_MISO',  'RXD5',          'MIC_CLK',       'SCL5',          'PCIE_CLKREQ_N', 'SYS_RIO23',  'PROC_RIO23',  '',            ''),
+     ('SPI8_MOSI',  'RTS5',          'MIC_DAT0',      'SDA6',          'AAUD_LEFT',     'SYS_RIO24',  'PROC_RIO24',  'DSI0_TE_EXT', ''),
+     ('SPI8_SCLK',  'CTS5',          'MIC_DAT1',      'SCL6',          'AAUD_RIGHT',    'SYS_RIO25',  'PROC_RIO25',  'DSI1_TE_EXT', ''),
+{40} ('PWM1_1',     'TXD5',          'SDA4',          'SPI6_MISO',     'AAUD_LEFT',     'SYS_RIO26',  'PROC_RIO26',  '',            ''),
+     ('PWM1_2',     'RXD5',          'SCL4',          'SPI6_MOSI',     'AAUD_RIGHT',    'SYS_RIO27',  'PROC_RIO27',  '',            ''),
+     ('GPCLK5',     'RTS5',          'VBUS_EN1',      'SPI6_SCLK',     'I2S2_SCLK',     'SYS_RIO28',  'PROC_RIO28',  '',            ''),
+     ('GPCLK4',     'CTS5',          'VBUS_OC1',      'SPI6_CE0',      'I2S2_WS',       'SYS_RIO29',  'PROC_RIO29',  '',            ''),
+     ('GPCLK5',     'SDA5',          'PWM1_0',        'SPI6_CE1',      'I2S2_SDI0',     'SYS_RIO210', 'PROC_RIO210', '',            ''),
+     ('PWM1_3',     'SCL5',          'SPI7_CE0',      'SPI6_CE2',      'I2S2_SDO0',     'SYS_RIO211', 'PROC_RIO211', '',            ''),
+     ('GPCLK3',     'SDA4',          'SPI7_MOSI',     'MIC_CLK',       'I2S2_SDI1',     'SYS_RIO212', 'PROC_RIO212', 'DSI0_TE_EXT', ''),
+     ('GPCLK5',     'SCL4',          'SPI7_MISO',     'MIC_DAT0',      'I2S2_SDO1',     'SYS_RIO213', 'PROC_RIO213', 'DSI1_TE_EXT', ''),
+     ('PWM1_0',     'PCIE_CLKREQ_N', 'SPI7_SCLK',     'MIC_DAT1',      'TXD5',          'SYS_RIO214', 'PROC_RIO214', '',            ''),
+     ('SPI8_SCLK',  'SPI7_SCLK',     'SDA5',          'AAUD_LEFT',     'RXD5',          'SYS_RIO215', 'PROC_RIO215', '',            ''),
+{50} ('SPI8_MISO',  'SPI7_MOSI',     'SCL5',          'AAUD_RIGHT',    'VBUS_EN2',      'SYS_RIO216', 'PROC_RIO216', '',            ''),
+     ('SPI8_MOSI',  'SPI7_MISO',     'SDA6',          'AAUD_LEFT',     'VBUS_OC2',      'SYS_RIO217', 'PROC_RIO217', '',            ''),
+     ('SPI8_CE0',   '',              'SCL6',          'AAUD_RIGHT',    'VBUS_EN3',      'SYS_RIO218', 'PROC_RIO218', '',            ''),
+{53} ('SPI8_CE1',   'SPI7_CE0',      '',              'PCIE_CLKREQ_N', 'VBUS_OC3',      'SYS_RIO219', 'PROC_RIO219', '',            ''));
+
+
+
+
 function GpioAltModeToStr(Cpu, Gpio, AltMode: Integer): String;
 begin
   case AltMode of
-    FSEL_ALT0: AltMode:= 0;
-    FSEL_ALT1: AltMode:= 1;
-    FSEL_ALT2: AltMode:= 2;
-    FSEL_ALT3: AltMode:= 3;
-    FSEL_ALT4: AltMode:= 4;
-    FSEL_ALT5: AltMode:= 5;
-    else       AltMode:= -1;
+    PM_ALT0: AltMode:= 0;
+    PM_ALT1: AltMode:= 1;
+    PM_ALT2: AltMode:= 2;
+    PM_ALT3: AltMode:= 3;
+    PM_ALT4: AltMode:= 4;
+    PM_ALT5: AltMode:= 5;
+    PM_ALT6: AltMode:= 6;
+    PM_ALT7: AltMode:= 7;
+    PM_ALT8: AltMode:= 8;
+    else     AltMode:= -1;
   end;
 
+  if Cpu = PI_CPU_BCM2712 then
+  begin
+    if (Gpio in [0..57]) and (AltMode in [0..8])
+      then Result:= GpioAltModePi5Def[Gpio, AltMode]
+      else Result:= 'Unknown Alt Mode';
+  end
+  else
   if Cpu = PI_CPU_BCM2711 then
   begin
     if (Gpio in [0..57]) and (AltMode in [0..5])

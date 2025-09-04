@@ -1,122 +1,13 @@
 object FormPwm: TFormPwm
-  Left = 1168
+  Left = 1356
   Height = 448
-  Top = 233
-  Width = 395
+  Top = 303
+  Width = 512
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Pulse Width Modulators'
-  ClientHeight = 448
-  ClientWidth = 395
-  Font.CharSet = ANSI_CHARSET
-  Font.Height = -12
+  Font.Height = -13
   Font.Name = 'Segoe UI'
-  Font.Pitch = fpVariable
-  Font.Quality = fqDraft
   OnCreate = FormCreate
-  LCLVersion = '2.2.4.0'
-  object GroupBoxPwm0: TGroupBox
-    Left = 8
-    Height = 208
-    Top = 8
-    Width = 184
-    Caption = 'PWM 0_0'
-    ClientHeight = 188
-    ClientWidth = 180
-    TabOrder = 0
-    object Label1: TLabel
-      Left = 8
-      Height = 135
-      Top = 8
-      Width = 77
-      Caption = 'Enable . . . . . . .'#13#10'Serial mode  . .'#13#10'Repeat . . . . . .'#13#10'Silence  . . . . . .'#13#10'Polarity . . . . . .'#13#10'Use FIFO . . . . .'#13#10'M/S Enable . .'#10'Range . . . . . . .'#13#10'Data  . . . . . . . .'
-      ParentColor = False
-    end
-    object LabPwm0: TLabel
-      Left = 96
-      Height = 135
-      Top = 8
-      Width = 52
-      Caption = 'LabPwm0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'#13#10'Line 6'#13#10'Line 7'#10'Line 8'#10'Line 9'
-      ParentColor = False
-    end
-  end
-  object GroupBoxPwm1: TGroupBox
-    Left = 200
-    Height = 208
-    Top = 8
-    Width = 184
-    Caption = 'PWM 0_1'
-    ClientHeight = 188
-    ClientWidth = 180
-    TabOrder = 1
-    object LabPwm1: TLabel
-      Left = 96
-      Height = 135
-      Top = 8
-      Width = 52
-      Caption = 'LabPwm0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'#13#10'Line 6'#13#10'Line 7'#10'Line 8'#10'Line 9'
-      ParentColor = False
-    end
-    object Label2: TLabel
-      Left = 8
-      Height = 135
-      Top = 8
-      Width = 77
-      Caption = 'Enable . . . . . . .'#13#10'Serial mode  . .'#13#10'Repeat . . . . . .'#13#10'Silence  . . . . . .'#13#10'Polarity . . . . . .'#13#10'Use FIFO . . . . .'#13#10'M/S Enable . .'#10'Range . . . . . . .'#13#10'Data  . . . . . . . .'
-      ParentColor = False
-    end
-  end
-  object GroupBoxPwm2: TGroupBox
-    Left = 8
-    Height = 208
-    Top = 224
-    Width = 184
-    Caption = 'PWM 1_0'
-    ClientHeight = 188
-    ClientWidth = 180
-    TabOrder = 2
-    object LabPwm2: TLabel
-      Left = 96
-      Height = 135
-      Top = 8
-      Width = 52
-      Caption = 'LabPwm0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'#13#10'Line 6'#13#10'Line 7'#10'Line 8'#10'Line 9'
-      ParentColor = False
-    end
-    object Label3: TLabel
-      Left = 8
-      Height = 135
-      Top = 8
-      Width = 77
-      Caption = 'Enable . . . . . . .'#13#10'Serial mode  . .'#13#10'Repeat . . . . . .'#13#10'Silence  . . . . . .'#13#10'Polarity . . . . . .'#13#10'Use FIFO . . . . .'#13#10'M/S Enable . .'#10'Range . . . . . . .'#13#10'Data  . . . . . . . .'
-      ParentColor = False
-    end
-  end
-  object GroupBoxPwm3: TGroupBox
-    Left = 200
-    Height = 208
-    Top = 224
-    Width = 184
-    Caption = 'PWM 1_1'
-    ClientHeight = 188
-    ClientWidth = 180
-    TabOrder = 3
-    object LabPwm3: TLabel
-      Left = 96
-      Height = 135
-      Top = 8
-      Width = 52
-      Caption = 'LabPwm0'#13#10'Line 2'#13#10'Line 3'#13#10'Line 4'#13#10'Line 5'#13#10'Line 6'#13#10'Line 7'#10'Line 8'#10'Line 9'
-      ParentColor = False
-    end
-    object Label4: TLabel
-      Left = 8
-      Height = 135
-      Top = 8
-      Width = 77
-      Caption = 'Enable . . . . . . .'#13#10'Serial mode  . .'#13#10'Repeat . . . . . .'#13#10'Silence  . . . . . .'#13#10'Polarity . . . . . .'#13#10'Use FIFO . . . . .'#13#10'M/S Enable . .'#10'Range . . . . . . .'#13#10'Data  . . . . . . . .'
-      ParentColor = False
-    end
-  end
+  LCLVersion = '2.2.6.0'
 end

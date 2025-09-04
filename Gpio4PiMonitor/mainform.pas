@@ -10,7 +10,7 @@ unit MainForm;
 //     Pull Up/Down must be disregarded as this cannot be read on an Rpi1-3
 //
 // Still under development and therefore not quite finished
-// Copyright (c) 2024 Jan Andersen
+// Copyright (c) 2024-2025 Jan Andersen
 // -----------------------------------------------------------------
 
 {$mode objfpc}{$H+}
@@ -228,7 +228,7 @@ var
 
 begin
   // Initialize RasPiMem
-  PiGpio:= TPiGpioMem.Create;
+  PiGpio:= TPiGpio.Create;
 
   if PiGpio <> Nil then
   begin

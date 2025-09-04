@@ -5,7 +5,7 @@ program Gpio4PiCmd;
 // Gpio4Pi Cmd-line is a test / debug App accessing Gpio4Pi object
 //
 // Still under development and therefore not quite finished
-// Copyright (c) 2024 Jan Andersen
+// Copyright (c) 2024-2025 Jan Andersen
 // -----------------------------------------------------------------
 
 {$mode objfpc}{$H+}
@@ -44,25 +44,25 @@ type
 
 procedure TGpio4PiCmd.ShowAllGpio;
 var
-  I:    Integer;
+  Gpin: Integer;
   Data: TGpioPin;
 
 begin
   WriteLn;
   WriteLn('---------- All GPIOs ----------');
-  for I:= 0 to PiGpio.GpioHighestPin do
+
+  Gpin:= 0;
+  while PiGpio.GetGpioPinData(Gpin, Data{%H-}) do
   begin
-    if PiGpio.GetGpioPinData(I, Data{%H-}) then
-    begin
-      S:= 'GPIO ' + IntToStr(I) +
-          ': Mode=' + GpioModeToLongStr(PiGpio.RPiModelInfo.Cpu, I, Data.Mode) +
-          ', Level=' + GpioLevelToLongStr(Data.Level);
+    S:= 'GPIO ' + IntToStr(Gpin) +
+        ': Mode=' + GpioModeToLongStr(PiGpio.RPiModelInfo.Cpu, Gpin, Data.Mode) +
+        ', Level=' + GpioLevelToLongStr(Data.Level);
 
-      if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2711 then
-        S:= S + ', Pull=' + GpioPullToLongStr(Data.Pull);
+    if PiGpio.RPiModelInfo.Cpu in [PI_CPU_BCM2711,PI_CPU_BCM2712] then
+      S:= S + ', Pull=' + GpioPullToLongStr(Data.Pull);
 
-      WriteLn(S);
-    end;
+    WriteLn(S);
+    Gpin:= Gpin + 1;
   end;
 end;
 
@@ -95,14 +95,14 @@ end;
 procedure TGpio4PiCmd.ShowAllClock;
 var
   ClkNo: Integer;
-  Clock: TClock;
-  Di,Fr,Freq: LongWord;
+  Clock: TGpioClk;
+  Freq: LongWord;
   Gpios: TIntArray;
 
 begin
   WriteLn;
   WriteLn('---------- All CLOCKs ----------');
-  for ClkNo:= 0 to 5 do
+  for ClkNo:= 0 to 8 do
   begin
     if PiGpio.GetRawClockData(ClkNo, Clock{%H-}) then
     begin
@@ -110,50 +110,69 @@ begin
         CLK_GPIO0: S:= 'GPIO CLOCK 0:';
         CLK_GPIO1: S:= 'GPIO CLOCK 1:';
         CLK_GPIO2: S:= 'GPIO CLOCK 2:';
-        CLK_PCM:   S:= 'PCM CLOCK:';
+        CLK_GPIO3: S:= 'GPIO CLOCK 3:';
+        CLK_GPIO4: S:= 'GPIO CLOCK 4:';
+        CLK_GPIO5: S:= 'GPIO CLOCK 5:';
         CLK_PWM:   S:= 'PWM CLOCK:';
         CLK_UART:  S:= 'UART CLOCK:';
+        CLK_PCM:   S:= 'PCM CLOCK:';
         else exit;
       end;
 
-      // Enable bit (B4)
-      S:= S + ' Enable=' + LongToYesNo((Clock.Control shr 4) and 1);
+      // RaspberryPi 1 to RaspberryPi 4
+      if  PiGpio.RPiModelInfo.Cpu in [PI_CPU_BCM2835,PI_CPU_BCM2836,PI_CPU_BCM2837,PI_CPU_BCM2711] then
+      begin
+        // Enable bit (B4)
+        S:= S + ' Enable=' + LongToYesNo((Clock.Control shr 4) and 1);
 
-      // Source (B0-B3)
-      S:= S + ', Source=';
-      case Clock.Control and $0F of
-        1:   S:= S + 'Oscillator';
-        2:   S:= S + 'Testdebug0';
-        3:   S:= S + 'Testdebug1';
-        4:   S:= S + 'PLLA per';
-        5:   S:= S + 'PLLC per';
-        6:   S:= S + 'PLLD per';
-        7:   S:= S + 'HDMI aux';
-        else S:= S + 'GND';
+        // Source (B0-B3)
+        S:= S + ', Source=';
+        case Clock.Control and $0F of
+          1:   S:= S + 'Oscillator';
+          2:   S:= S + 'Testdebug0';
+          3:   S:= S + 'Testdebug1';
+          4:   S:= S + 'PLLA per';
+          5:   S:= S + 'PLLC per';
+          6:   S:= S + 'PLLD per';
+          7:   S:= S + 'HDMI aux';
+          else S:= S + 'GND';
+        end;
+
+        // Kill bit (B5)
+        S:= S + ', Kill=' + LongToYesNo((Clock.Control shr 5) and 1);
+
+        // Flip bit (B8)
+        S:= S + ', Flip=' + LongToYesNo((Clock.Control shr 8) and 1);
+
+        // MASH (B9-B10)
+        S:= S + ', MASH=';
+        case (Clock.Control shr 9) and 3 of
+          0: S:= S + 'Integer Division';
+          1: S:= S + '1-stage MASH';
+          2: S:= S + '2-stage MASH';
+          3: S:= S + '3-stage MASH';
+        end;
       end;
 
-      // Kill bit (B5)
-      S:= S + ', Kill=' + LongToYesNo((Clock.Control shr 5) and 1);
+      // RaspberryPi 5
+      if  PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
+      begin
+        // Enable bit (B11)
+        S:= S + ' Enable=' + LongToYesNo((Clock.Control shr 11) and 1);
 
-      // Flip bit (B8)
-      S:= S + ', Flip=' + LongToYesNo((Clock.Control shr 8) and 1);
+        // Source (B5-B8)
+        S:= S + ', Source=0x' + IntToHex((Clock.Control and RP1_CLK_CTRL_SRCMASK) shr 5, 2);
 
-      // MASH (B9-B10)
-      S:= S + ', MASH=';
-      case (Clock.Control shr 9) and 3 of
-        0: S:= S + 'Integer Division';
-        1: S:= S + '1-stage MASH';
-        2: S:= S + '2-stage MASH';
-        3: S:= S + '3-stage MASH';
+        // Control register
+        S:= S + ', Control=0x' + IntToHex(Clock.Control, 8);
       end;
 
-      // Divisor (B12-B23)
-      Di:= (Clock.Divisor shr 12) and $FFF;
-      S:= S + ', Div=' + IntToStr(Di);
+      // The rest are the same for all Raspberry Pi's
+      // Divisor
+      S:= S + ', Div=' + IntToStr(Clock.Divisor);
 
-      // Fraction (B0-B11)
-      Fr:= Clock.Divisor and $FFF;
-      S:= S + ', Frac=' + IntToStr(Fr);
+      // Fraction
+      S:= S + ', Frac=' + IntToStr(Clock.Fract);
 
       // Calculate Frequency.
       Freq:= PiGpio.GetClockFrequency(ClkNo);
@@ -161,7 +180,7 @@ begin
       WriteLn(S);
 
       // Print connected GPIOs
-      if ClkNo in [0..2] then
+      if ClkNo in [CLK_GPIO0..CLK_GPIO5] then
       begin
         Gpios:= PiGpio.GetGpiosForGpioClock(ClkNo);
         S:= ConnectedClocksToStr(Gpios);
@@ -180,12 +199,13 @@ var
   Pwm: TPwmData;
   Gpios: TIntArray;
 
-procedure ShowOnePwm(Group: Integer);
+  // Raspberry Pi 1-4
+procedure ShowOnePwmPi1_4(Group: Integer);
 begin
   if not PiGpio.GetRawPwmData(Group, Pwm) then exit;
 
   // Channel 1 Control
-  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2711
+  if Pwm.Cpu = PI_CPU_BCM2711
     then S:= 'PWM ' + IntToStr(Group) + '_0: '
     else S:= 'PWM 0: ';
 
@@ -204,7 +224,7 @@ begin
   WriteLn(S);
 
   // Print connected GPIOs
-  Gpios:= PiGpio.GetGpiosForPwm((Group * 2) + 0);
+  Gpios:= PiGpio.GetGpiosForPwm((Group * 4) + 0);
   S:= ConnectedClocksToStr(Gpios);
   WriteLn(S);
   WriteLn;
@@ -229,17 +249,77 @@ begin
   WriteLn(S);
 
   // Print connected GPIOs
-  Gpios:= PiGpio.GetGpiosForPwm((Group * 2) + 1);
+  Gpios:= PiGpio.GetGpiosForPwm((Group * 4) + 1);
   S:= ConnectedClocksToStr(Gpios);
   WriteLn(S);
   WriteLn;
 end;
 
+// Raspberry Pi 5
+procedure ShowOnePwmPi5(Group: Integer);
+var
+  Chan: Integer;
+
+begin
+  if not PiGpio.GetRawPwmData(Group, Pwm) then exit;
+
+  S:= 'PWM ' + IntToStr(Group) + ' Common Data: ' +
+      'GlobalCtrl=0x' + IntToHex(Pwm.Rp1GlobCtrl, 8) +
+      ', FifoCtrl=0x' + IntToHex(Pwm.Rp1FifoCtrl, 8) +
+      ', CommonRange=0x' + IntToHex(Pwm.Rp1ComRange, 8);
+  WriteLn(S);
+
+  S:= '                   ' +
+      'CommonDuty=0x' + IntToHex(Pwm.Rp1ComDuty, 8) +
+      ', DutyFifo=0x' + IntToHex(Pwm.Rp1DutyFifo, 8);
+  WriteLn(S);
+  WriteLn;
+
+  for Chan:= 0 to 3 do
+  begin
+    S:= 'PWM ' + IntToStr(Group) + '_' + IntToStr(Chan) + ': Mode=';
+    case Pwm.Rp1Channels[Chan].Rp1Control and $07 of
+      $00: S:= S + 'Off';
+      $01: S:= S + 'Trailing-edge mark-space';
+      $02: S:= S + 'Phase-correct mark-space';
+      $03: S:= S + 'Pulse-density encoded';
+      $04: S:= S + 'MSB Serialiser';
+      $05: S:= S + 'Pulse position modulated';
+      $06: S:= S + 'Leading-edge mark-space';
+      $07: S:= S + 'LSB Serialiser';
+    end;
+
+    S:= S + ', Control=0x' + IntToHex(Pwm.Rp1Channels[Chan].Rp1Control, 8) +
+            ', Div=' + IntToStr(Pwm.Rp1Channels[Chan].Rp1Range) +
+            ', Duty=' + IntToStr(Pwm.Rp1Channels[Chan].Rp1Duty) +
+            ', Phase=' + IntToStr(Pwm.Rp1Channels[Chan].Rp1Phase);
+
+    WriteLn(S);
+
+    // Print connected GPIOs
+    Gpios:= PiGpio.GetGpiosForPwm((Group * 4) + Chan);
+    S:= ConnectedClocksToStr(Gpios);
+    WriteLn(S);
+    WriteLn;
+  end;
+end;
+
+// ShowAllPwm entry..........
 begin
   WriteLn;
   WriteLn('---------- All PWMs ----------');
-  ShowOnePwm(0);
-  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2711 then ShowOnePwm(1);
+  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
+  begin
+    // Raspberry Pi 5
+    ShowOnePwmPi5(PWM_GROUP_0);
+    ShowOnePwmPi5(PWM_GROUP_1);
+  end
+  else
+  begin
+    // Raspberry Pi 1-4
+    ShowOnePwmPi1_4(PWM_GROUP_0);
+    if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2711 then ShowOnePwmPi1_4(PWM_GROUP_1);
+  end;
 end;
 
 //----------------------------------------------------------------
@@ -297,10 +377,11 @@ begin
   else
 
   if (ParamCount = 3) and (Params[1] = 'mode') and
-     (Pos(','+Params[2]+',', ',in,out,alt0,alt1,alt2,alt3,alt4,alt5,') > 0) then
+     (Pos(','+Params[2]+',', ',off,in,out,alt0,alt1,alt2,alt3,alt4,alt5,alt6,alt7,alt8,clk,pwm,') > 0) then
   begin
     Ok:= False;
     case Params[2] of
+      'off':  Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_GPIO_OFF);
       'in':   Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_INPUT);
       'out':  Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_OUTPUT);
       'alt0': Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_ALT0);
@@ -309,6 +390,11 @@ begin
       'alt3': Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_ALT3);
       'alt4': Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_ALT4);
       'alt5': Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_ALT5);
+      'alt6': Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_ALT6);
+      'alt7': Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_ALT7);
+      'alt8': Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_ALT8);
+      'clk':  Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_GPIO_CLOCK);
+      'pwm':  Ok:= PiGpio.SetPinMode(StrToIntDef(Params[3], -1), PM_PWMOUT_MS);
     end;
     if Ok
       then WriteLn('Set Mode OK')
@@ -438,7 +524,7 @@ begin
   WriteLn('Usage: ', ExtractFileName(ExeName));
   WriteLn('  info ..................: Show info about the Paspberry PI');
   WriteLn('  show ..................: Show all GPIO, Clock and PWM information');
-  WriteLn('  mode <mode gpio> ......: Set GPIO to Mode. Mode=in,out,alt0..alt5');
+  WriteLn('  mode <mode gpio> ......: Set GPIO to Mode. Mode=off,in,out,alt0..alt8,clk,pwm');
   WriteLn('  pull <pull gpio> ......: Set GPIO Pull-Up/Down. Pull=none,up,down');
   WriteLn('  write <val gpio> ......: Write a Value to GPIO. Value=0,1');
   WriteLn('  read <gpio> ...........: Read a Value from GPIO');

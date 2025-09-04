@@ -5,7 +5,7 @@ unit GpioExtraForm;
 // Shows GPIO 28 to 57 which is not shown in MainForm
 //
 // Still under development and therefore not quite finished
-// Copyright (c) 2024 Jan Andersen
+// Copyright (c) 2024-2025 Jan Andersen
 // -------------------------------------------------------------------
 
 {$mode ObjFPC}{$H+}

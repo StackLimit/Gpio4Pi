@@ -1,6 +1,8 @@
 
-Gpio4Pi.zip
+*.zip
 *.exe
+
+Revisioner.txt
 
 README.md-OLD
 GpioUart4Pi.pas

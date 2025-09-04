@@ -5,7 +5,7 @@ unit PwmForm;
 // Shows all the PWM's in a Form
 //
 // Still under development and therefore not quite finished
-// Copyright (c) 2024 Jan Andersen
+// Copyright (c) 2024-2025 Jan Andersen
 // -------------------------------------------------------------------
 
 {$mode ObjFPC}{$H+}
@@ -13,7 +13,7 @@ unit PwmForm;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, StrUtils,
   GpioDefs;
 
 
@@ -34,21 +34,12 @@ const
 type
   // TFormPwm
   TFormPwm = class(TForm)
-    GroupBoxPwm0: TGroupBox;
-    GroupBoxPwm1: TGroupBox;
-    GroupBoxPwm2: TGroupBox;
-    GroupBoxPwm3: TGroupBox;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    LabPwm0: TLabel;
-    LabPwm1: TLabel;
-    LabPwm2: TLabel;
-    LabPwm3: TLabel;
     procedure FormCreate(Sender: TObject);
   private
-
+    GroupBox: array[0..7] of TGroupBox;
+    LabelV:   array[0..7] of TLabel;
+    LabelH:   array[0..7] of TLabel;
+    BoxCount: Integer;
   public
     procedure UpdatePwmBlock(PwmNo: Integer);
   end;
@@ -68,60 +59,190 @@ uses
 
 procedure TFormPwm.UpdatePwmBlock(PwmNo: Integer);
 var
-  LabCtl1, LabCtl2: TLabel;
+//  LabCtl1, LabCtl2: TLabel;
   Data: TPwmData;
+  I,Idx: Integer;
+  S: String;
 
 begin
   if not PiGpio.GetRawPwmData(PwmNo, Data{%H-}) then exit;
 
-  case PwmNo of
-    0: begin LabCtl1:= LabPwm0; LabCtl2:= LabPwm1; end;
-    1: begin LabCtl1:= LabPwm2; LabCtl2:= LabPwm3; end;
-    else exit;
+  Idx:= PwmNo * (BoxCount div 2);
+
+  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
+  begin
+    // RaspberryPi 5
+    for I:= Low(Data.Rp1Channels) to High(Data.Rp1Channels) do
+    begin
+      // Global Control
+      S:= '';
+      if (Data.Rp1GlobCtrl and RP1_PWM_GLOBCTRL_CHAN0_EN) <> 0 then S:= S + '0,';
+      if (Data.Rp1GlobCtrl and RP1_PWM_GLOBCTRL_CHAN1_EN) <> 0 then S:= S + '1,';
+      if (Data.Rp1GlobCtrl and RP1_PWM_GLOBCTRL_CHAN2_EN) <> 0 then S:= S + '2,';
+      if (Data.Rp1GlobCtrl and RP1_PWM_GLOBCTRL_CHAN3_EN) <> 0 then S:= S + '3';
+      if S = '' then S:= 'None';
+      If RPos(',', S) = Length(S) then Delete(S, Length(S), 1);      // Remove last ','
+      S:= 'Ch: ' + S;
+
+      LabelH[Idx+I].Caption:=
+        '0x' + IntToHex(Data.Rp1GlobCtrl, 8) + #13#10 +
+        S + #13#10 +
+
+      // Channel Control
+        '0x' + IntToHex(Data.Rp1Channels[I].Rp1Control, 8) + #13#10 +
+        LongToTrueFalse(Data.Rp1Channels[I].Rp1Control and RP1_PWM_CHANCTRL_MODE_MASK) + #13#10 +
+
+        'xx' + #13#10 +
+        'xx' + #13#10 +
+
+      // Channel Data
+        IntToStr(Data.Rp1Channels[I].Rp1Phase)  + #13#10 +
+        IntToStr(Data.Rp1Channels[I].Rp1Range)  + #13#10 +
+        IntToStr(Data.Rp1Channels[I].Rp1Duty);
+
+{
+      PI_CPU_BCM2712: (Rp1GlobCtrl: LongWord;
+                       Rp1FifoCtrl: LongWord;
+                       Rp1ComRange: LongWord;
+                       Rp1ComDuty:  LongWord;
+                       Rp1DutyFifo: LongWord;
+                       Rp1Channels: Array [0..3] of TPwmChannel);
+
+                       PI_CPU_BCM2712: (Rp1Control: LongWord;
+                                        Rp1Range:   LongWord;
+                                        Rp1Phase:   LongWord;
+                                        Rp1Duty:    LongWord);
+}
+    end;
+  end
+
+  else
+
+  begin
+    // RaspberryPi 1 to RaspberryPi 4
+    // Channel 1 Control
+    LabelH[Idx+0].Caption:=
+      LongToTrueFalse(Data.Control and PWM0_ENABLE) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM0_SERIAL) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM0_REPEATFF) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM0_SILENCE) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM0_REVPOLAR) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM0_USEFIFO) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM0_MS_MODE) + #13#10 +
+
+    // Channel 1 Data
+      IntToStr(Data.Channels[0].Range)  + #13#10 +
+      IntToStr(Data.Channels[0].Data);
+
+    // Channel 2 Control
+    LabelH[Idx+1].Caption:=
+      LongToTrueFalse(Data.Control and PWM1_ENABLE) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM1_SERIAL) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM1_REPEATFF) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM1_SILENCE) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM1_REVPOLAR) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM1_USEFIFO) + #13#10 +
+      LongToTrueFalse(Data.Control and PWM1_MS_MODE) + #13#10 +
+
+    // Channel 2 Data
+    IntToStr(Data.Channels[1].Range)  + #13#10 +
+    IntToStr(Data.Channels[1].Data);
   end;
-
-  // Channel 1 Control
-  LabCtl1.Caption:=
-    LongToTrueFalse(Data.Control and PWM0_ENABLE) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM0_SERIAL) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM0_REPEATFF) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM0_SILENCE) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM0_REVPOLAR) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM0_USEFIFO) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM0_MS_MODE) + #13#10 +
-
-  // Channel 1 Data
-    IntToStr(Data.Channels[0].Range)  + #13#10 +
-    IntToStr(Data.Channels[0].Data);
-
-  // Channel 2 Control
-  LabCtl2.Caption:=
-    LongToTrueFalse(Data.Control and PWM1_ENABLE) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM1_SERIAL) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM1_REPEATFF) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM1_SILENCE) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM1_REVPOLAR) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM1_USEFIFO) + #13#10 +
-    LongToTrueFalse(Data.Control and PWM1_MS_MODE) + #13#10 +
-
-  // Channel 2 Data
-  IntToStr(Data.Channels[1].Range)  + #13#10 +
-  IntToStr(Data.Channels[1].Data);
 end;
 
+
+const
+  BoxWidth  = 180;
+  BoxHeight = 210;
+  BoxDist   = 8;
 
 
 procedure TFormPwm.FormCreate(Sender: TObject);
 var
-  I: Integer;
+  I,BoxNo: Integer;
+
+procedure CreatePwmBox;
+var
+  X,Y: Integer;
+begin
+  X:= BoxDist + ((BoxNo mod 4) * (BoxWidth+BoxDist));
+  Y:= BoxDist + ((BoxNo div 4) * (BoxHeight+BoxDist));
+
+  GroupBox[BoxNo]:= TGroupBox.Create(Self);
+  GroupBox[BoxNo].Parent:= Self;
+  GroupBox[BoxNo].Top:= Y;
+  GroupBox[BoxNo].Left:= X;
+  GroupBox[BoxNo].Width:= BoxWidth;
+  GroupBox[BoxNo].Height:= BoxHeight;
+
+  LabelV[BoxNo]:= TLabel.Create(GroupBox[BoxNo]);
+  LabelV[BoxNo].Parent:= GroupBox[BoxNo];
+  LabelV[BoxNo].Top:= BoxDist;
+  LabelV[BoxNo].Left:= BoxDist;
+
+  LabelH[BoxNo]:= TLabel.Create(GroupBox[BoxNo]);
+  LabelH[BoxNo].Parent:= GroupBox[BoxNo];
+  LabelH[BoxNo].Top:= BoxDist;
+  LabelH[BoxNo].Left:= BoxDist + (BoxWidth div 2);
+end;
+
 
 begin
-  LabPwm0.Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
-                    'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
-                    'NA' + #13#10 + 'NA' + #13#10 + 'NA';
-  LabPwm1.Caption:= LabPwm0.Caption;
-  LabPwm2.Caption:= LabPwm0.Caption;
-  LabPwm3.Caption:= LabPwm0.Caption;
+  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
+  begin
+    // RaspberryPi 5
+    BoxCount:= 8;
+    for BoxNo:= 0 to BoxCount-1 do
+    begin
+      CreatePwmBox;
+      GroupBox[BoxNo].Caption:= ' PWM_' + IntToStr(BoxNo div (BoxCount div 2)) +
+                                '_' + IntToStr(BoxNo and 3) + ' ';
+
+      LabelV[BoxNo].Caption:= 'Global Ctrl . . .'     + #13#10 +
+                              'Global Enab . .'       + #13#10 +
+                              'Chan Ctrl . . . .'     + #13#10 +
+                              'Chan Enable . .'       + #13#10 +
+                              'xxxxxx . . . . . .'    + #13#10 +
+                              'xxxxxx . . . . .'      + #13#10 +
+                              'Chan Phase . .'        + #13#10 +
+                              'Chan Range . .'        + #13#10 +
+                              'Chan Duty  . . .';
+
+      LabelH[BoxNo].Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
+                              'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
+                              'NA' + #13#10 + 'NA' + #13#10 + 'NA';
+    end;
+  end
+
+  else
+
+  begin
+    // RaspberryPi 1 to RaspberryPi 4
+    BoxCount:= 4;
+    for BoxNo:= 0 to BoxCount-1 do
+    begin
+      CreatePwmBox;
+      GroupBox[BoxNo].Caption:= ' PWM_' + IntToStr(BoxNo div (BoxCount div 2)) +
+                                '_' + IntToStr(BoxNo and 1) + ' ';
+
+      LabelV[BoxNo].Caption:= 'Enable . . . . . . .' + #13#10 +
+                              'Serial mode  .'       + #13#10 +
+                              'Repeat . . . . . .'   + #13#10 +
+                              'Silence  . . . . . .' + #13#10 +
+                              'Polarity . . . . . .' + #13#10 +
+                              'Use FIFO . . . . .'   + #13#10 +
+                              'M/S Enable . .'       + #13#10 +
+                              'Range . . . . . . .'  + #13#10 +
+                              'Data  . . . . . . . .';
+
+      LabelH[BoxNo].Caption:= 'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
+                              'NA' + #13#10 + 'NA' + #13#10 + 'NA' + #13#10 +
+                              'NA' + #13#10 + 'NA' + #13#10 + 'NA';
+    end;
+  end;
+
+  Self.Width:=  BoxDist + ((BoxCount div 2) * (BoxWidth+BoxDist));
+  Self.Height:= BoxDist + (2 * (BoxHeight+BoxDist));
 
   for I:= 0 to 1 do UpdatePwmBlock(I);
 end;

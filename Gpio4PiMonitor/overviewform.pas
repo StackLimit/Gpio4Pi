@@ -5,7 +5,7 @@ unit OverviewForm;
 // Shows a overview of Clocks and PWM's in a form
 //
 // Still under development and therefore not quite finished
-// Copyright (c) 2024 Jan Andersen
+// Copyright (c) 2024-2025 Jan Andersen
 // -------------------------------------------------------------------
 
 {$mode ObjFPC}{$H+}
@@ -53,37 +53,45 @@ const
 // -------------------------------------------------------------
 // Draw one PWM channel
 // First: The channel are the very first
-// Chan:  Channel number 0-3
+// Chan:  Channel number 0-3/7
 // X,Y:   Position to draw the channel
 // -------------------------------------------------------------
 procedure TFormOverview.DrawOnePwmChannel(First: Boolean; Chan, X, Y: Integer);
 var
   S: String;
   Style: TTextStyle;
-  Mask: LongWord;
   Freq,Rng,Dat: LongWord;
   Proc: Integer;
   PwmData: TPwmData;
+  PwmEna: Boolean;
 
 begin
   FillChar(PwmData{%H-}, SizeOf(PwmData), 0);
-  if not PiGpio.GetRawPwmData(Chan div 2, PwmData) then exit;
 
-  if Chan in [0,2] then
+  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
   begin
-    Mask:= PWM0_ENABLE;
-    Rng:=  PwmData.Channels[0].Range;
-    Dat:=  PwmData.Channels[0].Data;
+    // RaspberryPi 5
+    if not PiGpio.GetRawPwmData(Chan div 4, PwmData) then exit;
+
+    PwmEna:= ((PwmData.Rp1Channels[Chan mod 4].Rp1Control and RP1_PWM_CHANCTRL_MODE_MASK) <> 0);
+    Rng:=  PwmData.Rp1Channels[Chan mod 4].Rp1Range;
+    Dat:=  PwmData.Rp1Channels[Chan mod 4].Rp1Duty;
   end
   else
   begin
-    Mask:= PWM1_ENABLE;
-    Rng:=  PwmData.Channels[1].Range;
-    Dat:=  PwmData.Channels[1].Data;
+    // RaspberryPi 1 to RaspberryPi 4
+    if not PiGpio.GetRawPwmData(Chan div 2, PwmData) then exit;
+
+    if Chan in [0,2]
+      then PwmEna:= ((PwmData.Control and PWM0_ENABLE) <> 0)
+      else PwmEna:= ((PwmData.Control and PWM1_ENABLE) <> 0);
+
+    Rng:=  PwmData.Channels[Chan mod 2].Range;
+    Dat:=  PwmData.Channels[Chan mod 2].Data;
   end;
 
   // Draw green / grayed rect
-  if (PwmData.Control and Mask) <> 0
+  if PwmEna
     then Panel.Canvas.Brush.Color:= clLightGreen
     else Panel.Canvas.Brush.Color:= clDefault;
 
@@ -98,11 +106,29 @@ begin
                     X + PwmBoxDim.Width +  Space2, Y + Space);
 
   S:= 'PWM ';
-  case Chan of
-    0: S:= S+ '0_0';
-    1: S:= S+ '0_1';
-    2: S:= S+ '1_0';
-    3: S:= S+ '1_1';
+  if PwmData.Cpu = PI_CPU_BCM2712 then
+  begin
+    // RaspberryPi 5
+    case Chan of
+      0: S:= S+ '0_0';
+      1: S:= S+ '0_1';
+      2: S:= S+ '0_2';
+      3: S:= S+ '0_3';
+      4: S:= S+ '1_0';
+      5: S:= S+ '1_1';
+      6: S:= S+ '1_2';
+      7: S:= S+ '1_3';
+    end;
+  end
+  else
+  begin
+    // RaspberryPi 1 to RaspberryPi 4
+    case Chan of
+      0: S:= S+ '0_0';
+      1: S:= S+ '0_1';
+      2: S:= S+ '1_0';
+      3: S:= S+ '1_1';
+    end;
   end;
 
   Freq:= 0;
@@ -110,8 +136,8 @@ begin
 
   if Rng > 0 then
   begin
-    Freq:= PiGpio.GetClockFrequency(4) div Rng;
-    Proc:= (100 * Dat) div Rng;
+    Freq:= PiGpio.GetClockFrequency(CLK_PWM) div Rng;
+    Proc:= Trunc((100 * Dat) / Rng);
   end;
 
   S:= S + #13#10 + 'Rng/Dat: ' + IntToStr(Rng) + '/' + IntToStr(Dat);
@@ -151,12 +177,15 @@ begin
   if PiGpio.GetGpioPinData(Gpio, Data{%H-}) then
   begin
     case Data.Mode of
-      FSEL_ALT0: S:= S + ' (Alt 0)';
-      FSEL_ALT1: S:= S + ' (Alt 1)';
-      FSEL_ALT2: S:= S + ' (Alt 2)';
-      FSEL_ALT3: S:= S + ' (Alt 3)';
-      FSEL_ALT4: S:= S + ' (Alt 4)';
-      FSEL_ALT5: S:= S + ' (Alt 5)';
+      PM_ALT0: S:= S + ' (Alt 0)';
+      PM_ALT1: S:= S + ' (Alt 1)';
+      PM_ALT2: S:= S + ' (Alt 2)';
+      PM_ALT3: S:= S + ' (Alt 3)';
+      PM_ALT4: S:= S + ' (Alt 4)';
+      PM_ALT5: S:= S + ' (Alt 5)';
+      PM_ALT6: S:= S + ' (Alt 6)';
+      PM_ALT7: S:= S + ' (Alt 7)';
+      PM_ALT8: S:= S + ' (Alt 8)';
     end;
   end;
 
@@ -168,20 +197,32 @@ end;
 
 // -------------------------------------------------------------
 // Draw one Clock device
-// ClkNo: 0-2 = GpioClock 0-2, 3 = PCM Clock, 4 = PWM Clock
+// ClkNo: GpioClock 0-5, PWM Clock, PCM Clock
 // X,Y:   Position to draw the Clock
 // -------------------------------------------------------------
 procedure TFormOverview.DrawOneClock(ClkNo, X, Y: Integer);
 var
   S: String;
   Style: TTextStyle;
-  Data: TClock;
+  ClkEna: Boolean;
+  Data: TGpioClk;
 
 begin
   if not PiGpio.GetRawClockData(ClkNo, Data{%H-}) then exit;
 
+  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
+  begin
+    // RaspberryPi 5
+    ClkEna:= ((Data.Control and RP1_CLK_CTRL_ENABLE) <> 0);
+  end
+  else
+  begin
+    // RaspberryPi 1 to RaspberryPi 4
+    ClkEna:= (((Data.Control shr 4) and 1) <> 0);
+  end;
+
   // Draw green / grayed rect
-  if ((Data.Control shr 4) and 1) <> 0
+  if ClkEna
     then Panel.Canvas.Brush.Color:= clLightGreen
     else Panel.Canvas.Brush.Color:= clDefault;
 
@@ -192,23 +233,32 @@ begin
 
   // Build text
   case ClkNo of
-    0..2: S:= 'GPIO Clock ' + IntToStr(ClkNo);
-    3:    S:= 'PCM Clock';
-    4:    S:= 'PWM Clock';
+    CLK_GPIO0..CLK_GPIO5: S:= 'GPIO Clock ' + IntToStr(ClkNo);
+    CLK_PWM:              S:= 'PWM Clock';
+    CLK_PCM:              S:= 'PCM Clock';
   end;
 
   // Enable bit (B4)
-  S:= S + #13#10 + 'Enable: ' +
-    LongToTrueFalse((Data.Control shr 4) and 1);
+  S:= S + #13#10 + 'Enable: ' + LongToTrueFalse(LongWord(ClkEna));
 
-  // Source (B0-B3)
+  // Source
   S:= S + #13#10 + 'Source: ';
-  case Data.Control and $0F of
-    1:   S:= S + 'OSC';
-    4:   S:= S + 'PLLA';
-    5:   S:= S + 'PLLC';
-    6:   S:= S + 'PLLD';
-    else S:= S + 'GND';
+
+  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
+  begin
+    // RaspberryPi 5
+    S:= S + '0x' + IntToHex((Data.Control and RP1_CLK_CTRL_SRCMASK) shr 5, 2);
+  end
+  else
+  begin
+    // RaspberryPi 1 to RaspberryPi 4
+    case Data.Control and $0F of
+      1:   S:= S + 'OSC';
+      4:   S:= S + 'PLLA';
+      5:   S:= S + 'PLLC';
+      6:   S:= S + 'PLLD';
+      else S:= S + 'GND';
+    end;
   end;
 
   // Calculate Frequency.
@@ -228,35 +278,59 @@ end;
 // We draw all the stuff ourself in a TPanel
 // -------------------------------------------------------------
 procedure TFormOverview.PanelPaint(Sender: TObject);
+const
+  PwmChanBcm: Array[0..7] of Integer =
+    (PWM_CHANNEL_0_0, PWM_CHANNEL_0_1,
+     PWM_CHANNEL_1_0, PWM_CHANNEL_1_1,
+     0,0,0,0);
+
+  PwmChanRp1: Array[0..7] of Integer =
+    (PWM_CHANNEL_0_0, PWM_CHANNEL_0_1, PWM_CHANNEL_0_2, PWM_CHANNEL_0_3,
+     PWM_CHANNEL_1_0, PWM_CHANNEL_1_1, PWM_CHANNEL_1_2, PWM_CHANNEL_1_3);
+
 var
   Cl,Gp,Pw: Integer;
   Gpio: TIntArray;
-  FirstGp: Boolean;
   PX,PY: Integer;
+  ClkCnt,PwmCnt: Integer;
+  PwmChan: Array[0..7] of Integer;
 
 begin
   // Erase background
   Panel.Canvas.Brush.Color:= clDefault;
   Panel.Canvas.FillRect(0, 0, Panel.Width, Panel.Height);
 
-  // Draw GPIO clocks 0-2 and all the GPIOs that are connected to the clocks
+  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
+  begin
+    // RaspberryPi 5
+    ClkCnt:= 6;
+    PwmCnt:= 8;
+    PwmChan:= PwmChanRp1;
+  end
+  else
+  begin
+    // RaspberryPi 1 to RaspberryPi 4
+    ClkCnt:= 3;
+    PwmCnt:= 4;
+    PwmChan:= PwmChanBcm;
+  end;
+
+  // Draw GPIO clocks 0-2/5 and all the GPIOs that are connected to the clocks
   PX:= 10;
   PY:= 10;
 
-  for Cl:= 0 to 2 do
+  for Cl:= 0 to ClkCnt-1 do
   begin
     DrawOneClock(Cl, PX, PY);
 
     Gpio:= PiGpio.GetGpiosForGpioClock(Cl);
     if Length(Gpio) > 0 then
     begin
-      FirstGp:= True;
       for Gp:= 0 to Length(Gpio)-1 do
       begin
-        DrawOneGpio(FirstGp, Gpio[Gp],
+        DrawOneGpio(Gp = 0, Gpio[Gp],
                     PX + ClkBoxDim.Width + Space4,
                     PY + (GpioBoxDim.Height * Gp) + (Space * Gp));
-        FirstGp:= False;
       end;
     end;
 
@@ -264,26 +338,28 @@ begin
   end;
 
 
-  // Draw PWM clock and 4 PWM channels and all the GPIOs that
+  // All PWM's are on the right side
+  PX:= 140 + ClkBoxDim.Width + GpioBoxDim.Width;
+  PY:= 10;
+
+  // Draw PWM clock and 4/8 PWM channels and all the GPIOs that
   // are connected to the PWM channels
-  DrawOneClock(4, PX, PY);
+  DrawOneClock(CLK_PWM, PX, PY);
 
   PX:= PX + ClkBoxDim.Width + Space4;
 
-  for Pw:= 0 to 3 do
+  for Pw:= 0 to (PwmCnt-1) do
   begin
     DrawOnePwmChannel(Pw = 0, Pw, PX, PY);
 
-    Gpio:= PiGpio.GetGpiosForPwm(Pw);
+    Gpio:= PiGpio.GetGpiosForPwm(PwmChan[Pw]);
     if Length(Gpio) > 0 then
     begin
-      FirstGp:= True;
       for Gp:= 0 to Length(Gpio)-1 do
       begin
-        DrawOneGpio(FirstGp, Gpio[Gp],
+        DrawOneGpio(Gp = 0, Gpio[Gp],
                     PX + PwmBoxDim.Width + Space4,
                     PY + (GpioBoxDim.Height * Gp) + (Space * Gp));
-        FirstGp:= False;
       end;
     end;
 
