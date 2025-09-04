@@ -20,11 +20,11 @@ To use the library you just copy the two files: **Gpio4Pi.pas** and **GpioDefs.p
 
 There is a brief description of all the functions in Gpio4Pi.pas.
 
-**Support:**</BR>
+**Support**</BR>
 Supports Raspberry Pi 1 to Raspberry Pi 5.
 Both 32 bit and 64 bit OS. Tested on RPI3B+ and RPI4B on both 32 and 64 bit. RPI5 only 64 bit.
 
-**Raspberry Pi 5:**</BR>
+**Raspberry Pi 5**</BR>
 For the moment the RPI5 are only supportet and testet in 64 bit OS.
 Because there is no documentation for the RP1 clock section,
 GPIO Clock and PWM Clock can only be used to a limited extent.
