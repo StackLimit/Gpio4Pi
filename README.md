@@ -177,7 +177,7 @@ and changes in the memory are presented graphically.
 All GPIOs are shown with Input, Output, Alt0..5 and Pull Up/Down.
 All Clock's and PWM's are displayed with all their values.
 
-At the moment the app are written for Raspberry Pi 4 and 5 and therefore are showing all 57 GPIO pins and four/eight PWM channels.
+At the moment the app are written for Raspberry Pi 4 and 5 and therefore are showing all 57/53 GPIO pins and four/eight PWM channels.
 
 Note that two files, baseunix.pas and unix.pas, also are included in this directory. 
 It is to be able to compile and test the application under Windows. 
