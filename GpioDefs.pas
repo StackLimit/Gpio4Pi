@@ -231,7 +231,7 @@ const
   GPIO_PERI_BASE_2835 = $20000;    // Pi 1
   GPIO_PERI_BASE_2836 = $3F000;    // Pi 2,3
   GPIO_PERI_BASE_2711 = $FE000;    // Pi 4
-  GPIO_PERI_BASE_2712 = $40000;    // Pi 5 <- Måske
+  GPIO_PERI_BASE_2712 = $40000;    // Pi 5 - Not Yet
 
   // Pi1-Pi4: Offsets into the memory interface, div $1000
   SYST_BASE  = $003;     // System Timer peripheral
