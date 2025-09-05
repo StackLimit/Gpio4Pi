@@ -174,7 +174,7 @@ PWM 1_1: Enable=No, Serial=No, Repeat=No, Silence=No, Polarity=No, UseFifo=No, M
 ## Gpio4PiMonitor
 This is a GUI application where the Pi's memory is scanned for changes all the time
 and changes in the memory are presented graphically.
-All GPIOs are shown with Input, Output, Alt0..5 and Pull Up/Down.
+All GPIOs are shown with Input, Output, Alt0..5/8 and Pull Up/Down.
 All Clock's and PWM's are displayed with all their values.
 
 At the moment the app are written for Raspberry Pi 4 and 5 and therefore are showing all 57/53 GPIO pins and four/eight PWM channels.
