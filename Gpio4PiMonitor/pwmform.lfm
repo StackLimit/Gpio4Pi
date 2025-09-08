@@ -6,8 +6,8 @@ object FormPwm: TFormPwm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Pulse Width Modulators'
-  Font.Height = -13
-  Font.Name = 'Segoe UI'
+  Font.Height = -12
+  Font.Name = 'Sans'
   OnCreate = FormCreate
   LCLVersion = '2.2.6.0'
 end

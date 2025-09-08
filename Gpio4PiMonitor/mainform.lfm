@@ -9,8 +9,8 @@ object FormMain: TFormMain
   Caption = 'Gpio4Pi Monitor'
   ClientHeight = 486
   ClientWidth = 657
-  Font.Height = -13
-  Font.Name = 'Segoe UI'
+  Font.Height = -12
+  Font.Name = 'Sans'
   Menu = MainMenu1
   OnCreate = FormCreate
   Position = poDefaultSizeOnly

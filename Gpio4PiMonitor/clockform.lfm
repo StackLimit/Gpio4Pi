@@ -6,11 +6,8 @@ object FormClocks: TFormClocks
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Clocks'
-  Font.CharSet = ANSI_CHARSET
-  Font.Height = -13
-  Font.Name = 'Segoe UI'
-  Font.Pitch = fpVariable
-  Font.Quality = fqDraft
+  Font.Height = -12
+  Font.Name = 'Sans'
   OnCreate = FormCreate
   LCLVersion = '2.2.6.0'
 end

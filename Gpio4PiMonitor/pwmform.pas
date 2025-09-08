@@ -152,7 +152,7 @@ end;
 
 
 const
-  BoxWidth  = 180;
+  BoxWidth  = 190;
   BoxHeight = 210;
   BoxDist   = 8;
 

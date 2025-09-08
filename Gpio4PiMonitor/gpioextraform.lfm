@@ -8,8 +8,8 @@ object FormGpioExtra: TFormGpioExtra
   Caption = 'Gpio 28 to 57'
   ClientHeight = 361
   ClientWidth = 340
-  Font.Height = -13
-  Font.Name = 'Segoe UI'
+  Font.Height = -12
+  Font.Name = 'Sans'
   OnCreate = FormCreate
   LCLVersion = '2.2.6.0'
   object PanelForComboBoxe: TPanel

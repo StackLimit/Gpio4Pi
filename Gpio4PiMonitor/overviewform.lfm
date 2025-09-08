@@ -9,8 +9,8 @@ object FormOverview: TFormOverview
   Caption = 'Overview Clocks and PWMs'
   ClientHeight = 626
   ClientWidth = 807
-  Font.Height = -13
-  Font.Name = 'Segoe UI'
+  Font.Height = -12
+  Font.Name = 'Sans'
   OnCreate = FormCreate
   Position = poDefaultPosOnly
   LCLVersion = '2.2.6.0'

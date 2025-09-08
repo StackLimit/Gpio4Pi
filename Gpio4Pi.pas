@@ -10,7 +10,7 @@ unit Gpio4Pi;
 // - Pi 2 (BCM2836) - I don't have a Pi 2
 // - Pi 3 (BCM2837) - Tested with Pi 3B+. Both 32 and 64 bit
 // - Pi 4 (BCM2711) - Tested with Pi 4B. Both 32 and 64 bit
-// - Pi 5 (BCM2712) - Tested with Pi 5. 64 bit
+// - Pi 5 (BCM2712) - Tested with Pi 5. Both 32 and 64 bit
 //
 // This unit / object uses ONLY GPIO pin numbers which directly refer
 // to BCM GPIO numbers.
@@ -277,7 +277,7 @@ type
     //       Pi 1-4: 12,13,18,19,40,41,45
     //       Pi 5:   12,13,14,15,18,19
     // Range: Pi 1-4: 2 - 4294967295 ($FFFFFFFF)
-    //        Pi 5:   1 - 4294967295 ($FFFFFFFF)
+    //        Pi 5:   2 - 4294967295 ($FFFFFFFF)
     // Return: True on success, False on error
     // ----------------------------------------
     function SetPwmRange(Gpin: Byte; Range: LongWord): Boolean;
@@ -305,10 +305,10 @@ type
     // Gpin: GPIO pin number, can be one of the following:
     //       Pi 1-4: 12,13,18,19,40,41,45
     //       Pi 5:   12,13,14,15,18,19
-    // DutyCycle: 0 to 100%
+    // DutyCycle: 0.00 to 100.00%
     // Return: True on success, False on error
     // ----------------------------------------
-    function SetPwmDutyCycle(Gpin: Byte; DutyCycle: Byte): Boolean;
+    function SetPwmDutyCycle(Gpin: Byte; DutyCycle: Single): Boolean;
 
     // ----------------------------------------
     // SetPwmMode:
@@ -784,13 +784,6 @@ end;
 
 function TPiGpio.IsCpuOk: Boolean;
 begin
-{$ifdef CPU32}
-  if FRPiModel.Cpu = PI_CPU_BCM2712 then
-  begin
-    FLastErrorStr:= 'No Support for BCM2712 in 32bit Mode';
-    Exit(False);
-  end;
-{$endif}
   Exit(True);
 end;
 
@@ -969,7 +962,7 @@ begin
       begin
         pGpio^:= RP1_GPIO_FSEL_GPIO;
         pPad^:=  RP1_PAD_DRV_4MA or RP1_PAD_SCHMITT or RP1_PAD_IE;
-        pRio^:=  pRio^ or (1 shl Gpin);
+        pRio^:=  pRio^ or LongWord(1 shl Gpin);
       end;
 
       PM_ALT0: pGpio^:= pGpio^ and (not RP1_GPIO_FSEL_NONE);
@@ -999,7 +992,7 @@ begin
         // Set Alt0 / Alt3 Mode
         pGpio^:= Alt or RP1_GPIO_FILTER;
         pPad^:=  RP1_PAD_DRV_4MA or RP1_PAD_SCHMITT or RP1_PAD_PDE or RP1_PAD_IE;
-        pRio^:=  pRio^ or (1 shl Gpin);
+        pRio^:=  pRio^ or LongWord(1 shl Gpin);
 
         // Set PWM Mode. ONLY MarkSpace Mode.
         Result:= SetPwmMode(Gpin, PWM_MODE_MS);
@@ -1030,7 +1023,7 @@ begin
         // Set Alt0 / Alt3 / Alt8 Mode
         pGpio^:= pGpio^ and (not RP1_GPIO_FSEL_NONE) or Alt or RP1_GPIO_FILTER;
         pPad^:=  RP1_PAD_DRV_4MA or RP1_PAD_SCHMITT or RP1_PAD_PDE or RP1_PAD_IE;
-        pRio^:=  pRio^ or (1 shl Gpin);
+        pRio^:=  pRio^ or LongWord(1 shl Gpin);
       end;
 
       PM_GPIO_OFF:
@@ -1534,7 +1527,7 @@ begin
       else PiFreq:= CLK_OSC_FREQ;       // Pi 1-3.  4.688 Hz to 9.6 MHz
 
     // If we are going fast, use PLLD source clock to avoid jitter on the clock
-    if Freq > (PiFreq div 10) then
+    if Freq > LongInt(PiFreq div 10) then
     begin
       ClkSrc:= CLK_SRC_PLLD;
 
@@ -1546,7 +1539,7 @@ begin
     // Calculate Divisor and Fraction
     // From the manual: Freq:= Source / (DIVI + DIVF / 1024??) in MASH-1 mode
     // It seems to be: Freq:= Source / (DIVI + DIVF / 4096) in MASH-1 mode
-    DivI:= PiFreq div Freq;
+    DivI:= PiFreq div LongWord(Freq);
     DivF:= Round(((PiFreq / Freq) - DivI) * 4096);  // Round up here
     if DivF > 4095 then DivF:= 4095;
 
@@ -1635,7 +1628,7 @@ begin
 }
     // Calculate Divisor and Fraction
     // Fraction don't semms to work!!!!
-    DivI:= PiFreq div Freq;
+    DivI:= PiFreq div LongWord(Freq);
     DivF:= Round(((PiFreq / Freq) - DivI) * (Rp1ClkDef.MaxDivI+1));  // Round up here
     if DivF > Rp1ClkDef.MaxDivI+1 then DivF:= Rp1ClkDef.MaxDivI;
 
@@ -1648,7 +1641,7 @@ begin
     if (DivI >  Rp1ClkDef.MaxDivI) then
     begin
       FLastErrorStr:= 'Requested frequency too low, lowest freq = ' +
-                      IntToStr((PiFreq div Rp1ClkDef.MaxDivI)+1);
+                      IntToStr(QWord(PiFreq div Rp1ClkDef.MaxDivI)+1);
       Exit(False);
     end;
 
@@ -1771,7 +1764,7 @@ begin
     end;
 
     if ClkData.Divisor > 0 then
-      Result:= Trunc((PiFreq / (ClkData.Divisor + (ClkData.Fract / 4096))) + 0.5);  // Round up
+      Result:= Trunc((PiFreq / (ClkData.Divisor + (ClkData.Fract / 4096))) + 0.5);  // Round down
   end;
 
   // RaspberryPi 5
@@ -1789,7 +1782,7 @@ begin
     else Exit;
 
     if ClkData.Divisor > 0 then
-      Result:= Trunc((PiFreq / (ClkData.Divisor + (ClkData.Fract / (Rp1ClkDef.MaxDivI+1)))) + 0.5);  // Round up
+      Result:= Trunc((PiFreq / (ClkData.Divisor + (ClkData.Fract / (Rp1ClkDef.MaxDivI+1)))) + 0.5);  // Round down
   end;
 end;
 
@@ -1866,7 +1859,7 @@ begin
     if pPwm = Nil then Exit;
 
     Case Gpin of
-      12,18,40:
+      12,18{,40}:
       begin
         Mask:= PWM0_ENABLE or PWM0_SERIAL or PWM0_REPEATFF or PWM0_SILENCE or
                PWM0_REVPOLAR or PWM0_USEFIFO or PWM0_MS_Mode;
@@ -1876,7 +1869,7 @@ begin
           else pPwm^:= (pPwm^ and (not Mask)) or PWM0_ENABLE;
       end;
 
-      13,19,41,45:
+      13,19{,41,45}:
       begin
         Mask:= PWM1_ENABLE or PWM1_SERIAL or PWM1_REPEATFF or PWM1_SILENCE or
                PWM1_REVPOLAR or PWM1_USEFIFO or PWM1_MS_Mode;
@@ -1963,6 +1956,9 @@ begin
       15,19: PwmReg:= RP1_PWM_CHAN3_RANGE;
       else   PwmReg:= 0;
     end;
+
+    // On Pi5 the count starts at 0 and increments on each cycle until it reaches RANGE
+    if Range > 1 then Range:= Range - 1;
   end;
 
   pPwm:= GetPwmBasePtr(Gpin, PwmReg);
@@ -2013,7 +2009,7 @@ end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.SetPwmDutyCycle(Gpin: Byte; DutyCycle: Byte): Boolean;
+function TPiGpio.SetPwmDutyCycle(Gpin: Byte; DutyCycle: Single): Boolean;
 var
   pPwm: ^LongWord;
   PwmReg: Word;
@@ -2052,10 +2048,14 @@ begin
     Exit;
   end;
 
-  Value:= (pPwm^ * DutyCycle) div 100;
+  Value:= Trunc((pPwm^ * DutyCycle) / 100);
 
-  // Pi5: We have to compensate for something? So 100% can be constant ON
-  if (FRPiModel.Cpu = PI_CPU_BCM2712) and (DutyCycle >= 50) then Value:= Value + 1;
+  // On Pi5 the count starts at 0 and increments on each cycle until it reaches RANGE
+  if FRPiModel.Cpu = PI_CPU_BCM2712 then
+  begin
+    if (Value > 0) and (Value < $FFFFFFFF) then
+      Value:= Value + 1;
+  end;
 
   Result:= SetPwmValue(Gpin, Value);
 end;
@@ -2151,6 +2151,9 @@ begin
       Data.Rp1Channels[I].Rp1Range:=   pPwm^; pPwm:= pPwm + 1;
       Data.Rp1Channels[I].Rp1Phase:=   pPwm^; pPwm:= pPwm + 1;
       Data.Rp1Channels[I].Rp1Duty:=    pPwm^; pPwm:= pPwm + 1;
+      if (Data.Rp1Channels[I].Rp1Range > 0) and
+         (Data.Rp1Channels[I].Rp1Range < $FFFFFFFF) then
+        Data.Rp1Channels[I].Rp1Range:= Data.Rp1Channels[I].Rp1Range + 1;
     end;
 
     Result:= True;

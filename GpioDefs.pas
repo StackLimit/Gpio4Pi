@@ -134,15 +134,15 @@ const
   PI_MAKER_EMBEST2 = 4;
   PI_MAKER_STADIUM = 5;
 
-  // Memory Size
-  PI_MEM_256  = 0;
-  PI_MEM_512  = 1;
-  PI_MEM_1024 = 2;
-  PI_MEM_2048 = 3;
-  PI_MEM_4096 = 4;
-  PI_MEM_8192 = 5;
-
-
+{ // Memory Size
+  PI_MEM_256   = 0;
+  PI_MEM_512   = 1;
+  PI_MEM_1024  = 2;
+  PI_MEM_2048  = 3;
+  PI_MEM_4096  = 4;
+  PI_MEM_8192  = 5;
+  PI_MEM_16384 = 6;
+}
   PiModelNames: Array[0..26] of String =
   ( 'Model A',    //  0
     'Model B',    //  1
@@ -208,7 +208,7 @@ const
     2048,  // 3
     4096,  // 4
     8192,  // 5
-       0,  // 6
+   16384,  // 6
        0); // 7
 
 
@@ -226,12 +226,12 @@ const
   PAGE_SIZE_RP1_GPIO = $30000;    // Pi5 /dev/gpiomem0
 
 {$ifdef CPU32}
-  // 32 BIT address space
+  // 32 Bit address space
   // Memory addresses Pi 1 to 5
-  GPIO_PERI_BASE_2835 = $20000;    // Pi 1
-  GPIO_PERI_BASE_2836 = $3F000;    // Pi 2,3
-  GPIO_PERI_BASE_2711 = $FE000;    // Pi 4
-  GPIO_PERI_BASE_2712 = $40000;    // Pi 5 - Not Yet
+  GPIO_PERI_BASE_2835 = $0020000;    // Pi 1
+  GPIO_PERI_BASE_2836 = $003F000;    // Pi 2,3
+  GPIO_PERI_BASE_2711 = $00FE000;    // Pi 4
+  GPIO_PERI_BASE_2712 = $1F00000;    // Pi 5
 
   // Pi1-Pi4: Offsets into the memory interface, div $1000
   SYST_BASE  = $003;     // System Timer peripheral
@@ -245,7 +245,7 @@ const
 {$endif}
 
 {$ifdef CPU64}
-  // 64 BIT address space
+  // 64 Bit address space
   // Memory addresses Pi 1 to 5
   GPIO_PERI_BASE_2835 = $0020000000;    // Pi 1
   GPIO_PERI_BASE_2836 = $003F000000;    // Pi 2,3
@@ -261,8 +261,9 @@ const
   SPI_BASE   = $204000;     // Serial Peripheral Interface (SPI) or Synchronous Serial Protocol (SSP)
   PWM_BASE   = $20C000;     // Pulse Width Modulator (PWM) peripherals
   AUX_BASE   = $215000;     // Auxiliary peripherals: One mini UART (UART1) and two SPI masters (SPI1 & SPI2)
+{$endif}
 
-  // Pi5: RP1 chip address and Offsets
+  // Pi5: RP1 chip Offsets. Both 32 Bit and 64 Bit
   RP1_CLOCK_BASE = $018000;
   RP1_UART_BASE  = $030000;
   RP1_PWM_BASE   = $098000;   // PWM 0 Block
@@ -271,7 +272,7 @@ const
   RP1_GPIO2_OFFS = $008000;   // GPIO 34 to 53  (RP1_GPIO_BASE + RP1_GPIO2_OFFS)
   RP1_RIO_BASE   = $0E0000;   // RIO 1/2 have same offsets as GPIO
   RP1_PADS_BASE  = $0F0000;   // PADS 1/2 have same offsets as GPIO
-{$endif}
+
 
 
   // -----------------------------------------------
@@ -442,18 +443,18 @@ const
   // Pi5: Clock fields for all clocks
   RP1_CLK_CTRL_ENABLE  = 1 shl 11;      // 0 = Stop Clock, 1 = Start Clock
   RP1_CLK_CTRL_SRCMASK = $000001E0;     // Mask for Source (4 bits)
-  RP1_CLK_CTRL_BUSY    = $10000000;     // Clock busy bit?
+  RP1_CLK_CTRL_BUSY    = $10000000;     // Clock busy bit
 
   // Pi5: Clock sources and frequncy
 type
   TRp1Clk = record
-    SrcLo:   Integer;   // Source for Low freq.
+    SrcLo:   LongWord;  // Source for Low freq.
     FreqLo:  LongWord;  // Low freq. in Hz
-    SrcHi:   Integer;   // Source for High freq.
+    SrcHi:   LongWord;  // Source for High freq.
     FreqHi:  LongWord;  // High freq. in Hz
-    MaxDivI: Integer;   // Max. I Divisor
-    MinDivI: Integer;   // Min. I Divisor in high freq.
-    OEmask:  LongInt;   // Mask for RP1_GPCLK_OE_CTRL
+    MaxDivI: LongWord;  // Max. I Divisor
+    MinDivI: LongWord;  // Min. I Divisor in high freq.
+    OEmask:  LongWord;  // Mask for RP1_GPCLK_OE_CTRL
   end;
   TRp1Clks = Array[CLK_GPIO0..CLK_UART] of TRp1Clk;
 
@@ -574,6 +575,15 @@ const
   RP1_PWM_CHANCTRL_INVERT       = $00000008;
   RP1_PWM_CHANCTRL_MODE_MASK    = $00000007;   // Mask for Mode
   RP1_PWM_CHANCTRL_MODE_MS      = $00000001;   // Trailing-edge mark-space PWM modulation
+// MODE PWM generation mode
+// 0x0: Generates 0
+// 0x1: Trailing-edge mark-space PWM modulation
+// 0x2: Phase-correct mark-space PWM modulation
+// 0x3: Pulse-density encoded output
+// 0x4: MSB Serialiser output.
+// 0x5: Pulse position modulated output - a single highpulse is transmitted per cycle.
+// 0x6: Leading-edge mark-space PWM modulation
+// 0x7: LSB Serialiser output.
 
 
   // -----------------------------------------------
