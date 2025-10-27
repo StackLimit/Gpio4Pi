@@ -13,7 +13,8 @@ unit ClockForm;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  GpioDefs;
 
 
 type
@@ -26,7 +27,7 @@ type
     LabelH:   array[0..8] of TLabel;
     BoxCount: Integer;
   public
-    procedure UpdateClock(ClkNo: Integer);
+    procedure UpdateClock(ClkNo: TClockNumber);
   end;
 
 var
@@ -37,11 +38,11 @@ implementation
 {$R *.lfm}
 
 uses
-  Common, GpioDefs, Gpio4Pi, RasPiMem;
+  Common, Gpio4Pi, RasPiMem;
 
 
 
-procedure TFormClocks.UpdateClock(ClkNo: Integer);
+procedure TFormClocks.UpdateClock(ClkNo: TClockNumber);
 var
   Txt: String;
   Freq: LongWord;
@@ -146,7 +147,8 @@ const
 
 procedure TFormClocks.FormCreate(Sender: TObject);
 var
-  I,BoxNo: Integer;
+  BoxNo: Integer;
+  ClkNo: TClockNumber;
 
 procedure CreateClockBox;
 var
@@ -242,7 +244,7 @@ begin
   Self.Width:=  BoxDist + (3 * (BoxWidth+BoxDist));
   Self.Height:= BoxDist + ((BoxCount div 3) * (BoxHeight+BoxDist));
 
-  for I:= 0 to 8 do UpdateClock(I);
+  for ClkNo:= CLK_GPIO0 to CLK_PCM do UpdateClock(ClkNo);
 end;
 
 

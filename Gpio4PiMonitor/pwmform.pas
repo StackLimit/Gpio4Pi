@@ -41,7 +41,7 @@ type
     LabelH:   array[0..7] of TLabel;
     BoxCount: Integer;
   public
-    procedure UpdatePwmBlock(PwmNo: Integer);
+    procedure UpdatePwmBlock(PwmNo: TPwmGroupNumber);
   end;
 
 var
@@ -57,7 +57,7 @@ uses
 
 
 
-procedure TFormPwm.UpdatePwmBlock(PwmNo: Integer);
+procedure TFormPwm.UpdatePwmBlock(PwmNo: TPwmGroupNumber);
 var
 //  LabCtl1, LabCtl2: TLabel;
   Data: TPwmData;
@@ -67,7 +67,7 @@ var
 begin
   if not PiGpio.GetRawPwmData(PwmNo, Data{%H-}) then exit;
 
-  Idx:= PwmNo * (BoxCount div 2);
+  Idx:= Ord(PwmNo) * (BoxCount div 2);
 
   if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
   begin
@@ -159,7 +159,7 @@ const
 
 procedure TFormPwm.FormCreate(Sender: TObject);
 var
-  I,BoxNo: Integer;
+  BoxNo: Integer;
 
 procedure CreatePwmBox;
 var
@@ -244,7 +244,8 @@ begin
   Self.Width:=  BoxDist + ((BoxCount div 2) * (BoxWidth+BoxDist));
   Self.Height:= BoxDist + (2 * (BoxHeight+BoxDist));
 
-  for I:= 0 to 1 do UpdatePwmBlock(I);
+  UpdatePwmBlock(PWM_GROUP_0);
+  UpdatePwmBlock(PWM_GROUP_1);
 end;
 
 

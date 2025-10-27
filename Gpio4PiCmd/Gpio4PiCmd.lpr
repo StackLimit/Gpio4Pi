@@ -94,7 +94,7 @@ end;
 
 procedure TGpio4PiCmd.ShowAllClock;
 var
-  ClkNo: Integer;
+  ClkNo: TClockNumber;
   Clock: TGpioClk;
   Freq: LongWord;
   Gpios: TIntArray;
@@ -102,7 +102,7 @@ var
 begin
   WriteLn;
   WriteLn('---------- All CLOCKs ----------');
-  for ClkNo:= 0 to 8 do
+  for ClkNo:= CLK_GPIO0 to CLK_PCM do
   begin
     if PiGpio.GetRawClockData(ClkNo, Clock{%H-}) then
     begin
@@ -200,13 +200,13 @@ var
   Gpios: TIntArray;
 
   // Raspberry Pi 1-4
-procedure ShowOnePwmPi1_4(Group: Integer);
+procedure ShowOnePwmPi1_4(Group: TPwmGroupNumber);
 begin
   if not PiGpio.GetRawPwmData(Group, Pwm) then exit;
 
   // Channel 1 Control
   if Pwm.Cpu = PI_CPU_BCM2711
-    then S:= 'PWM ' + IntToStr(Group) + '_0: '
+    then S:= 'PWM ' + IntToStr(Ord(Group)) + '_0: '
     else S:= 'PWM 0: ';
 
   S:= S +
@@ -224,14 +224,14 @@ begin
   WriteLn(S);
 
   // Print connected GPIOs
-  Gpios:= PiGpio.GetGpiosForPwm((Group * 4) + 0);
+  Gpios:= PiGpio.GetGpiosForPwm(TPwmChannelNumber((Ord(Group) * 4) + 0));
   S:= ConnectedClocksToStr(Gpios);
   WriteLn(S);
   WriteLn;
 
   // Channel 2 Control
   if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2711
-    then S:= 'PWM ' + IntToStr(Group) + '_1: '
+    then S:= 'PWM ' + IntToStr(Ord(Group)) + '_1: '
     else S:= 'PWM 1: ';
 
   S:= S +
@@ -249,21 +249,21 @@ begin
   WriteLn(S);
 
   // Print connected GPIOs
-  Gpios:= PiGpio.GetGpiosForPwm((Group * 4) + 1);
+  Gpios:= PiGpio.GetGpiosForPwm(TPwmChannelNumber((Ord(Group) * 4) + 1));
   S:= ConnectedClocksToStr(Gpios);
   WriteLn(S);
   WriteLn;
 end;
 
 // Raspberry Pi 5
-procedure ShowOnePwmPi5(Group: Integer);
+procedure ShowOnePwmPi5(Group: TPwmGroupNumber);
 var
   Chan: Integer;
 
 begin
   if not PiGpio.GetRawPwmData(Group, Pwm) then exit;
 
-  S:= 'PWM ' + IntToStr(Group) + ' Common Data: ' +
+  S:= 'PWM ' + IntToStr(Ord(Group)) + ' Common Data: ' +
       'GlobalCtrl=0x' + IntToHex(Pwm.Rp1GlobCtrl, 8) +
       ', FifoCtrl=0x' + IntToHex(Pwm.Rp1FifoCtrl, 8) +
       ', CommonRange=0x' + IntToHex(Pwm.Rp1ComRange, 8);
@@ -277,7 +277,7 @@ begin
 
   for Chan:= 0 to 3 do
   begin
-    S:= 'PWM ' + IntToStr(Group) + '_' + IntToStr(Chan) + ': Mode=';
+    S:= 'PWM ' + IntToStr(Ord(Group)) + '_' + IntToStr(Chan) + ': Mode=';
     case Pwm.Rp1Channels[Chan].Rp1Control and $07 of
       $00: S:= S + 'Off';
       $01: S:= S + 'Trailing-edge mark-space';
@@ -297,7 +297,7 @@ begin
     WriteLn(S);
 
     // Print connected GPIOs
-    Gpios:= PiGpio.GetGpiosForPwm((Group * 4) + Chan);
+    Gpios:= PiGpio.GetGpiosForPwm(TPwmChannelNumber((Ord(Group) * 4) + Chan));
     S:= ConnectedClocksToStr(Gpios);
     WriteLn(S);
     WriteLn;
@@ -336,7 +336,7 @@ end;
 procedure TGpio4PiCmd.DoRun;
 var
   Ok: Boolean;
-  Val: Byte;
+  Val: TPinLevel;
   PiInfo: TRPiModelInfo;
 
 begin
@@ -437,7 +437,7 @@ begin
   if (ParamCount = 2) and (Params[1] = 'read') then
   begin
     Val:= PiGpio.GpioRead(StrToIntDef(Params[2], -1));
-    WriteLn('GPIO Read, Value = ' + IntToStr(Val));
+    WriteLn('GPIO Read, Value = ' + IntToStr(Ord(Val)));
   end
 
   else

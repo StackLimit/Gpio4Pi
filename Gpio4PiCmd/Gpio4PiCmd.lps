@@ -7,37 +7,37 @@
       <Unit0>
         <Filename Value="Gpio4PiCmd.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="302"/>
-        <CursorPos X="33" Y="397"/>
-        <UsageCount Value="74"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="310"/>
+        <CursorPos X="35" Y="318"/>
+        <UsageCount Value="75"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="gpioextrastuff.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GpioExtraStuff"/>
-        <EditorIndex Value="1"/>
-        <CursorPos X="27" Y="8"/>
-        <UsageCount Value="74"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="91"/>
+        <CursorPos X="15" Y="125"/>
+        <UsageCount Value="75"/>
       </Unit1>
       <Unit2>
         <Filename Value="../GpioDefs.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="451"/>
-        <CursorPos X="52" Y="378"/>
-        <UsageCount Value="74"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="44"/>
+        <CursorPos X="12" Y="50"/>
+        <UsageCount Value="75"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="../Gpio4Pi.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="2041"/>
-        <CursorPos X="47" Y="2056"/>
-        <UsageCount Value="74"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="1484"/>
+        <CursorPos X="30" Y="1492"/>
+        <UsageCount Value="75"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
@@ -47,7 +47,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="198"/>
         <CursorPos X="8" Y="207"/>
-        <UsageCount Value="39"/>
+        <UsageCount Value="40"/>
       </Unit4>
       <Unit5>
         <Filename Value="/usr/share/fpcsrc/3.2.0/rtl/inc/systemh.inc"/>
@@ -91,119 +91,95 @@
         <UsageCount Value="19"/>
       </Unit10>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
+    <JumpHistory Count="22" HistoryIndex="21">
       <Position1>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="565" Column="11" TopLine="557"/>
+        <Filename Value="../GpioDefs.pas"/>
+        <Caret Line="378" Column="52" TopLine="367"/>
       </Position1>
       <Position2>
         <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="564" Column="2" TopLine="557"/>
+        <Caret Line="1487" Column="26" TopLine="1475"/>
       </Position2>
       <Position3>
         <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="113" Column="13" TopLine="107"/>
+        <Caret Line="1491" Column="3" TopLine="1473"/>
       </Position3>
       <Position4>
         <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="512" Column="13" TopLine="500"/>
+        <Caret Line="854" Column="3" TopLine="834"/>
       </Position4>
       <Position5>
         <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="514" Column="45" TopLine="500"/>
+        <Caret Line="955" Column="14" TopLine="940"/>
       </Position5>
       <Position6>
         <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="117" Column="12" TopLine="100"/>
+        <Caret Line="1107" Column="15" TopLine="1092"/>
       </Position6>
       <Position7>
         <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="399" Column="50" TopLine="381"/>
+        <Caret Line="1144" Column="13" TopLine="1130"/>
       </Position7>
       <Position8>
-        <Filename Value="Gpio4PiCmd.lpr"/>
-        <Caret Line="397" Column="33" TopLine="378"/>
+        <Filename Value="../Gpio4Pi.pas"/>
+        <Caret Line="1179" Column="13" TopLine="1165"/>
       </Position8>
       <Position9>
         <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="1247" Column="5" TopLine="1205"/>
+        <Caret Line="2053" Column="30" TopLine="2042"/>
       </Position9>
       <Position10>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="843" TopLine="828"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="97" Column="22" TopLine="94"/>
       </Position10>
       <Position11>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="1251" Column="2" TopLine="1239"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="105" Column="35" TopLine="92"/>
       </Position11>
       <Position12>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="1090" Column="54" TopLine="1078"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="203" Column="49" TopLine="225"/>
       </Position12>
       <Position13>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="838" TopLine="833"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="209" Column="42" TopLine="196"/>
       </Position13>
       <Position14>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="946" TopLine="935"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="227" Column="72" TopLine="215"/>
       </Position14>
       <Position15>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="839" Column="69" TopLine="828"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="234" Column="42" TopLine="222"/>
       </Position15>
       <Position16>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="851" Column="40" TopLine="832"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="252" Column="62" TopLine="240"/>
       </Position16>
       <Position17>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="855" TopLine="836"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="259" Column="47" TopLine="255"/>
       </Position17>
       <Position18>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="1191" Column="46" TopLine="1176"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="266" Column="32" TopLine="256"/>
       </Position18>
       <Position19>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="191" Column="40" TopLine="181"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="280" Column="37" TopLine="268"/>
       </Position19>
       <Position20>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="854" Column="39" TopLine="835"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="300" Column="46" TopLine="288"/>
       </Position20>
       <Position21>
-        <Filename Value="../GpioDefs.pas"/>
-        <Caret Line="378" Column="52" TopLine="367"/>
+        <Filename Value="Gpio4PiCmd.lpr"/>
+        <Caret Line="339" Column="17" TopLine="330"/>
       </Position21>
       <Position22>
         <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="1487" Column="26" TopLine="1475"/>
+        <Caret Line="2056" Column="24" TopLine="2042"/>
       </Position22>
-      <Position23>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="1491" Column="3" TopLine="1473"/>
-      </Position23>
-      <Position24>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="854" Column="3" TopLine="834"/>
-      </Position24>
-      <Position25>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="955" Column="14" TopLine="940"/>
-      </Position25>
-      <Position26>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="1107" Column="15" TopLine="1092"/>
-      </Position26>
-      <Position27>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="1144" Column="13" TopLine="1130"/>
-      </Position27>
-      <Position28>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="1179" Column="13" TopLine="1165"/>
-      </Position28>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

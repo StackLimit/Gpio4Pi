@@ -8,6 +8,6 @@ object FormClocks: TFormClocks
   Caption = 'Clocks'
   Font.Height = -12
   Font.Name = 'Sans'
+  LCLVersion = '4.2.0.0'
   OnCreate = FormCreate
-  LCLVersion = '2.2.6.0'
 end

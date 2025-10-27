@@ -9,7 +9,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="65" Y="14"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="55"/>
       </Unit0>
       <Unit1>
         <Filename Value="mainform.pas"/>
@@ -18,9 +18,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
-        <TopLine Value="231"/>
-        <CursorPos X="54" Y="243"/>
-        <UsageCount Value="51"/>
+        <TopLine Value="119"/>
+        <CursorPos X="12" Y="135"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -28,10 +28,9 @@
         <Filename Value="raspimem.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="RasPiMem"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="161"/>
-        <CursorPos X="38" Y="176"/>
-        <UsageCount Value="51"/>
+        <EditorIndex Value="8"/>
+        <CursorPos X="16" Y="13"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
@@ -41,16 +40,16 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="44"/>
         <CursorPos X="27" Y="9"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="55"/>
       </Unit3>
       <Unit4>
         <Filename Value="gpiocheckbox.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GPIOcheckbox"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="32"/>
-        <CursorPos X="27" Y="13"/>
-        <UsageCount Value="51"/>
+        <TopLine Value="75"/>
+        <CursorPos X="55" Y="83"/>
+        <UsageCount Value="55"/>
       </Unit4>
       <Unit5>
         <Filename Value="clockform.pas"/>
@@ -60,8 +59,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ClockForm"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="26" Y="8"/>
-        <UsageCount Value="51"/>
+        <TopLine Value="226"/>
+        <CursorPos X="33" Y="237"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit5>
@@ -72,10 +72,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PwmForm"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="150"/>
-        <CursorPos X="17" Y="155"/>
-        <UsageCount Value="51"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="152"/>
+        <CursorPos X="3" Y="162"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit6>
@@ -86,30 +86,30 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="OverviewForm"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="28"/>
-        <CursorPos X="60" Y="46"/>
-        <UsageCount Value="51"/>
+        <TopLine Value="339"/>
+        <CursorPos X="57" Y="349"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="../GpioDefs.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="58"/>
-        <CursorPos X="66" Y="77"/>
-        <UsageCount Value="51"/>
+        <TopLine Value="82"/>
+        <CursorPos Y="79"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="../Gpio4Pi.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="270"/>
-        <CursorPos X="52" Y="278"/>
-        <UsageCount Value="51"/>
+        <TopLine Value="1322"/>
+        <CursorPos X="39" Y="1851"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit9>
       <Unit10>
@@ -119,9 +119,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="GpioExtraForm"/>
-        <EditorIndex Value="5"/>
-        <CursorPos X="43" Y="17"/>
-        <UsageCount Value="51"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="84"/>
+        <CursorPos X="21" Y="97"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit10>
@@ -129,10 +130,11 @@
         <Filename Value="gpioextrastuff.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GpioExtraStuff"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="103"/>
-        <CursorPos X="60" Y="12"/>
-        <UsageCount Value="51"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="297"/>
+        <CursorPos X="51" Y="315"/>
+        <UsageCount Value="55"/>
+        <Loaded Value="True"/>
       </Unit11>
       <Unit12>
         <Filename Value="/usr/share/fpcsrc/3.2.2/rtl/inc/typshrdh.inc"/>
@@ -169,127 +171,107 @@
         <UsageCount Value="9"/>
       </Unit16>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="25" HistoryIndex="24">
       <Position1>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="68" Column="3" TopLine="52"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="99" Column="5" TopLine="92"/>
       </Position1>
       <Position2>
-        <Filename Value="../Gpio4Pi.pas"/>
-        <Caret Line="1487" Column="20" TopLine="1472"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="121" Column="22" TopLine="108"/>
       </Position2>
       <Position3>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="73" Column="18" TopLine="48"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="124" TopLine="112"/>
       </Position3>
       <Position4>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="224" TopLine="206"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="320" Column="66" TopLine="308"/>
       </Position4>
       <Position5>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="73" Column="16" TopLine="59"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="234" Column="52" TopLine="230"/>
       </Position5>
       <Position6>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="215" Column="45" TopLine="198"/>
+        <Filename Value="../GpioDefs.pas"/>
+        <Caret Line="82" Column="20" TopLine="73"/>
       </Position6>
       <Position7>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="220" TopLine="206"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="285" TopLine="278"/>
       </Position7>
       <Position8>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="230" Column="16" TopLine="215"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="318" TopLine="311"/>
       </Position8>
       <Position9>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="229" Column="39" TopLine="209"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="347" Column="48" TopLine="336"/>
       </Position9>
       <Position10>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="220" Column="50" TopLine="205"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="349" Column="43" TopLine="336"/>
       </Position10>
       <Position11>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="230" Column="15" TopLine="213"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="288" Column="14" TopLine="278"/>
       </Position11>
       <Position12>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="229" Column="68" TopLine="214"/>
+        <Filename Value="overviewform.pas"/>
+        <Caret Line="349" Column="57" TopLine="339"/>
       </Position12>
       <Position13>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="236" TopLine="217"/>
+        <Filename Value="mainform.pas"/>
+        <Caret Line="115" Column="59" TopLine="103"/>
       </Position13>
       <Position14>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="235" TopLine="219"/>
+        <Filename Value="mainform.pas"/>
+        <Caret Line="131" Column="5" TopLine="119"/>
       </Position14>
       <Position15>
         <Filename Value="raspimem.pas"/>
-        <Caret Line="26" Column="2" TopLine="10"/>
+        <Caret Line="65" Column="23" TopLine="62"/>
       </Position15>
       <Position16>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="82" Column="80" TopLine="74"/>
+        <Filename Value="raspimem.pas"/>
+        <Caret Line="100" TopLine="88"/>
       </Position16>
       <Position17>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="84" Column="15" TopLine="74"/>
+        <Filename Value="raspimem.pas"/>
+        <Caret Line="105" Column="31" TopLine="92"/>
       </Position17>
       <Position18>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="16" Column="77"/>
+        <Filename Value="raspimem.pas"/>
+        <Caret Line="42" Column="41" TopLine="28"/>
       </Position18>
       <Position19>
-        <Filename Value="overviewform.pas"/>
-        <Caret Line="218" Column="55" TopLine="199"/>
+        <Filename Value="raspimem.pas"/>
+        <Caret Line="113" Column="30" TopLine="92"/>
       </Position19>
       <Position20>
-        <Filename Value="../GpioDefs.pas"/>
-        <Caret Line="77" Column="66" TopLine="65"/>
+        <Filename Value="raspimem.pas"/>
+        <Caret Line="135" Column="49" TopLine="123"/>
       </Position20>
       <Position21>
-        <Filename Value="overviewform.pas"/>
-        <Caret Line="140" Column="15" TopLine="129"/>
+        <Filename Value="raspimem.pas"/>
+        <Caret Line="155" Column="56" TopLine="145"/>
       </Position21>
       <Position22>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="218" Column="69" TopLine="194"/>
+        <Filename Value="raspimem.pas"/>
+        <Caret Line="174" Column="28" TopLine="43"/>
       </Position22>
       <Position23>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="16" Column="13"/>
+        <Filename Value="mainform.pas"/>
+        <Caret Line="22" Column="26" TopLine="7"/>
       </Position23>
       <Position24>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="218" Column="51" TopLine="198"/>
+        <Filename Value="gpioextraform.pas"/>
+        <Caret Line="95" Column="30" TopLine="83"/>
       </Position24>
       <Position25>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="260" Column="3" TopLine="237"/>
+        <Filename Value="gpioextraform.pas"/>
+        <Caret Line="97" Column="21" TopLine="84"/>
       </Position25>
-      <Position26>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="261" TopLine="237"/>
-      </Position26>
-      <Position27>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="252" TopLine="224"/>
-      </Position27>
-      <Position28>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="204" Column="43" TopLine="197"/>
-      </Position28>
-      <Position29>
-        <Filename Value="pwmform.pas"/>
-        <Caret Line="16" Column="12"/>
-      </Position29>
-      <Position30>
-        <Filename Value="raspimem.pas"/>
-        <Caret Line="127" Column="9" TopLine="115"/>
-      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

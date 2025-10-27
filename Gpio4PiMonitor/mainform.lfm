@@ -7,14 +7,14 @@ object FormMain: TFormMain
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Gpio4Pi Monitor'
-  ClientHeight = 486
+  ClientHeight = 514
   ClientWidth = 657
   Font.Height = -12
   Font.Name = 'Sans'
   Menu = MainMenu1
-  OnCreate = FormCreate
   Position = poDefaultSizeOnly
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '4.2.0.0'
+  OnCreate = FormCreate
   object MemoText: TMemo
     Left = 336
     Height = 452
@@ -29,8 +29,8 @@ object FormMain: TFormMain
   end
   object StatusBar: TStatusBar
     Left = 0
-    Height = 24
-    Top = 462
+    Height = 23
+    Top = 491
     Width = 657
     Panels = <    
       item

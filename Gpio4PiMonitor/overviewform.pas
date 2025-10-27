@@ -13,7 +13,8 @@ unit OverviewForm;
 interface
 
 uses
-  Classes, Types, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, ComCtrls;
+  Classes, Types, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, ComCtrls,
+  GpioDefs;
 
 
 type
@@ -26,9 +27,9 @@ type
     ClkBoxDim: TSize;
     PwmBoxDim: TSize;
     GpioBoxDim: TSize;
-    procedure DrawOnePwmChannel(First: Boolean; Chan, X, Y: Integer);
+    procedure DrawOnePwmChannel(First: Boolean; Chan: TPwmChannelNumber; X, Y: Integer);
     procedure DrawOneGpio(First: Boolean; Gpio, X, Y: Integer);
-    procedure DrawOneClock(ClkNo, X, Y: Integer);
+    procedure DrawOneClock(ClkNo: TClockNumber; X, Y: Integer);
   public
     procedure UpdateView;
   end;
@@ -41,7 +42,7 @@ implementation
 {$R *.lfm}
 
 uses
-  Common, GpioDefs, Gpio4Pi, RasPiMem, GPIOcheckbox;
+  Common, Gpio4Pi, RasPiMem, GPIOcheckbox;
 
 const
   Space = 10;           // Distance between boxes
@@ -56,38 +57,45 @@ const
 // Chan:  Channel number 0-3/7
 // X,Y:   Position to draw the channel
 // -------------------------------------------------------------
-procedure TFormOverview.DrawOnePwmChannel(First: Boolean; Chan, X, Y: Integer);
+procedure TFormOverview.DrawOnePwmChannel(First: Boolean; Chan: TPwmChannelNumber; X, Y: Integer);
 var
   S: String;
   Style: TTextStyle;
-  Freq,Rng,Dat: LongWord;
+  GrpIdx: TPwmGroupNumber;
+  ChanIdx: Integer;
+  Mask,Freq,Rng,Dat: LongWord;
   Proc: Integer;
   PwmData: TPwmData;
   PwmEna: Boolean;
 
 begin
-  FillChar(PwmData{%H-}, SizeOf(PwmData), 0);
+  case Chan of
+    PWM_CHANNEL_0_0: begin Mask:= PWM0_ENABLE; ChanIdx:= 0; GrpIdx:= PWM_GROUP_0; end;
+    PWM_CHANNEL_0_1: begin Mask:= PWM1_ENABLE; ChanIdx:= 1; GrpIdx:= PWM_GROUP_0; end;
+    PWM_CHANNEL_0_2: begin Mask:= PWM0_ENABLE; ChanIdx:= 2; GrpIdx:= PWM_GROUP_0; end;
+    PWM_CHANNEL_0_3: begin Mask:= PWM0_ENABLE; ChanIdx:= 3; GrpIdx:= PWM_GROUP_0; end;
+    PWM_CHANNEL_1_0: begin Mask:= PWM0_ENABLE; ChanIdx:= 0; GrpIdx:= PWM_GROUP_1; end;
+    PWM_CHANNEL_1_1: begin Mask:= PWM1_ENABLE; ChanIdx:= 1; GrpIdx:= PWM_GROUP_1; end;
+    PWM_CHANNEL_1_2: begin Mask:= PWM0_ENABLE; ChanIdx:= 2; GrpIdx:= PWM_GROUP_1; end;
+    PWM_CHANNEL_1_3: begin Mask:= PWM0_ENABLE; ChanIdx:= 3; GrpIdx:= PWM_GROUP_1; end;
+    else exit;
+  end;
 
-  if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
+  if not PiGpio.GetRawPwmData(GrpIdx, PwmData{%H-}) then exit;
+
+  if PwmData.Cpu = PI_CPU_BCM2712 then
   begin
     // RaspberryPi 5
-    if not PiGpio.GetRawPwmData(Chan div 4, PwmData) then exit;
-
-    PwmEna:= ((PwmData.Rp1Channels[Chan mod 4].Rp1Control and RP1_PWM_CHANCTRL_MODE_MASK) <> 0);
-    Rng:=  PwmData.Rp1Channels[Chan mod 4].Rp1Range;
-    Dat:=  PwmData.Rp1Channels[Chan mod 4].Rp1Duty;
+    PwmEna:= ((PwmData.Rp1Channels[ChanIdx].Rp1Control and RP1_PWM_CHANCTRL_MODE_MASK) <> 0);
+    Rng:=    PwmData.Rp1Channels[ChanIdx].Rp1Range;
+    Dat:=    PwmData.Rp1Channels[ChanIdx].Rp1Duty;
   end
   else
   begin
     // RaspberryPi 1 to RaspberryPi 4
-    if not PiGpio.GetRawPwmData(Chan div 2, PwmData) then exit;
-
-    if Chan in [0,2]
-      then PwmEna:= ((PwmData.Control and PWM0_ENABLE) <> 0)
-      else PwmEna:= ((PwmData.Control and PWM1_ENABLE) <> 0);
-
-    Rng:=  PwmData.Channels[Chan mod 2].Range;
-    Dat:=  PwmData.Channels[Chan mod 2].Data;
+    PwmEna:= ((PwmData.Control and Mask) <> 0);
+    Rng:=    PwmData.Channels[ChanIdx].Range;
+    Dat:=    PwmData.Channels[ChanIdx].Data;
   end;
 
   // Draw green / grayed rect
@@ -106,29 +114,15 @@ begin
                     X + PwmBoxDim.Width +  Space2, Y + Space);
 
   S:= 'PWM ';
-  if PwmData.Cpu = PI_CPU_BCM2712 then
-  begin
-    // RaspberryPi 5
-    case Chan of
-      0: S:= S+ '0_0';
-      1: S:= S+ '0_1';
-      2: S:= S+ '0_2';
-      3: S:= S+ '0_3';
-      4: S:= S+ '1_0';
-      5: S:= S+ '1_1';
-      6: S:= S+ '1_2';
-      7: S:= S+ '1_3';
-    end;
-  end
-  else
-  begin
-    // RaspberryPi 1 to RaspberryPi 4
-    case Chan of
-      0: S:= S+ '0_0';
-      1: S:= S+ '0_1';
-      2: S:= S+ '1_0';
-      3: S:= S+ '1_1';
-    end;
+  case Chan of
+    PWM_CHANNEL_0_0: S:= S+ '0_0';
+    PWM_CHANNEL_0_1: S:= S+ '0_1';
+    PWM_CHANNEL_0_2: S:= S+ '0_2';
+    PWM_CHANNEL_0_3: S:= S+ '0_3';
+    PWM_CHANNEL_1_0: S:= S+ '1_0';
+    PWM_CHANNEL_1_1: S:= S+ '1_1';
+    PWM_CHANNEL_1_2: S:= S+ '1_2';
+    PWM_CHANNEL_1_3: S:= S+ '1_3';
   end;
 
   Freq:= 0;
@@ -200,7 +194,7 @@ end;
 // ClkNo: GpioClock 0-5, PWM Clock, PCM Clock
 // X,Y:   Position to draw the Clock
 // -------------------------------------------------------------
-procedure TFormOverview.DrawOneClock(ClkNo, X, Y: Integer);
+procedure TFormOverview.DrawOneClock(ClkNo: TClockNumber; X, Y: Integer);
 var
   S: String;
   Style: TTextStyle;
@@ -233,7 +227,7 @@ begin
 
   // Build text
   case ClkNo of
-    CLK_GPIO0..CLK_GPIO5: S:= 'GPIO Clock ' + IntToStr(ClkNo);
+    CLK_GPIO0..CLK_GPIO5: S:= 'GPIO Clock ' + IntToStr(Ord(ClkNo));
     CLK_PWM:              S:= 'PWM Clock';
     CLK_PCM:              S:= 'PCM Clock';
   end;
@@ -279,21 +273,23 @@ end;
 // -------------------------------------------------------------
 procedure TFormOverview.PanelPaint(Sender: TObject);
 const
-  PwmChanBcm: Array[0..7] of Integer =
+  PwmChanBcm: Array[0..7] of TPwmChannelNumber =
     (PWM_CHANNEL_0_0, PWM_CHANNEL_0_1,
      PWM_CHANNEL_1_0, PWM_CHANNEL_1_1,
-     0,0,0,0);
+     PWM_CHANNEL_0_0, PWM_CHANNEL_0_0, PWM_CHANNEL_0_0, PWM_CHANNEL_0_0);
 
-  PwmChanRp1: Array[0..7] of Integer =
+  PwmChanRp1: Array[0..7] of TPwmChannelNumber =
     (PWM_CHANNEL_0_0, PWM_CHANNEL_0_1, PWM_CHANNEL_0_2, PWM_CHANNEL_0_3,
      PWM_CHANNEL_1_0, PWM_CHANNEL_1_1, PWM_CHANNEL_1_2, PWM_CHANNEL_1_3);
 
 var
-  Cl,Gp,Pw: Integer;
+  Cl: TClockNumber;
+  Gp: Integer;
+  Pw: Integer;
   Gpio: TIntArray;
   PX,PY: Integer;
   ClkCnt,PwmCnt: Integer;
-  PwmChan: Array[0..7] of Integer;
+  PwmChan: Array[0..7] of TPwmChannelNumber;
 
 begin
   // Erase background
@@ -319,7 +315,7 @@ begin
   PX:= 10;
   PY:= 10;
 
-  for Cl:= 0 to ClkCnt-1 do
+  for Cl:= CLK_GPIO0 to TClockNumber(ClkCnt-1) do
   begin
     DrawOneClock(Cl, PX, PY);
 
@@ -350,7 +346,7 @@ begin
 
   for Pw:= 0 to (PwmCnt-1) do
   begin
-    DrawOnePwmChannel(Pw = 0, Pw, PX, PY);
+    DrawOnePwmChannel(Pw = 0, PwmChan[Pw], PX, PY);
 
     Gpio:= PiGpio.GetGpiosForPwm(PwmChan[Pw]);
     if Length(Gpio) > 0 then

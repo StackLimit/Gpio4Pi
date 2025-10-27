@@ -13,23 +13,21 @@ unit GpioExtraStuff;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils, GpioDefs;
 
 
 function LongToTrueFalse(L: LongWord): String;
 function LongToYesNo(L: LongWord): String;
-function GpioModeToShortStr(Mode: Integer): String;
-function GpioModeToLongStr(Cpu, Gpio, Mode: Integer): String;
-function GpioPullToShortStr(Pull: Integer): String;
-function GpioPullToLongStr(Pull: Integer): String;
-function GpioLevelToLongStr(Level: Integer): String;
-function GpioAltModeToStr(Cpu, Gpio, AltMode: Integer): String;
+function GpioModeToShortStr(Mode: TPinMode): String;
+function GpioModeToLongStr(Cpu, Gpio:Integer; Mode: TPinMode): String;
+function GpioPullToShortStr(Pull: TPullMode): String;
+function GpioPullToLongStr(Pull: TPullMode): String;
+function GpioLevelToLongStr(Level: TPinLevel): String;
+function GpioAltModeToStr(Cpu, Gpio: Integer; AltMode: TPinMode): String;
 
 
 implementation
 
-uses
-  GpioDefs;
 
 
 // ---------------------------------------------------------
@@ -52,7 +50,7 @@ end;
 
 // ---------------------------------------------------------
 
-function GpioModeToShortStr(Mode: Integer): String;
+function GpioModeToShortStr(Mode: TPinMode): String;
 begin
   case Mode of
     PM_GPIO_OFF: Result:= 'Off';
@@ -73,7 +71,7 @@ end;
 
 // ---------------------------------------------------------
 
-function GpioModeToLongStr(Cpu, Gpio, Mode: Integer): String;
+function GpioModeToLongStr(Cpu, Gpio: Integer; Mode: TPinMode): String;
 begin
   case Mode of
     PM_GPIO_OFF: Result:= 'Off';
@@ -94,7 +92,7 @@ end;
 
 // ---------------------------------------------------------
 
-function GpioPullToShortStr(Pull: Integer): String;
+function GpioPullToShortStr(Pull: TPullMode): String;
 begin
   case Pull of
     PUD_OFF:  Result:= ',NoPul';
@@ -106,7 +104,7 @@ end;
 
 // ---------------------------------------------------------
 
-function GpioPullToLongStr(Pull: Integer): String;
+function GpioPullToLongStr(Pull: TPullMode): String;
 begin
   case Pull of
     PUD_OFF:  Result:= 'No PullUp/Down';
@@ -118,12 +116,12 @@ end;
 
 // ---------------------------------------------------------
 
-function GpioLevelToLongStr(Level: Integer): String;
+function GpioLevelToLongStr(Level: TPinLevel): String;
 begin
   case Level of
-    0:   Result:= 'Low';
-    1:   Result:= 'High';
-    else Result:= 'Undefined';
+    PIN_LOW:  Result:= 'Low';
+    PIN_HIGH: Result:= 'High';
+    else      Result:= 'Undefined';
   end;
 end;
 
@@ -315,38 +313,41 @@ const
 
 
 
-function GpioAltModeToStr(Cpu, Gpio, AltMode: Integer): String;
+function GpioAltModeToStr(Cpu, Gpio: Integer; AltMode: TPinMode): String;
+var
+  Alt: Integer;
+
 begin
   case AltMode of
-    PM_ALT0: AltMode:= 0;
-    PM_ALT1: AltMode:= 1;
-    PM_ALT2: AltMode:= 2;
-    PM_ALT3: AltMode:= 3;
-    PM_ALT4: AltMode:= 4;
-    PM_ALT5: AltMode:= 5;
-    PM_ALT6: AltMode:= 6;
-    PM_ALT7: AltMode:= 7;
-    PM_ALT8: AltMode:= 8;
-    else     AltMode:= -1;
+    PM_ALT0: Alt:= 0;
+    PM_ALT1: Alt:= 1;
+    PM_ALT2: Alt:= 2;
+    PM_ALT3: Alt:= 3;
+    PM_ALT4: Alt:= 4;
+    PM_ALT5: Alt:= 5;
+    PM_ALT6: Alt:= 6;
+    PM_ALT7: Alt:= 7;
+    PM_ALT8: Alt:= 8;
+    else     Alt:= -1;
   end;
 
   if Cpu = PI_CPU_BCM2712 then
   begin
-    if (Gpio in [0..57]) and (AltMode in [0..8])
-      then Result:= GpioAltModePi5Def[Gpio, AltMode]
+    if (Gpio in [0..57]) and (Alt in [0..8])
+      then Result:= GpioAltModePi5Def[Gpio, Alt]
       else Result:= 'Unknown Alt Mode';
   end
   else
   if Cpu = PI_CPU_BCM2711 then
   begin
-    if (Gpio in [0..57]) and (AltMode in [0..5])
-      then Result:= GpioAltModePi4Def[Gpio, AltMode]
+    if (Gpio in [0..57]) and (Alt in [0..5])
+      then Result:= GpioAltModePi4Def[Gpio, Alt]
       else Result:= 'Unknown Alt Mode';
   end
   else
   begin
-    if (Gpio in [0..53]) and (AltMode in [0..5])
-      then Result:= GpioAltModePi1to3Def[Gpio, AltMode]
+    if (Gpio in [0..53]) and (Alt in [0..5])
+      then Result:= GpioAltModePi1to3Def[Gpio, Alt]
       else Result:= 'Unknown Alt Mode';
   end;
 end;

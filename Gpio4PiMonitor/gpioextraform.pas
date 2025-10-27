@@ -74,9 +74,9 @@ begin
   Hnt:= Hnt + ', ' + GpioPullToLongStr(Data.Pull);
 
   case Data.Level of
-    0: ChBox.Checked:= False;
-    1: ChBox.Checked:= True;
-    else Hnt:= Hnt + ', State=' + IntToStr(Data.Level);
+    PIN_LOW:  ChBox.Checked:= False;
+    PIN_HIGH: ChBox.Checked:= True;
+    else Hnt:= Hnt + ', State=' + IntToStr(Ord(Data.Level));
   end;
 
   // Set Mode (In,Out,etc.) in Caption

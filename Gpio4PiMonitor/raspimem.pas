@@ -61,7 +61,8 @@ var
 // -------------------------------------------------------------
 procedure TMemThread.ScanGPIOClockMem;
 var
-  I, ClkNo: Integer;
+  I: Integer;
+  ClkNo: TClockNumber;
   Data: TGpioClk;
 
 begin
@@ -69,8 +70,6 @@ begin
 
   for I:= Low(OldGpioClk) to High(OldGpioClk) do
   begin
-    ClkNo:= $FF;
-
     if PiGpio.RPiModelInfo.Cpu = PI_CPU_BCM2712 then
     begin
       // RaspberryPi 5
@@ -84,6 +83,7 @@ begin
         6: ClkNo:= CLK_PWM;
         7: ClkNo:= CLK_UART;
         8: ClkNo:= CLK_PCM;
+        else exit;
       end;
     end
     else
@@ -96,20 +96,21 @@ begin
         3: ClkNo:= CLK_PWM;
         4: ClkNo:= CLK_UART;
         5: ClkNo:= CLK_PCM;
+        else exit;
       end;
     end;
 
     if PiGpio.GetRawClockData(ClkNo, Data{%H-}) then
     begin
-      if (Data.Control <> OldGpioClk[ClkNo].Control) or
-         (Data.Divisor <> OldGpioClk[ClkNo].Divisor) or
-         (Data.Fract   <> OldGpioClk[ClkNo].Fract) then
+      if (Data.Control <> OldGpioClk[Ord(ClkNo)].Control) or
+         (Data.Divisor <> OldGpioClk[Ord(ClkNo)].Divisor) or
+         (Data.Fract   <> OldGpioClk[Ord(ClkNo)].Fract) then
       begin
         // Clock Changed, update Clock Form and Overview
         FormClocks.UpdateClock(ClkNo);
         FormOverview.UpdateView;
 
-        OldGpioClk[ClkNo]:= Data;
+        OldGpioClk[Ord(ClkNo)]:= Data;
       end;
     end;
   end;
@@ -131,7 +132,7 @@ begin
 
   for Grp:= Low(OldPwmData) to High(OldPwmData) do
   begin
-    if PiGpio.GetRawPwmData(Grp, Data{%H-}) then
+    if PiGpio.GetRawPwmData(TPwmGroupNumber(Grp), Data{%H-}) then
     begin
       if Data.Cpu = PI_CPU_BCM2712 then
       begin
@@ -151,7 +152,7 @@ begin
              Changed then
           begin
             // PWM channel changed, update PWM Form and Overview
-            FormPwm.UpdatePwmBlock(Grp);
+            FormPwm.UpdatePwmBlock(TPwmGroupNumber(Grp));
             FormOverview.UpdateView;
 
             OldPwmData[Grp]:= Data;
@@ -173,7 +174,7 @@ begin
              Changed then
           begin
             // PWM channel changed, update PWM Form and Overview
-            FormPwm.UpdatePwmBlock(Grp);
+            FormPwm.UpdatePwmBlock(TPwmGroupNumber(Grp));
             FormOverview.UpdateView;
 
             OldPwmData[Grp]:= Data;

@@ -11,9 +11,9 @@ object FormOverview: TFormOverview
   ClientWidth = 807
   Font.Height = -12
   Font.Name = 'Sans'
-  OnCreate = FormCreate
   Position = poDefaultPosOnly
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '4.2.0.0'
+  OnCreate = FormCreate
   object Panel: TPanel
     Left = 0
     Height = 626

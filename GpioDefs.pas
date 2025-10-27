@@ -27,66 +27,81 @@ type
 // Definitions used in Gpio4Pi calls
 //
 // -----------------------------------------------------
-const
+type
   // SetPinMode() and GetGpioPinData(): Pin Modes
-  PM_INPUT      =  $00;   // ------------------------------------
-  PM_OUTPUT     =  $01;   // These constants must not be changed as they have
-  PM_ALT5       =  $02;   // the same value as the FSEL_xx constants.
-  PM_ALT4       =  $03;   // And Yes, PM_ALT0...PM_ALT5 IS meant to be defined like that.
-  PM_ALT0       =  $04;   //
-  PM_ALT1       =  $05;   //
-  PM_ALT2       =  $06;   //
-  PM_ALT3       =  $07;   //
-  PM_ALT6       =  $08;   // ALT6 to ALT 8 are for Pi5 (RP1)
-  PM_ALT7       =  $09;   //
-  PM_ALT8       =  $0A;   // SetPinMode() and GetGpioPinData()
-  PM_GPIO_OFF   =  $1F;   // ------------------------------------
-  PM_PWMOUT_MS  =  $20;   // Only SetPinMode(). Not returned by GetGpioPinData()
-  PM_PWMOUT_BAL =  $21;   // Only SetPinMode(). Not returned by GetGpioPinData()
-  PM_GPIO_CLOCK =  $22;   // Only SetPinMode(). Not returned by GetGpioPinData()
+  TPinMode =
+   (PM_INPUT      =  $00,   // Pi1-5
+    PM_OUTPUT     =  $01,   // Pi1-5
+    PM_ALT0       =  $02,   // Pi1-5
+    PM_ALT1       =  $03,   // Pi1-5
+    PM_ALT2       =  $04,   // Pi1-5
+    PM_ALT3       =  $05,   // Pi1-5
+    PM_ALT4       =  $06,   // Pi1-5
+    PM_ALT5       =  $07,   // Pi1-5
+    PM_ALT6       =  $08,   // Pi5 (RP1)
+    PM_ALT7       =  $09,   // Pi5 (RP1)
+    PM_ALT8       =  $0A,   // Pi5 (RP1)
+    PM_GPIO_OFF   =  $1F,   // Pi5 (RP1)
+    PM_PWMOUT_MS  =  $20,   // Only SetPinMode(). Not returned by GetGpioPinData()
+    PM_PWMOUT_BAL =  $21,   // Only SetPinMode(). Not returned by GetGpioPinData()
+    PM_GPIO_CLOCK =  $22);  // Only SetPinMode(). Not returned by GetGpioPinData()
 
   // GpioRead() and GpioWrite(): Pin Levels
-  PIN_LOW  = 0;
-  PIN_HIGH = 1;
+  TPinLevel =
+   (PIN_LOW   = 0,
+    PIN_HIGH  = 1,
+    PIN_UNDEF = $FF);
 
   // SetPullMode(): Pull Up/Down/None
-  PUD_OFF  = 0;
-  PUD_DOWN = 1;
-  PUD_UP   = 2;
+  TPullMode =
+   (PUD_OFF  = 0,
+    PUD_DOWN = 1,
+    PUD_UP   = 2);
 
   // SetPwmMode(): PWM Modes
-  PWM_MODE_OFF = 0;     // Turn PWM Off
-  PWM_MODE_BAL = 1;     // BCM Default, Balanced
-  PWM_MODE_MS  = 2;     // Use Mark/Space for PWM
+  TPwmMode =
+   (PWM_MODE_OFF = 0,     // Turn PWM Off
+    PWM_MODE_BAL = 1,     // BCM Default, Balanced
+    PWM_MODE_MS  = 2);    // Use Mark/Space for PWM
 
   // GetGpiosForGpioClock(): Find all the GPIOs that are assigned to a GpioClock
   // GetRawClockData():      Returns the Raw Control and Divisor for a clock
   // GetClockFrequency():    Calculate Frequency of a clock
-  CLK_GPIO0 = 0;
-  CLK_GPIO1 = 1;
-  CLK_GPIO2 = 2;
-  CLK_GPIO3 = 3;      // Pi5
-  CLK_GPIO4 = 4;      // Pi5
-  CLK_GPIO5 = 5;      // Pi5
-  CLK_PWM   = 6;
-  CLK_UART  = 7;
-  CLK_PCM   = 8;
+  TClockNumber =
+   (CLK_GPIO0 = 0,      // Pi1-5
+    CLK_GPIO1 = 1,      // Pi1-5
+    CLK_GPIO2 = 2,      // Pi1-5
+    CLK_GPIO3 = 3,      // Pi5
+    CLK_GPIO4 = 4,      // Pi5
+    CLK_GPIO5 = 5,      // Pi5
+    CLK_PWM   = 6,      // Pi1-5
+    CLK_UART  = 7,      // Pi1-5
+    CLK_PCM   = 8);     // Pi1-4
 
   // GetGpiosForPwm(): Find all the GPIOs that are assigned to a PWM channel
-  PWM_CHANNEL_0_0 = 0;    // Group 0 - Channel 0    Pi 1,2,3,4,5
-  PWM_CHANNEL_0_1 = 1;    // Group 0 - Channel 1    Pi 1,2,3,4,5
-  PWM_CHANNEL_0_2 = 2;    // Group 0 - Channel 2    Pi 5
-  PWM_CHANNEL_0_3 = 3;    // Group 0 - Channel 3    Pi 5
-  PWM_CHANNEL_1_0 = 4;    // Group 1 - Channel 0    Pi 4,5
-  PWM_CHANNEL_1_1 = 5;    // Group 1 - Channel 1    Pi 4,5
-  PWM_CHANNEL_1_2 = 6;    // Group 1 - Channel 2    Pi 5
-  PWM_CHANNEL_1_3 = 7;    // Group 1 - Channel 3    Pi 5
+  TPwmChannelNumber =
+   (PWM_CHANNEL_0_0 = 0,    // Group 0 - Channel 0    Pi 1,2,3,4,5
+    PWM_CHANNEL_0_1 = 1,    // Group 0 - Channel 1    Pi 1,2,3,4,5
+    PWM_CHANNEL_0_2 = 2,    // Group 0 - Channel 2    Pi 5
+    PWM_CHANNEL_0_3 = 3,    // Group 0 - Channel 3    Pi 5
+    PWM_CHANNEL_1_0 = 4,    // Group 1 - Channel 0    Pi 4,5
+    PWM_CHANNEL_1_1 = 5,    // Group 1 - Channel 1    Pi 4,5
+    PWM_CHANNEL_1_2 = 6,    // Group 1 - Channel 2    Pi 5
+    PWM_CHANNEL_1_3 = 7);   // Group 1 - Channel 3    Pi 5
 
   // GetRawPwmData(): Returns the Raw data for a PWM group with 2/4 channels
-  PWM_GROUP_0 = 0;        // Group 0    Pi 1,2,3,4,5
-  PWM_GROUP_1 = 1;        // Group 1    Pi 4,5
+  TPwmGroupNumber =
+   (PWM_GROUP_0 = 0,        // Group 0    Pi 1,2,3,4,5
+    PWM_GROUP_1 = 1);       // Group 1    Pi 4,5
 
 
+
+// -----------------------------------------------------
+//
+// Other Global RPI def's
+//
+// -----------------------------------------------------
+const
   // PI model types and version numbers
   PI_MODEL_A       = 0;
   PI_MODEL_B       = 1;

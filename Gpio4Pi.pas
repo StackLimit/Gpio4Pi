@@ -43,9 +43,9 @@ uses
 type
   // Pi1-Pi5: One GPIO returned by GetGpioPinData()
   TGpioPin = Record
-    Mode:  Byte;     // Input, Output, Alt0 ... Alt8
-    Pull:  Byte;     // Pull Up/Down. ONLY on Pi4 and Pi5
-    Level: Byte;     // 0 or 1
+    Mode:  TPinMode;     // Input, Output, Alt0 ... Alt8
+    Pull:  TPullMode;    // Pull Up/Down. ONLY on Pi4 and Pi5
+    Level: TPinLevel;    // Low or High
   end;
 
   // Pi1-Pi5: One Clock
@@ -123,8 +123,8 @@ type
     function IsGpioPinOk(Gpin: Byte): Boolean;
     function IsCpuOk: Boolean;
     function UsingGpioMemCheck: Boolean;
-    function GetPwmBasePtr(Gpin: Byte; Ofs: Word): Pointer;
-    function SetBaseClock(ClkNo: Integer; Freq: Integer): Boolean;
+    function GetPwmBasePtr(Gpin: Byte; Ofs: Word; AllPins: Boolean): Pointer;
+    function SetBaseClock(ClkNo: TClockNumber; Freq: Integer): Boolean;
   public
     // ----------------------------------------
     // Create:
@@ -147,7 +147,7 @@ type
     //       PM_GPIO_OFF (Pi5)
     // Return: True on success, False on error
     // ----------------------------------------
-    function SetPinMode(Gpin, Mode: Byte): Boolean;
+    function SetPinMode(Gpin: Byte; Mode: TPinMode): Boolean;
 
     // ----------------------------------------
     // SetPullMode:
@@ -156,7 +156,7 @@ type
     // Mode: PUD_OFF, PUD_DOWN, PUD_UP
     // Return: True on success, False on error
     // ----------------------------------------
-    function SetPullMode(Gpin, Mode: Byte): Boolean;
+    function SetPullMode(Gpin: Byte; Mode: TPullMode): Boolean;
 
     // ----------------------------------------
     // GpioWrite:
@@ -166,7 +166,7 @@ type
     // Only makes sense if the pin is set to Output mode
     // Return: True on success, False on error
     // ----------------------------------------
-    function GpioWrite(Gpin, Value: Byte): Boolean;
+    function GpioWrite(Gpin: Byte; Value: TPinLevel): Boolean;
 
     // ----------------------------------------
     // GpioRead:
@@ -175,7 +175,7 @@ type
     // Gpin: GPIO pin number, 0-53/0-57/0-27 depending on CPU
     // Return: PIN_LOW,PIN_HIGH,0,1. $FF on Error
     // ----------------------------------------
-    function GpioRead(Gpin: Byte): Byte;
+    function GpioRead(Gpin: Byte): TPinLevel;
 
     // ----------------------------------------
     // GetGpioPinData:
@@ -216,7 +216,7 @@ type
     // GpioClk: CLK_GPIO_0, CLK_GPIO_1, CLK_GPIO_2
     // Return: Array of GPIO's. Empty = No GPIOs assigned
     // -------------------------------------------------------------
-    function GetGpiosForGpioClock(GpioClk: Integer): TIntArray;
+    function GetGpiosForGpioClock(GpioClk: TClockNumber): TIntArray;
 
     // ----------------------------------------
     // SetPwmMasterClock:
@@ -259,7 +259,7 @@ type
     // Consult the BCM manual for description of Control words
     // Return: True on success, False on error
     // -----------------------------------------------
-    function GetRawClockData(ClkNo: Integer; var Data: TGpioClk): Boolean;
+    function GetRawClockData(ClkNo: TClockNumber; var Data: TGpioClk): Boolean;
 
     // -----------------------------------------------
     // GetClockFrequency:
@@ -267,7 +267,7 @@ type
     // ClkNo: CLK_GPIO0, CLK_GPIO1, CLK_GPIO2, CLK_PWM, CLK_UART, CLK_PCM
     // Return: The frequency in Hz
     // -----------------------------------------------
-    function GetClockFrequency(ClkNo: Integer): LongWord;
+    function GetClockFrequency(ClkNo: TClockNumber): LongWord;
 
     // ----------------------------------------
     // SetPwmRange:
@@ -325,7 +325,7 @@ type
     //       Pi 5:   Only PWM_MODE_OFF, PWM_MODE_MS is supported
     // Return: True on success, False on error
     // ----------------------------------------
-    function SetPwmMode(Gpin: Byte; Mode: Byte): Boolean;
+    function SetPwmMode(Gpin: Byte; Mode: TPwmMode): Boolean;
 
     // -------------------------------------------------------------
     // GetGpiosForPwm:
@@ -337,7 +337,7 @@ type
     //                  PWM_CHANNEL_1_0, PWM_CHANNEL_1_1, PWM_CHANNEL_1_2, PWM_CHANNEL_1_3
     // Return: Array of GPIO's. Empty = No GPIOs assigned
     // -------------------------------------------------------------
-    function GetGpiosForPwm(PwmChan: Integer): TIntArray;
+    function GetGpiosForPwm(PwmChan: TPwmChannelNumber): TIntArray;
 
     // -----------------------------------------------
     // GetRawPwmData:
@@ -367,7 +367,7 @@ type
     // Consult the BCM / RP1 manual for description of a PWM block
     // Return: True on success, False on error
     // -----------------------------------------------
-    function GetRawPwmData(PwmGroup: Integer; var Data: TPwmData): Boolean;
+    function GetRawPwmData(PwmGroup: TPwmGroupNumber; var Data: TPwmData): Boolean;
 
     // ----------------------------------------
     // Return Info about the RaspBerry Pi
@@ -850,7 +850,7 @@ end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.SetPinMode(Gpin, Mode: Byte): Boolean;
+function TPiGpio.SetPinMode(Gpin: Byte; Mode: TPinMode): Boolean;
 var
   fSel, Shift, Alt: Byte;
   pGpio, pRio, pPad: ^LongWord;
@@ -893,11 +893,11 @@ begin
         if UsingGpioMem then Exit(False);
 
         Case Gpin of
-          12,13,40,41,45: Alt:= FSEL_ALT0;
-          18,19:          Alt:= FSEL_ALT5;
+          12,13{,40,41,45}: Alt:= FSEL_ALT0;
+          18,19:            Alt:= FSEL_ALT5;
           else
           begin
-            FLastErrorStr:= 'PWM Output only on GPIO 12,13,18,19,40,41,45';
+            FLastErrorStr:= 'PWM Output only on GPIO 12,13,18,19';
             Exit(False);
           end;
         end;
@@ -918,11 +918,11 @@ begin
 
         // Load Alt group
         Case Gpin of
-          4,5,6,32,34,42,43,44: Alt:= FSEL_ALT0;
-          20,21:                Alt:= FSEL_ALT5;
+          4,5,6{,32,34,42,43,44}: Alt:= FSEL_ALT0;
+          20,21:                  Alt:= FSEL_ALT5;
           else
           begin
-            FLastErrorStr:= 'GPIO Clock only on GPIO 4,5,6,20,21,32,34,42,43,44';
+            FLastErrorStr:= 'GPIO Clock only on GPIO 4,5,6,20,21';
             Exit(False);
           end;
         end;
@@ -1036,7 +1036,7 @@ end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.SetPullMode(Gpin, Mode: Byte): Boolean;
+function TPiGpio.SetPullMode(Gpin: Byte; Mode: TPullMode): Boolean;
 var
   fSel, Shift, Pud: Byte;
   pPud, pPudClk: ^LongWord;
@@ -1111,7 +1111,7 @@ end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.GpioWrite(Gpin, Value: Byte): Boolean;
+function TPiGpio.GpioWrite(Gpin: Byte; Value: TPinLevel): Boolean;
 var
   pGpio: ^LongWord;
   BankOffs: LongWord;
@@ -1123,7 +1123,7 @@ begin
   // RaspberryPi 1 to RaspberryPi 4
   if FRPiModel.Cpu in [PI_CPU_BCM2835,PI_CPU_BCM2836,PI_CPU_BCM2837,PI_CPU_BCM2711] then
   begin
-    if (Value and $01) = 0
+    if (Ord(Value) and $01) = 0
       then pGpio:= SetPtr(PGpioMem, GPCLR0 + ((Gpin shr 5) shl 2))   // (Gpin Div 32) * 4
       else pGpio:= SetPtr(PGpioMem, GPSET0 + ((Gpin shr 5) shl 2));
 
@@ -1136,7 +1136,7 @@ begin
   begin
     Rp1SetOffsAndPin(BankOffs{%H-}, Gpin);
 
-    if (Value and $01) = 0
+    if (Ord(Value) and $01) = 0
       then pGpio:= SetPtr(PRP1RioMem, BankOffs, RP1_RIO_CLR_OFFS)
       else pGpio:= SetPtr(PRP1RioMem, BankOffs, RP1_RIO_SET_OFFS);
 
@@ -1147,14 +1147,14 @@ end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.GpioRead(Gpin: Byte): Byte;
+function TPiGpio.GpioRead(Gpin: Byte): TPinLevel;
 var
   pGpio: ^LongWord;
   BankOffs: LongWord;
 
 begin
-  if not IsGpioPinOk(Gpin) then Exit($FF);
-  Result:= $FF;
+  if not IsGpioPinOk(Gpin) then Exit(PIN_UNDEF);
+  Result:= PIN_UNDEF;
 
   // RaspberryPi 1 to RaspberryPi 4
   if FRPiModel.Cpu in [PI_CPU_BCM2835,PI_CPU_BCM2836,PI_CPU_BCM2837,PI_CPU_BCM2711] then
@@ -1219,9 +1219,7 @@ begin
       Shift:= (Gpin mod 16) * 2;    // 0-15 pin shift. *2 = 2 bits
 
       pGpio:= SetPtr(PGpioMem, GPPUPPDN0, fSel);
-      Data.Pull:= (pGpio^ shr Shift) and 3;
-
-      case Data.Pull of
+      case ((pGpio^ shr Shift) and 3) of
         %0010: Data.Pull:= PUD_DOWN;
         %0001: Data.Pull:= PUD_UP;
         else   Data.Pull:= PUD_OFF;
@@ -1232,8 +1230,8 @@ begin
     // State, High / Low
     pGpio:= SetPtr(PGpioMem, GPLEV0 + ((Gpin shr 5) shl 2));   // (Gpin Div 32) * 4
     if (pGpio^ and (1 shl (Gpin and $1F))) = 0
-      then Data.Level:= 0
-      else Data.Level:= 1;
+      then Data.Level:= PIN_LOW
+      else Data.Level:= PIN_HIGH;
   end;
 
   // RaspberryPi 5
@@ -1275,14 +1273,14 @@ begin
     // State, High / Low
     pGpio:= SetPtr(PRP1RioMem, BankOffs, RP1_RIO_IN);
     if (pGpio^ and (1 shl Gpin)) = 0
-      then Data.Level:= 0
-      else Data.Level:= 1;
+      then Data.Level:= PIN_LOW
+      else Data.Level:= PIN_HIGH;
   end;
 end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.GetGpiosForGpioClock(GpioClk: Integer): TIntArray;
+function TPiGpio.GetGpiosForGpioClock(GpioClk: TClockNumber): TIntArray;
 var
   Gpio: Integer;
   Ok:   Boolean;
@@ -1380,7 +1378,7 @@ end;
 
 function TPiGpio.SetGpioClock(Gpin: Byte; Freq: Integer): Boolean;
 var
-  ClkNo: Integer;
+  ClkNo: TClockNumber;
 
 begin
   if not IsCpuOk then Exit(False);
@@ -1440,15 +1438,12 @@ begin
   // RaspberryPi 1 to RaspberryPi 4
   if FRPiModel.Cpu in [PI_CPU_BCM2835,PI_CPU_BCM2836,PI_CPU_BCM2837,PI_CPU_BCM2711] then
   begin
+    // We have to stop PWM before setting the clock
     pPwm:= SetPtr(PPwmMem, PWM_CONTROL);
-    PwmCont:= pPwm^;                  // preserve PWM_CONTROL
-    pPwm^:= 0;                        // Stop PWM
-
-    // Set PWM Clock
-    Result:= SetBaseClock(CLK_PWM, Freq);
-
-    // restore PWM_CONTROL
-    pPwm^:= PwmCont;
+    PwmCont:= pPwm^;                       // Preserve PWM_CONTROL
+    pPwm^:= 0;                             // Stop PWM
+    Result:= SetBaseClock(CLK_PWM, Freq);  // Set PWM Clock
+    pPwm^:= PwmCont;                       // Restore PWM_CONTROL
   end;
 
 
@@ -1469,13 +1464,13 @@ begin
   if not IsCpuOk then Exit(False);
   if UsingGpioMem then Exit(False);
 
-  // Set PWM Clock
+  // Set UART Clock
   Result:= SetBaseClock(CLK_UART, Freq);
 end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.SetBaseClock(ClkNo: Integer; Freq: Integer): Boolean;
+function TPiGpio.SetBaseClock(ClkNo: TClockNumber; Freq: Integer): Boolean;
 var
   pCtl,pDivI,pDivF,pSel,pOE: ^LongWord;
   PiFreq,DivI,DivF: LongWord;
@@ -1500,7 +1495,11 @@ begin
       CLK_PWM:   pCtl:= SetPtr(PClkMem, CLK_PWM_CTL);
       CLK_UART:  pCtl:= SetPtr(PClkMem, CLK_UART_CTL);
       CLK_PCM:   pCtl:= SetPtr(PClkMem, CLK_PCM_CTL);
-      else Exit(False);
+      else
+      begin
+        FLastErrorStr:= 'Clock ' + IntToStr(Ord(ClkNo)) + ' not supported';
+        Exit(False);
+      end;
     end;
 
     pDivI:= SetPtr(pCtl, 4);     // Clock Divisor
@@ -1591,7 +1590,11 @@ begin
       // We also have CLK_GPIO3,5,6 but don't set it....
       CLK_PWM:   pCtl:= SetPtr(PClkMem, RP1_CLK_PWM_CTRL);
       CLK_UART:  pCtl:= SetPtr(PClkMem, RP1_CLK_UART_CTRL);
-      else Exit(False);
+      else
+      begin
+        FLastErrorStr:= 'Clock ' + IntToStr(Ord(ClkNo)) + ' not supported';
+        Exit(False);
+      end;
     end;
 
     pDivI:= SetPtr(pCtl, 4);                     // Clock Divisor Int
@@ -1671,7 +1674,7 @@ end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.GetRawClockData(ClkNo: Integer; var Data: TGpioClk): Boolean;
+function TPiGpio.GetRawClockData(ClkNo: TClockNumber; var Data: TGpioClk): Boolean;
 var
   pCtl,pDivI,pDivF: ^LongWord;
 
@@ -1690,7 +1693,11 @@ begin
       CLK_PWM:   pCtl:= SetPtr(PClkMem, CLK_PWM_CTL);
       CLK_UART:  pCtl:= SetPtr(PClkMem, CLK_UART_CTL);
       CLK_PCM:   pCtl:= SetPtr(PClkMem, CLK_PCM_CTL);
-      else Exit;
+      else
+      begin
+        FLastErrorStr:= 'Clock ' + IntToStr(Ord(ClkNo)) + ' not supported';
+        Exit(False);
+      end;
     end;
 
     pDivI:= SetPtr(pCtl, 4);                     // Clock Divisor Int
@@ -1713,7 +1720,11 @@ begin
       CLK_GPIO5: pCtl:= SetPtr(PClkMem, RP1_CLK_GP5_CTRL);
       CLK_PWM:   pCtl:= SetPtr(PClkMem, RP1_CLK_PWM_CTRL);
       CLK_UART:  pCtl:= SetPtr(PClkMem, RP1_CLK_UART_CTRL);
-      else Exit;
+      else
+      begin
+        FLastErrorStr:= 'Clock ' + IntToStr(Ord(ClkNo)) + ' not supported';
+        Exit(False);
+      end;
     end;
 
     pDivI:= SetPtr(pCtl, 4);                     // Clock Divisor Int
@@ -1731,10 +1742,10 @@ end;
 // -----------------------------------------------
 // Calculate Frequency of a clock
 // Pi1-4: From the manual: Freq:= Source / (DIVI + DIVF / 1024)
-// Pi1-4: This is dependent on MESH mode !!! Assumes MESH1 mode
-// Pi5: Don't have dokumentation for RP1 chip!!!!
+//        This is dependent on MESH mode !!! Assumes MESH1 mode
+// Pi5:   Don't have dokumentation for RP1 chip!!!!
 // -----------------------------------------------
-function TPiGpio.GetClockFrequency(ClkNo: Integer): LongWord;
+function TPiGpio.GetClockFrequency(ClkNo: TClockNumber): LongWord;
 var
   ClkData: TGpioClk;
   PiFreq, Src: LongWord;
@@ -1796,8 +1807,11 @@ end;
 
 // ----------------------------------------
 // Internal function for set pointer to right PWM channel
+// Gpin:    GPIO pin number
+// Ofs:     Offset into PWM Channel
+// AllPins: False=Only pins on GPIO Header. True=All Pins
 // ----------------------------------------
-function TPiGpio.GetPwmBasePtr(Gpin: Byte; Ofs: Word): Pointer;
+function TPiGpio.GetPwmBasePtr(Gpin: Byte; Ofs: Word; AllPins: Boolean): Pointer;
 var
   ChanTwoOfs: Word;
 
@@ -1816,6 +1830,12 @@ begin
       PI_CPU_BCM2711: ChanTwoOfs:= PWM1_OFFSET;   // Pi 4. Two sets of PWM channels
     end;
 
+    if (not AllPins) and (Gpin > 27) then
+    begin
+      FLastErrorStr:= 'PWM only on GPIO 12,13,18,19';
+      Exit;
+    end;
+
     Case Gpin of
       12,13,18,19,45: Exit(SetPtr(PPwmMem, PWM0_OFFSET, Ofs));
       40,41:          Exit(SetPtr(PPwmMem, ChanTwoOfs, Ofs));
@@ -1828,6 +1848,7 @@ begin
   end;
 
   // RaspberryPi 5
+  // Only PWM's on the header for now!
   if FRPiModel.Cpu = PI_CPU_BCM2712 then
   begin
     Case Gpin of
@@ -1843,7 +1864,7 @@ end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.SetPwmMode(Gpin: Byte; Mode: Byte): Boolean;
+function TPiGpio.SetPwmMode(Gpin: Byte; Mode: TPwmMode): Boolean;
 var
   pPwm,pPwmChan: ^LongWord;
   PwmReg: Word;
@@ -1855,7 +1876,7 @@ begin
   // RaspberryPi 1 to RaspberryPi 4
   if FRPiModel.Cpu in [PI_CPU_BCM2835,PI_CPU_BCM2836,PI_CPU_BCM2837,PI_CPU_BCM2711] then
   begin
-    pPwm:= GetPwmBasePtr(Gpin, PWM_CONTROL);   // Get PWM0_x group / PWM1_x group pointer
+    pPwm:= GetPwmBasePtr(Gpin, PWM_CONTROL, False);  // Get PWM0_x group / PWM1_x group pointer
     if pPwm = Nil then Exit;
 
     Case Gpin of
@@ -1878,8 +1899,6 @@ begin
           then pPwm^:= (pPwm^ and (not Mask)) or PWM1_ENABLE or PWM1_MS_MODE
           else pPwm^:= (pPwm^ and (not Mask)) or PWM1_ENABLE;
       end;
-
-      else Exit(False);
     end;
 
     Result:= True;
@@ -1902,24 +1921,22 @@ begin
       else   begin PwmReg:= 0;                  Mask:= $00; end;
     end;
 
-    pPwm:= GetPwmBasePtr(Gpin, RP1_PWM_GLOBAL_CTRL);
+    pPwm:= GetPwmBasePtr(Gpin, RP1_PWM_GLOBAL_CTRL, False);
     if pPwm = Nil then Exit;
 
-    pPwmChan:= GetPwmBasePtr(Gpin, PwmReg);
+    pPwmChan:= GetPwmBasePtr(Gpin, PwmReg, False);
     if pPwmChan = Nil then Exit;
 
     if Mode = PWM_MODE_MS then
     begin
       pPwmChan^:= RP1_PWM_CHANCTRL_FIFO_POP or RP1_PWM_CHANCTRL_MODE_MS;
-      pPwm^:= pPwm^ or Mask;
-      pPwm^:= pPwm^ or RP1_PWM_GLOBCTRL_SET_UPDATE;
+      pPwm^:= pPwm^ or Mask or RP1_PWM_GLOBCTRL_SET_UPDATE;
     end;
 
     if Mode = PWM_MODE_OFF then
     begin
       pPwmChan^:= RP1_PWM_CHANCTRL_FIFO_POP;
-      pPwm^:= pPwm^ and (not Mask);
-      pPwm^:= pPwm^ or RP1_PWM_GLOBCTRL_SET_UPDATE;
+      pPwm^:= (pPwm^ and (not Mask)) or RP1_PWM_GLOBCTRL_SET_UPDATE;
     end;
 
     Result:= True;
@@ -1935,14 +1952,14 @@ var
 
 begin
   Result:= False;
+  PwmReg:= 0;
 
   // RaspberryPi 1 to RaspberryPi 4
   if FRPiModel.Cpu in [PI_CPU_BCM2835,PI_CPU_BCM2836,PI_CPU_BCM2837,PI_CPU_BCM2711] then
   begin
     Case Gpin of
-      12,18,40:    PwmReg:= PWM0_RANGE;
-      13,19,41,45: PwmReg:= PWM1_RANGE;
-      else         PwmReg:= 0;
+      12,18{,40}:    PwmReg:= PWM0_RANGE;
+      13,19{,41,45}: PwmReg:= PWM1_RANGE;
     end;
   end;
 
@@ -1954,14 +1971,13 @@ begin
       13:    PwmReg:= RP1_PWM_CHAN1_RANGE;
       14,18: PwmReg:= RP1_PWM_CHAN2_RANGE;
       15,19: PwmReg:= RP1_PWM_CHAN3_RANGE;
-      else   PwmReg:= 0;
     end;
 
     // On Pi5 the count starts at 0 and increments on each cycle until it reaches RANGE
     if Range > 1 then Range:= Range - 1;
   end;
 
-  pPwm:= GetPwmBasePtr(Gpin, PwmReg);
+  pPwm:= GetPwmBasePtr(Gpin, PwmReg, False);
   if pPwm = Nil then Exit;
 
   pPwm^:= Range;
@@ -1977,14 +1993,14 @@ var
 
 begin
   Result:= False;
+  PwmReg:= 0;
 
   // RaspberryPi 1 to RaspberryPi 4
   if FRPiModel.Cpu in [PI_CPU_BCM2835,PI_CPU_BCM2836,PI_CPU_BCM2837,PI_CPU_BCM2711] then
   begin
     Case Gpin of
-      12,18,40:    PwmReg:= PWM0_DATA;
-      13,19,41,45: PwmReg:= PWM1_DATA;
-      else         PwmReg:= 0;
+      12,18{,40}:    PwmReg:= PWM0_DATA;
+      13,19{,41,45}: PwmReg:= PWM1_DATA;
     end;
   end;
 
@@ -1996,11 +2012,10 @@ begin
       13:    PwmReg:= RP1_PWM_CHAN1_DUTY;
       14,18: PwmReg:= RP1_PWM_CHAN2_DUTY;
       15,19: PwmReg:= RP1_PWM_CHAN3_DUTY;
-      else   PwmReg:= 0;
     end;
   end;
 
-  pPwm:= GetPwmBasePtr(Gpin, PwmReg);
+  pPwm:= GetPwmBasePtr(Gpin, PwmReg, False);
   if pPwm = Nil then Exit;
 
   pPwm^:= Value;
@@ -2017,14 +2032,14 @@ var
 
 begin
   Result:= False;
+  PwmReg:= 0;
 
   // RaspberryPi 1 to RaspberryPi 4
   if FRPiModel.Cpu in [PI_CPU_BCM2835,PI_CPU_BCM2836,PI_CPU_BCM2837,PI_CPU_BCM2711] then
   begin
     Case Gpin of
-      12,18,40:    PwmReg:= PWM0_RANGE;
-      13,19,41,45: PwmReg:= PWM1_RANGE;
-      else         PwmReg:= 0;
+      12,18{,40}:    PwmReg:= PWM0_RANGE;
+      13,19{,41,45}: PwmReg:= PWM1_RANGE;
     end;
   end;
 
@@ -2036,11 +2051,10 @@ begin
       13:    PwmReg:= RP1_PWM_CHAN1_RANGE;
       14,18: PwmReg:= RP1_PWM_CHAN2_RANGE;
       15,19: PwmReg:= RP1_PWM_CHAN3_RANGE;
-      else   PwmReg:= 0;
     end;
   end;
 
-  pPwm:= GetPwmBasePtr(Gpin, PwmReg);
+  pPwm:= GetPwmBasePtr(Gpin, PwmReg, False);
   if pPwm = Nil then Exit;
   if pPwm^ = 0 then
   begin
@@ -2062,7 +2076,7 @@ end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.GetRawPwmData(PwmGroup: Integer; var Data: TPwmData): Boolean;
+function TPiGpio.GetRawPwmData(PwmGroup: TPwmGroupNumber; var Data: TPwmData): Boolean;
 var
   pPwm: ^LongWord;
   Ofs: LongWord;
@@ -2162,7 +2176,7 @@ end;
 
 // ------------------------------------------------------------------------
 
-function TPiGpio.GetGpiosForPwm(PwmChan: Integer): TIntArray;
+function TPiGpio.GetGpiosForPwm(PwmChan: TPwmChannelNumber): TIntArray;
 var
   Gpio: Integer;
   Ok: Boolean;

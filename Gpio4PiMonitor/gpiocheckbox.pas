@@ -18,7 +18,8 @@ unit GPIOcheckbox;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
+  GpioDefs;
 
 
 const
@@ -38,23 +39,23 @@ type
   private
     FChecked:   Boolean;
     FOnChange:  TNotifyEvent;
-    FGpioMode:  Integer;                // Input, Output, etc.
-    FGpioPull:  Integer;                // PullUp, PullDown, etc.
-    FGpioLevel: Integer;                // On, Off, etc.
+    FGpioMode:  TPinMode;               // Input, Output, etc.
+    FGpioPull:  TPullMode;              // PullUp, PullDown, etc.
+    FGpioLevel: TPinLevel;              // On, Off, etc.
     procedure GpioPinClick(Sender: TObject);
     procedure GpioPinPaint(Sender: TObject);
   protected
-    procedure SetGpioMode(GpioMode: Integer);
-    procedure SetGpioPull(GpioPull: Integer);
-    procedure SetGpioLevel(GpioLevel: Integer);
+    procedure SetGpioMode(GpioMode: TPinMode);
+    procedure SetGpioPull(GpioPull: TPullMode);
+    procedure SetGpioLevel(GpioLevel: TPinLevel);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property Checked: Boolean read FChecked write FChecked;
     property OnChange: TNotifyEvent read FOnChange write FOnChange;
-    property GpioMode: Integer read FGpioMode write SetGpioMode;
-    property GpioPull: Integer read FGpioPull write SetGpioPull;
-    property GpioLevel: Integer read FGpioLevel write SetGpioLevel;
+    property GpioMode: TPinMode read FGpioMode write SetGpioMode;
+    property GpioPull: TPullMode read FGpioPull write SetGpioPull;
+    property GpioLevel: TPinLevel read FGpioLevel write SetGpioLevel;
   end;
 
 
@@ -66,7 +67,7 @@ type
 implementation
 
 uses
-  RasPiMem, GpioDefs;
+  RasPiMem;
 
 
 // -----------------------------------------------
@@ -103,10 +104,18 @@ begin
   if Enabled then
   begin
     case GpioMode of
-      FSEL_INPUT:  Canvas.Brush.Color:= clLightGreen;
-      FSEL_OUTPUT: Canvas.Brush.Color:= clLightBlue;
-      2..7:        Canvas.Brush.Color:= clLightYellow; // Alt 0-5
-      else         Canvas.Brush.Color:= clLightRed;
+      PM_INPUT:  Canvas.Brush.Color:= clLightGreen;
+      PM_OUTPUT: Canvas.Brush.Color:= clLightBlue;
+      PM_ALT0,
+      PM_ALT1,
+      PM_ALT2,
+      PM_ALT3,
+      PM_ALT4,
+      PM_ALT5,
+      PM_ALT6,
+      PM_ALT7,
+      PM_ALT8: Canvas.Brush.Color:= clLightYellow;  // Alt 0-8
+      else     Canvas.Brush.Color:= clLightRed;
     end;
   end
   else Canvas.Brush.Color:= clDefault;
@@ -132,7 +141,7 @@ end;
 // -----------------------------------------------
 // SetGpioMode
 // -----------------------------------------------
-procedure TGpioCheckBox.SetGpioMode(GpioMode: Integer);
+procedure TGpioCheckBox.SetGpioMode(GpioMode: TPinMode);
 begin
   FGpioMode:= GpioMode;
   Repaint;
@@ -142,7 +151,7 @@ end;
 // -----------------------------------------------
 // SetGpioPud
 // -----------------------------------------------
-procedure TGpioCheckBox.SetGpioPull(GpioPull: Integer);
+procedure TGpioCheckBox.SetGpioPull(GpioPull: TPullMode);
 begin
   FGpioPull:= GpioPull;
   Repaint;
@@ -152,7 +161,7 @@ end;
 // -----------------------------------------------
 // SetGpioState
 // -----------------------------------------------
-procedure TGpioCheckBox.SetGpioLevel(GpioLevel: Integer);
+procedure TGpioCheckBox.SetGpioLevel(GpioLevel: TPinLevel);
 begin
   FGpioLevel:= GpioLevel;
   Repaint;
