@@ -194,7 +194,7 @@ type
     // SetGpioClock:
     // Output the given frequency on the selected pin
     // Gpin: GPIO pin number, can be one of the following:
-    //       Pi 1-4: 4,5,6,20,21,32,34,42,43,44
+    //       Pi 1-4: 4,5,6,20,21
     //       Pi 5:   4,5,6,18,20,21
     // Freq: The frequency in Hz. Can be in the range for
     //       Pi 1-3:  4.688 Hz to 250 MHz
@@ -251,7 +251,8 @@ type
     // -----------------------------------------------
     // GetRawClockData:
     // Returns the Raw Control and Divisor for a clock
-    // ClkNo: CLK_GPIO0, CLK_GPIO1, CLK_GPIO2, CLK_PWM, CLK_UART, CLK_PCM
+    // ClkNo: CLK_GPIO0, CLK_GPIO1, CLK_GPIO2, CLK_GPIO3, CLK_GPIO4, CLK_GPIO5,
+    //        CLK_PWM, CLK_UART, CLK_PCM
     // Data:  Data returned to the caller:
     //        .Control: Control word from the clock
     //        .Divisor: Int Divisor from the clock
@@ -264,7 +265,8 @@ type
     // -----------------------------------------------
     // GetClockFrequency:
     // Calculate Frequency of a clock
-    // ClkNo: CLK_GPIO0, CLK_GPIO1, CLK_GPIO2, CLK_PWM, CLK_UART, CLK_PCM
+    // ClkNo: CLK_GPIO0, CLK_GPIO1, CLK_GPIO2, CLK_GPIO3, CLK_GPIO4, CLK_GPIO5,
+    //        CLK_PWM, CLK_UART, CLK_PCM
     // Return: The frequency in Hz
     // -----------------------------------------------
     function GetClockFrequency(ClkNo: TClockNumber): LongWord;
@@ -274,7 +276,7 @@ type
     // In Mark/Space mode it behaves as a divider for the PWM master clock,
     // so the PWM frequency = PwmMasterClock / Range
     // Gpin: GPIO pin number, can be one of the following:
-    //       Pi 1-4: 12,13,18,19,40,41,45
+    //       Pi 1-4: 12,13,18,19
     //       Pi 5:   12,13,14,15,18,19
     // Range: Pi 1-4: 2 - 4294967295 ($FFFFFFFF)
     //        Pi 5:   2 - 4294967295 ($FFFFFFFF)
@@ -291,7 +293,7 @@ type
     // If it is set to a quarter of Range, the pulse width is 25%
     // Half of the Range, the pulse width is 50%, etc.
     // Gpin: GPIO pin number, can be one of the following:
-    //       Pi 1-4: 12,13,18,19,40,41,45
+    //       Pi 1-4: 12,13,18,19
     //       Pi 5:   12,13,14,15,18,19
     // Value: 0 to PWM Range
     // Return: True on success, False on error
@@ -303,7 +305,7 @@ type
     // Just a helper function whitch calculate the PWM value
     // and calls SetPwmValue()
     // Gpin: GPIO pin number, can be one of the following:
-    //       Pi 1-4: 12,13,18,19,40,41,45
+    //       Pi 1-4: 12,13,18,19
     //       Pi 5:   12,13,14,15,18,19
     // DutyCycle: 0.00 to 100.00%
     // Return: True on success, False on error
@@ -319,7 +321,7 @@ type
     // Be aware that different pins shares the same channel,
     // look further down in the source code
     // Gpin: GPIO pin number, can be one of the following:
-    //       Pi 1-4: 12,13,18,19,40,41,45
+    //       Pi 1-4: 12,13,18,19
     //       Pi 5:   12,13,14,15,18,19
     // Mode: Pi 1-4: PWM_MODE_OFF, PWM_MODE_BAL, PWM_MODE_MS  (use PWM_MODE_MS)
     //       Pi 5:   Only PWM_MODE_OFF, PWM_MODE_MS is supported
